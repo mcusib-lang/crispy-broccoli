@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing:border-box; }
+  html,body { margin:0; background:#050509; font-family:'Barlow Semi Condensed',sans-serif; }
+</style>
+</helmet>
+<div style="min-height:100vh; background:radial-gradient(120% 80% at 50% 0%, #0d0d1f 0%, #050509 60%); padding:24px;">
+  <div style="font:400 30px/1 'Bebas Neue'; color:#f3f1ec; margin-bottom:4px;">BANCO DE POSES</div>
+  <div style="font:500 12px/1 'Barlow Semi Condensed'; color:#8b88a8; margin-bottom:20px;">20 animaciones en canvas · verificación</div>
+  <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:12px;">
+    <sc-for list="{{ cells }}" as="c" hint-placeholder-count="20">
+      <div style="border-radius:14px; background:linear-gradient(180deg,#14142a,#101022); border:1px solid #ffffff10; overflow:hidden;">
+        <canvas data-ex="{{ c.ex }}" style="width:100%; height:150px; display:block;"></canvas>
+        <div style="padding:7px 9px 9px; border-top:1px solid #ffffff0a;">
+          <div style="font:600 11px/1.1 'Barlow Semi Condensed'; color:#e6e3f2;">{{ c.name }}</div>
+          <div style="font:600 9px/1 'Barlow Semi Condensed'; letter-spacing:.06em; color:#6f6c8e; margin-top:3px;">{{ c.ex }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const L = [
+      ['squat','Sentadilla sumo'],['lunge','Zancada trasera'],['glutebridge','Puente de glúteo'],
+      ['jack','Saltos de tijera'],['pushup','Flexiones'],['shoulderpress','Press de hombros'],
+      ['bicepcurl','Curl de bíceps'],['row','Remo'],['rdl','Peso muerto rumano'],
+      ['lateralraise','Elevación lateral'],['calfraise','Elevación de talón'],['crunch','Crunch'],
+      ['legraise','Elevación piernas'],['plank','Plancha'],['climber','Escaladores'],
+      ['highknees','Rodillas altas'],['legswing','Balanceo de pierna'],['catcow','Gato–Vaca'],
+      ['childpose','Postura del niño'],['quadstretch','Estiramiento cuádriceps']
+    ];
+    return { cells: L.map(x => ({ ex:x[0], name:x[1] })) };
+  }
+
+  componentDidMount() {
+    const BODY='#dfe5f4', BACK='#8b97c2', SHEEN='#ffffff';
+    const ACC = { squat:'#4f8cff', pushup:'#4f8cff', jack:'#ea580c', lunge:'#a855f7', shoulderpress:'#4f8cff', bicepcurl:'#4f8cff', row:'#4f8cff', rdl:'#22c55e', lateralraise:'#4f8cff', calfraise:'#22c55e', highknees:'#ea580c', climber:'#ea580c' };
+    const PER = { squat:2000, pushup:1500, jack:1050, lunge:2200, glutebridge:2200, shoulderpress:1800, bicepcurl:1700, row:1900, rdl:2400, lateralraise:1900, calfraise:1400, crunch:1800, legraise:2000, plank:3600, climber:900, highknees:760, legswing:1500, catcow:3000, childpose:4000, quadstretch:3200 };
+    const ease=(t)=>(1-Math.cos(2*Math.PI*t))/2, ph=(n,p)=>(n%p)/p;
+    const mid=(a,b)=>[(a[0]+b[0])/2,(a[1]+b[1])/2];
+
+    const POSE = {
+      squat(s){const hX=112,hY=80+32*s,hip=[hX,hY],sh=[hX+5+6*s,hY-46];return{dumbbell:true,hip,sh,neck:[sh[0]+4,sh[1]-7],head:[sh[0]+7,sh[1]-22],knee:[132+12*s,118+4*s],foot:[123,158],knee2:[122+12*s,120+4*s],foot2:[104,158],elbow:[sh[0]+14,(sh[1]+hY)/2+8],hand:[sh[0]+18,hY+4],elbow2:[sh[0]+4,(sh[1]+hY)/2+8],hand2:[sh[0]+8,hY+6]};},
+      lunge(l){const hX=120,hY=76+20*l,hip=[hX,hY],sh=[hX,hY-44];return{dumbbell:true,hip,sh,neck:[hX,sh[1]-6],head:[hX,sh[1]-21],knee:[150,116+18*l],foot:[152,158],knee2:[100,124+8*l],foot2:[86,158],elbow:[hX+11,(sh[1]+hY)/2+6],hand:[hX+14,hY+2],elbow2:[hX-11,(sh[1]+hY)/2+6],hand2:[hX-14,hY+2]};},
+      jack(o){const cx=120,b=-6*Math.sin(Math.PI*o),sh=[cx,58+b],hip=[cx,100+b];return{dumbbell:false,hip,sh,neck:[cx,51+b],head:[cx,41+b],knee:[cx-8-12*o,130],foot:[cx-10-26*o,158],knee2:[cx+8+12*o,130],foot2:[cx+10+26*o,158],elbow:[cx-18-14*o,sh[1]+22-46*o],hand:[cx-26-22*o,sh[1]+42-86*o],elbow2:[cx+18+14*o,sh[1]+22-46*o],hand2:[cx+26+22*o,sh[1]+42-86*o]};},
+      pushup(d){const sh=[136,106+16*d];return{dumbbell:false,hip:[96,116],sh,neck:[sh[0]+8,sh[1]-1],head:[sh[0]+18,sh[1]-3],knee:[68,134],foot:[40,150],knee2:[68,137],foot2:[40,153],elbow:[146,128+8*d],hand:[150,150],elbow2:[148,131+8*d],hand2:[150,150]};},
+
+      glutebridge(s){const hipY=150-30*s,hip=[120,hipY],sh=[82,150];return{dumbbell:false,hip,sh,neck:[73,150],head:[60,150],knee:[152,126],foot:[170,156],knee2:[150,130],foot2:[168,158],elbow:[68,153],hand:[54,156],elbow2:[68,155],hand2:[54,158]};},
+      plank(t){const b=2.5*Math.sin(Math.PI*t),sh=[148,116+b],hip=[112,124+b];return{dumbbell:false,hip,sh,neck:[158,112+b],head:[170,108+b],knee:[86,132+b],foot:[60,140+b],knee2:[86,135+b],foot2:[60,143+b],elbow:[148,150],hand:[170,150],elbow2:[148,150],hand2:[168,150]};},
+      climber(s){const a=s,b=1-s,sh=[148,108],hip=[112,118];return{dumbbell:false,hip,sh,neck:[158,105],head:[170,102],knee:[88+34*a,136-16*a],foot:[62+50*a,150-18*a],knee2:[88+34*b,136-16*b],foot2:[62+50*b,150-18*b],elbow:[148,130],hand:[150,150],elbow2:[146,132],hand2:[148,150]};},
+      highknees(s){const cx=120,a=s,b=1-s,sh=[cx,60],hip=[cx,104];return{dumbbell:false,hip,sh,neck:[cx,52],head:[cx,42],knee:[cx-12,130-40*a],foot:[cx-15,156-40*a],knee2:[cx+12,130-40*b],foot2:[cx+15,156-40*b],elbow:[cx-16,86-18*b],hand:[cx-20,108-44*b],elbow2:[cx+16,86-18*a],hand2:[cx+20,108-44*a]};},
+      shoulderpress(s){const cx=120,hip=[cx,108],sh=[cx,62];return{dumbbell:true,hip,sh,neck:[cx,53],head:[cx,42],knee:[cx-12,132],foot:[cx-13,158],knee2:[cx+12,132],foot2:[cx+13,158],elbow:[cx-18,72-12*s],hand:[cx-21,58-24*s],elbow2:[cx+18,72-12*s],hand2:[cx+21,58-24*s]};},
+      bicepcurl(s){const hip=[112,108],sh=[117,62],hy=104-38*s;return{dumbbell:true,hip,sh,neck:[120,55],head:[124,41],knee:[118,130],foot:[118,158],knee2:[104,130],foot2:[104,158],elbow:[126,86],hand:[128-6*s,hy],elbow2:[122,86],hand2:[124-10*s,hy]};},
+      row(s){const hip=[110,112],sh=[148,88];return{dumbbell:true,hip,sh,neck:[158,84],head:[170,80],knee:[120,132],foot:[120,158],knee2:[104,134],foot2:[104,158],elbow:[154-8*s,108-6*s],hand:[156-16*s,122-22*s],elbow2:[152-8*s,110-6*s],hand2:[154-16*s,124-22*s]};},
+      rdl(s){const sh=[116+34*s,62+30*s],hip=[114,108],hand=[134+16*s,116+6*s];return{dumbbell:true,hip,sh,neck:[sh[0]+5,sh[1]-7],head:[sh[0]+9,sh[1]-20],knee:[120,132],foot:[120,158],knee2:[106,132],foot2:[106,158],elbow:[hand[0]-2,(sh[1]+hand[1])/2],hand,elbow2:[hand[0]-6,(sh[1]+hand[1])/2],hand2:[hand[0]-4,hand[1]+2]};},
+      lateralraise(s){const cx=120,hip=[cx,108],sh=[cx,62];return{dumbbell:true,hip,sh,neck:[cx,53],head:[cx,42],knee:[cx-11,132],foot:[cx-12,158],knee2:[cx+11,132],foot2:[cx+12,158],elbow:[cx-14-22*s,86-22*s],hand:[cx-14-44*s,108-46*s],elbow2:[cx+14+22*s,86-22*s],hand2:[cx+14+44*s,108-46*s]};},
+      calfraise(s){const L=10*s,hip=[112,108-L],sh=[116,62-L];return{dumbbell:false,hip,sh,neck:[120,55-L],head:[123,41-L],knee:[118,130-L],foot:[120,156],knee2:[104,130-L],foot2:[104,156],elbow:[120,86-L],hand:[122,108-L],elbow2:[108,86-L],hand2:[106,108-L]};},
+      crunch(s){const hip=[108,150],sh=[84+12*s,150-18*s];return{dumbbell:false,hip,sh,neck:[sh[0]-6,sh[1]-4],head:[sh[0]-14,sh[1]-6],knee:[140,126],foot:[152,156],knee2:[138,129],foot2:[150,158],elbow:[sh[0]+4,sh[1]+6],hand:[sh[0]+18,sh[1]+2],elbow2:[sh[0]+2,sh[1]+8],hand2:[sh[0]+16,sh[1]+4]};},
+      legraise(s){const sh=[80,150],hip=[112,150],foot=[162-12*s,150-44*s],knee=mid(hip,foot);return{dumbbell:false,hip,sh,neck:[71,150],head:[58,150],knee,foot,knee2:[knee[0],knee[1]+3],foot2:[foot[0],foot[1]+3],elbow:[66,153],hand:[52,156],elbow2:[66,155],hand2:[52,158]};},
+      legswing(s){const cx=118,sw=(s-0.5)*2,hip=[cx,106],sh=[cx,60];return{dumbbell:false,hip,sh,neck:[cx,52],head:[cx,42],knee:[cx+6+20*sw,128],foot:[cx+8+38*sw,148],knee2:[cx-4,130],foot2:[cx-6,158],elbow:[cx+14,84],hand:[cx+18,104],elbow2:[cx-14,84],hand2:[cx-18,104]};},
+      catcow(s){const ar=(s-0.5);return{dumbbell:false,hip:[94,118-9*ar],sh:[150,118-9*ar],neck:[160,118+10*ar],head:[171,121+14*ar],knee:[94,150],foot:[80,153],knee2:[96,150],foot2:[82,153],elbow:[150,134],hand:[150,150],elbow2:[150,136],hand2:[150,150]};},
+      childpose(t){const b=1.5*Math.sin(Math.PI*t);return{dumbbell:false,hip:[88,138+b],sh:[120,141+b],neck:[134,143+b],head:[150,147],knee:[86,152],foot:[72,154],knee2:[88,152],foot2:[74,154],elbow:[148,150],hand:[172,150],elbow2:[148,150],hand2:[170,150]};},
+      quadstretch(s){const cx=116,sw=2*Math.sin(Math.PI*s),hip=[cx,106+sw],sh=[cx+2,60+sw];return{dumbbell:false,hip,sh,neck:[cx+3,52+sw],head:[cx+6,41+sw],knee:[cx+8,128],foot:[cx+2,96],knee2:[cx-2,130],foot2:[cx-4,158],elbow:[cx+8,82],hand:[cx+3,98],elbow2:[cx-12,84],hand2:[cx-18,104]};}
+    };
+
+    const cap=(c,a,b,w,col)=>{c.strokeStyle=col;c.lineWidth=w;c.lineCap='round';c.lineJoin='round';c.beginPath();c.moveTo(a[0],a[1]);c.lineTo(b[0],b[1]);c.stroke();};
+    const off=(p)=>[p[0]-2.6,p[1]-2.6];
+    function dumbbell(c,p,acc){c.strokeStyle=acc;c.lineWidth=4.5;c.lineCap='round';c.beginPath();c.moveTo(p[0]-7,p[1]);c.lineTo(p[0]+7,p[1]);c.stroke();c.fillStyle=acc;c.beginPath();c.arc(p[0]-7,p[1],5.5,0,7);c.fill();c.beginPath();c.arc(p[0]+7,p[1],5.5,0,7);c.fill();}
+    function draw(c,P,acc){
+      c.fillStyle='rgba(0,0,0,.25)';c.beginPath();c.ellipse(120,160,46,6,0,0,7);c.fill();
+      cap(c,P.hip,P.knee2,15,BACK);cap(c,P.knee2,P.foot2,11,BACK);
+      cap(c,P.sh,P.elbow2,11,BACK);cap(c,P.elbow2,P.hand2,8,BACK);
+      cap(c,P.hip,P.sh,27,BODY);
+      cap(c,P.hip,P.knee,16,BODY);cap(c,P.knee,P.foot,12,BODY);
+      cap(c,P.sh,P.elbow,12,BODY);cap(c,P.elbow,P.hand,9,BODY);
+      cap(c,P.sh,P.neck,11,BODY);
+      c.fillStyle=BODY;c.beginPath();c.arc(P.head[0],P.head[1],13,0,7);c.fill();
+      cap(c,off(P.hip),off(P.sh),9,SHEEN);
+      cap(c,off(P.hip),off(P.knee),6,SHEEN);cap(c,off(P.knee),off(P.foot),4,SHEEN);
+      cap(c,off(P.sh),off(P.elbow),4,SHEEN);cap(c,off(P.elbow),off(P.hand),2.6,SHEEN);
+      c.fillStyle=SHEEN;c.beginPath();c.arc(P.head[0]-3.5,P.head[1]-3.5,5,0,7);c.fill();
+      if(P.dumbbell){dumbbell(c,P.hand2,acc);dumbbell(c,P.hand,acc);}
+    }
+    const dpr=()=>window.devicePixelRatio||1;
+    const setup=(cv)=>{const r=dpr();const w=cv.clientWidth||220,h=cv.clientHeight||150;cv.width=Math.round(w*r);cv.height=Math.round(h*r);return{cv,ctx:cv.getContext('2d'),w,h};};
+    let items=[];
+    const measure=()=>{items=Array.from(document.querySelectorAll('canvas[data-ex]')).map(setup);};
+    measure();
+    const frame=(now)=>{
+      const r=dpr();
+      items.forEach((it)=>{
+        const ex=it.cv.getAttribute('data-ex');if(!POSE[ex])return;
+        const s=ease(ph(now,PER[ex]||1600));
+        it.ctx.setTransform(r,0,0,r,0,0);it.ctx.clearRect(0,0,it.w,it.h);
+        const sc=Math.min(it.w/240,it.h/172);
+        it.ctx.translate((it.w-240*sc)/2,(it.h-172*sc)/2);it.ctx.scale(sc,sc);
+        draw(it.ctx,POSE[ex](s),ACC[ex]||'#4f8cff');
+      });
+      this.raf=requestAnimationFrame(frame);
+    };
+    this.raf=requestAnimationFrame(frame);
+    this._rz=()=>measure();window.addEventListener('resize',this._rz);
+  }
+  componentWillUnmount(){if(this.raf)cancelAnimationFrame(this.raf);if(this._rz)window.removeEventListener('resize',this._rz);}
+}
+</script>
+</body>
+</html>

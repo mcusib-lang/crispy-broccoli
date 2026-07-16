@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; font-family: system-ui, -apple-system, sans-serif; }
+  .pf { position:absolute; width:300px; }
+  .pl { position:absolute; top:-25px; left:3px; font:700 15px 'Caveat',cursive; color:#5a5550; white-space:nowrap; }
+  .scr { background:#fdfcfa; border:1.6px solid #2b2b2b; border-radius:28px; min-height:624px; box-shadow:0 4px 14px rgba(0,0,0,.14); overflow:visible; position:relative; display:flex; flex-direction:column; padding:20px 16px 14px; }
+  .notch { position:absolute; top:9px; left:50%; transform:translateX(-50%); width:48px; height:5px; border-radius:3px; background:#dad8d3; }
+  .eyb { font:700 8.5px ui-monospace,monospace; letter-spacing:.18em; color:#a09a90; text-transform:uppercase; }
+  .ttl { font:400 30px 'Bebas Neue',sans-serif; letter-spacing:.02em; color:#2b2b2b; line-height:.9; }
+  .ttl.sm { font-size:24px; }
+  .bar { height:8px; background:#e6e3dd; border-radius:4px; }
+  .box { border:1.4px solid #cdcac4; border-radius:12px; }
+  .btn { border:1.6px solid #2b2b2b; border-radius:22px; padding:11px; text-align:center; font:600 12px system-ui; color:#2b2b2b; }
+  .btn.pri { background:#2b2b2b; color:#fff; }
+  .mono { font:600 9px ui-monospace,monospace; letter-spacing:.08em; color:#8a857c; }
+  .ph { background:repeating-linear-gradient(45deg,#eceae6,#eceae6 6px,#f6f5f2 6px,#f6f5f2 12px); display:flex; align-items:center; justify-content:center; color:#a8a298; font:600 9px ui-monospace,monospace; letter-spacing:.06em; text-align:center; }
+  .chip { border:1.3px solid #cdcac4; border-radius:20px; padding:4px 10px; font:600 10px system-ui; color:#6a655c; }
+  .nav { display:flex; justify-content:space-around; align-items:center; border-top:1.4px solid #e6e3dd; padding-top:9px; margin:auto -16px -14px; }
+  .navi { display:flex; flex-direction:column; align-items:center; gap:3px; font:700 7.5px ui-monospace; letter-spacing:.05em; color:#b3ada3; }
+  .navi.on { color:#2b2b2b; }
+  .post { background:#fef3a8; padding:13px 14px; font:600 13px 'Caveat',cursive; color:#5c5326; box-shadow:0 2px 6px rgba(0,0,0,.12); line-height:1.25; border-radius:2px; }
+  .sec { font:700 26px 'Caveat',cursive; color:#3a3631; }
+  .secn { font:600 12px system-ui; color:#7a756c; margin-top:2px; }
+  .dot4 { display:flex; gap:4px; }
+  .dot4 i { height:4px; width:5px; border-radius:3px; background:#d8d5cf; }
+  .dot4 i.on { width:16px; background:#2b2b2b; }
+  .field { border:1.4px solid #cdcac4; border-radius:9px; padding:9px 10px; font:500 11px system-ui; color:#b3ada3; }
+</style>
+</helmet>
+
+<!-- DOC TITLE -->
+<div style="position:absolute; left:80px; top:12px; width:900px;">
+  <div style="font:400 40px 'Bebas Neue',sans-serif; letter-spacing:.03em; color:#2b2b2b;">AMRAP PERSONAL — WIREFRAMES v2</div>
+  <div style="font:600 14px 'Caveat',cursive; color:#6a655c; margin-top:2px;">Storyboard de estructura · arrastra para mover el lienzo y haz zoom para alejarte · móvil + escritorio</div>
+</div>
+<div style="position:absolute; left:1140px; top:18px; width:230px;" class="post">App real = tema OSCURO (#08080f), tipografía condensada y color por semana. Esto es el esqueleto, no el acabado final.</div>
+
+<!-- ════════ SECCIÓN A ════════ -->
+<div style="position:absolute; left:80px; top:100px;">
+  <div class="sec">A · Entrada &amp; Onboarding</div>
+  <div class="secn">Cada amig@ crea su perfil y genera su plan según su físico y ritmo de vida</div>
+</div>
+
+<!-- A1 Splash -->
+<div class="pf" style="left:80px; top:160px;">
+  <div class="pl">A1 · Bienvenida</div>
+  <div class="scr"><div class="notch"></div>
+    <div class="eyb" style="margin-top:12px;">AMRAP · Personal</div>
+    <div class="ttl" style="font-size:44px; margin-top:auto;">ENTRENA<br>SIN<br>LÍMITES</div>
+    <div style="display:flex; flex-direction:column; gap:7px; margin:16px 0;">
+      <div class="bar" style="width:88%;"></div><div class="bar" style="width:70%;"></div>
+    </div>
+    <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:auto;">
+      <span class="chip">⏱ 28 min/día</span><span class="chip">🏠 En casa</span><span class="chip">📴 Sin conexión</span><span class="chip">📅 4 semanas</span>
+    </div>
+    <div class="btn pri" style="margin-bottom:8px;">EMPEZAR →</div>
+    <div class="btn">Ya tengo un perfil</div>
+  </div>
+</div>
+
+<!-- A2 Perfiles multi-user -->
+<div class="pf" style="left:460px; top:160px;">
+  <div class="pl">A2 · ¿Quién entrena? (multi-usuario)</div>
+  <div class="scr"><div class="notch"></div>
+    <div class="eyb" style="margin-top:12px;">Perfiles en este dispositivo</div>
+    <div class="ttl" style="margin-top:4px;">¿QUIÉN<br>ENTRENA?</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:18px;">
+      <div class="box" style="padding:14px; text-align:center;"><div style="width:48px; height:48px; border-radius:50%; background:#16a34a22; border:1.5px solid #16a34a; margin:0 auto 8px;"></div><div style="font:600 12px system-ui; color:#2b2b2b;">Javi</div><div class="mono">Sem 2 · racha 6</div></div>
+      <div class="box" style="padding:14px; text-align:center;"><div style="width:48px; height:48px; border-radius:50%; background:#2563eb22; border:1.5px solid #2563eb; margin:0 auto 8px;"></div><div style="font:600 12px system-ui; color:#2b2b2b;">Marcos</div><div class="mono">Sem 1 · racha 2</div></div>
+      <div class="box" style="padding:14px; text-align:center;"><div style="width:48px; height:48px; border-radius:50%; background:#9333ea22; border:1.5px solid #9333ea; margin:0 auto 8px;"></div><div style="font:600 12px system-ui; color:#2b2b2b;">Ana</div><div class="mono">Sem 4 · racha 11</div></div>
+      <div class="box" style="padding:14px; text-align:center; border-style:dashed;"><div style="width:48px; height:48px; border-radius:50%; border:1.5px dashed #b3ada3; margin:0 auto 8px; display:flex; align-items:center; justify-content:center; font-size:22px; color:#b3ada3;">+</div><div style="font:600 12px system-ui; color:#7a756c;">Añadir</div></div>
+    </div>
+    <div class="box" style="margin-top:14px; padding:10px 12px; background:#f6f5f2; border-style:dashed; font:500 10px system-ui; color:#7a756c; line-height:1.4;">Perfiles locales para uso en solitario o dispositivo compartido. ¿Entrenar con amigos en remoto? → Sección F.</div>
+    <div class="btn pri" style="margin-top:auto;">Entrar como Javi →</div>
+  </div>
+</div>
+
+<!-- A3 Onb sobre ti -->
+<div class="pf" style="left:840px; top:160px;">
+  <div class="pl">A3 · Sobre ti</div>
+  <div class="scr"><div class="notch"></div>
+    <div class="dot4" style="margin-top:12px;"><i class="on"></i><i></i><i></i><i></i></div>
+    <div class="eyb" style="margin-top:14px;">Paso 1 de 4</div>
+    <div class="ttl" style="margin-top:4px;">SOBRE TI</div>
+    <div style="display:flex; flex-direction:column; gap:11px; margin-top:18px;">
+      <div><div class="mono" style="margin-bottom:5px;">NOMBRE</div><div class="field">¿Cómo te llamo?</div></div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:9px;">
+        <div><div class="mono" style="margin-bottom:5px;">EDAD</div><div class="field">años</div></div>
+        <div><div class="mono" style="margin-bottom:5px;">SEXO</div><div class="field">Hombre ⌄</div></div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:9px;">
+        <div><div class="mono" style="margin-bottom:5px;">ALTURA (CM)</div><div class="field">175</div></div>
+        <div><div class="mono" style="margin-bottom:5px;">PESO (KG)</div><div class="field">80</div></div>
+      </div>
+    </div>
+    <div class="btn pri" style="margin-top:auto;">SIGUIENTE →</div>
+    <div class="btn" style="margin-top:8px; border:none; color:#9a958c;">← Volver</div>
+  </div>
+</div>
+
+<!-- A4 Onb objetivos -->
+<div class="pf" style="left:1220px; top:160px;">
+  <div class="pl">A4 · Objetivos</div>
+  <div class="scr"><div class="notch"></div>
+    <div class="dot4" style="margin-top:12px;"><i></i><i class="on"></i><i></i><i></i></div>
+    <div class="eyb" style="margin-top:14px;">Paso 2 de 4 · marca los que apliquen</div>
+    <div class="ttl" style="margin-top:4px;">¿QUÉ BUSCAS?</div>
+    <div style="display:flex; flex-direction:column; gap:8px; margin-top:16px;">
+      <div class="box" style="padding:11px 12px; display:flex; align-items:center; gap:10px; border-color:#16a34a; background:#16a34a0e;"><div style="width:17px; height:17px; border-radius:4px; background:#16a34a; color:#fff; font:900 11px system-ui; display:flex; align-items:center; justify-content:center;">✓</div><div><div style="font:600 12px system-ui; color:#2b2b2b;">🎯 Reducir vientre</div><div class="mono">Grasa abdominal y lumbar</div></div></div>
+      <div class="box" style="padding:11px 12px; display:flex; align-items:center; gap:10px;"><div style="width:17px; height:17px; border-radius:4px; border:1.6px solid #cdcac4;"></div><div><div style="font:600 12px system-ui; color:#2b2b2b;">💪 Tonificar</div><div class="mono">Definir, perder volumen</div></div></div>
+      <div class="box" style="padding:11px 12px; display:flex; align-items:center; gap:10px;"><div style="width:17px; height:17px; border-radius:4px; border:1.6px solid #cdcac4;"></div><div><div style="font:600 12px system-ui; color:#2b2b2b;">🏋️ Ganar músculo</div></div></div>
+      <div class="box" style="padding:11px 12px; display:flex; align-items:center; gap:10px; border-color:#16a34a; background:#16a34a0e;"><div style="width:17px; height:17px; border-radius:4px; background:#16a34a; color:#fff; font:900 11px system-ui; display:flex; align-items:center; justify-content:center;">✓</div><div><div style="font:600 12px system-ui; color:#2b2b2b;">🔥 Quemar grasa</div></div></div>
+      <div class="box" style="padding:11px 12px; display:flex; align-items:center; gap:10px;"><div style="width:17px; height:17px; border-radius:4px; border:1.6px solid #cdcac4;"></div><div><div style="font:600 12px system-ui; color:#2b2b2b;">❤️ Mejorar resistencia</div></div></div>
+    </div>
+    <div class="mono" style="margin-top:16px; margin-bottom:7px;">¿ALGUNA ZONA A PRIORIZAR?</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+      <div class="box" style="padding:9px 11px; text-align:center; border-color:#2b2b2b; background:#2b2b2b08; font:600 11px system-ui; color:#2b2b2b;">🧍 Cuerpo completo</div>
+      <div class="box" style="padding:9px 11px; text-align:center; font:600 11px system-ui; color:#6a655c;">💪 Brazos</div>
+      <div class="box" style="padding:9px 11px; text-align:center; font:600 11px system-ui; color:#6a655c;">🫁 Torso / core</div>
+      <div class="box" style="padding:9px 11px; text-align:center; font:600 11px system-ui; color:#6a655c;">🍑 Glúteo y pierna</div>
+    </div>
+    <div class="mono" style="margin-top:8px; color:#b3ada3;">Reparte el énfasis; el plan sigue trabajando todo.</div>
+    <div class="btn pri" style="margin-top:auto;">SIGUIENTE →</div>
+  </div>
+</div>
+
+<!-- A5 Onb nivel & equipo -->
+<div class="pf" style="left:1600px; top:160px;">
+  <div class="pl">A5 · Nivel &amp; material</div>
+  <div class="scr"><div class="notch"></div>
+    <div class="dot4" style="margin-top:12px;"><i></i><i></i><i class="on"></i><i></i></div>
+    <div class="eyb" style="margin-top:14px;">Paso 3 de 4</div>
+    <div class="ttl sm" style="margin-top:4px;">NIVEL Y EQUIPO</div>
+    <div class="mono" style="margin-top:16px; margin-bottom:6px;">NIVEL FÍSICO</div>
+    <div style="display:flex; gap:6px;">
+      <div class="chip" style="flex:1; text-align:center;">Principiante</div>
+      <div class="chip" style="flex:1; text-align:center; border-color:#2b2b2b; background:#2b2b2b; color:#fff;">Intermedio</div>
+      <div class="chip" style="flex:1; text-align:center;">Avanzado</div>
+    </div>
+    <div class="mono" style="margin-top:14px; margin-bottom:6px;">DÍAS POR SEMANA</div>
+    <div style="display:flex; gap:6px;">
+      <div class="chip" style="flex:1; text-align:center;">3</div>
+      <div class="chip" style="flex:1; text-align:center; border-color:#2b2b2b; background:#2b2b2b; color:#fff;">4</div>
+      <div class="chip" style="flex:1; text-align:center;">5</div>
+    </div>
+    <div class="mono" style="margin-top:14px; margin-bottom:6px;">DURACIÓN DEL PROGRAMA</div>
+    <div style="display:flex; gap:5px; flex-wrap:wrap;">
+      <div class="chip" style="flex:1; text-align:center; min-width:38px;">2</div>
+      <div class="chip" style="flex:1; text-align:center; min-width:38px; border-color:#2b2b2b; background:#2b2b2b; color:#fff;">4</div>
+      <div class="chip" style="flex:1; text-align:center; min-width:38px;">6</div>
+      <div class="chip" style="flex:1; text-align:center; min-width:38px;">8</div>
+      <div class="chip" style="flex:1; text-align:center; min-width:38px;">12</div>
+      <div class="chip" style="text-align:center;">Otras…</div>
+    </div>
+    <div class="mono" style="margin-top:5px; color:#b3ada3;">semanas · el ciclo de 4 fases se estira o repite para encajar</div>
+    <div class="mono" style="margin-top:14px; margin-bottom:6px;">MATERIAL DISPONIBLE</div>
+    <div style="display:flex; flex-direction:column; gap:6px;">
+      <div class="box" style="padding:9px 11px; display:flex; gap:9px; align-items:center; border-color:#2b2b2b;"><div style="width:15px; height:15px; border-radius:3px; background:#2b2b2b; color:#fff; font:900 10px system-ui; display:flex; align-items:center; justify-content:center;">✓</div><span style="font:600 11px system-ui; color:#2b2b2b;">🏋️ Mancuernas</span></div>
+      <div class="box" style="padding:9px 11px; display:flex; gap:9px; align-items:center; border-color:#2b2b2b;"><div style="width:15px; height:15px; border-radius:3px; background:#2b2b2b; color:#fff; font:900 10px system-ui; display:flex; align-items:center; justify-content:center;">✓</div><span style="font:600 11px system-ui; color:#2b2b2b;">🔴 Bandas elásticas</span></div>
+      <div class="box" style="padding:9px 11px; display:flex; gap:9px; align-items:center;"><div style="width:15px; height:15px; border-radius:3px; border:1.6px solid #cdcac4;"></div><span style="font:600 11px system-ui; color:#6a655c;">🟦 Esterilla</span></div>
+    </div>
+    <div class="btn pri" style="margin-top:auto;">SIGUIENTE →</div>
+  </div>
+</div>
+
+<!-- A6 Onb lesiones & cardio -->
+<div class="pf" style="left:1980px; top:160px;">
+  <div class="pl">A6 · Lesiones &amp; cardio (NUEVO)</div>
+  <div class="scr"><div class="notch"></div>
+    <div class="dot4" style="margin-top:12px;"><i></i><i></i><i></i><i class="on"></i></div>
+    <div class="eyb" style="margin-top:14px;">Paso 4 de 4</div>
+    <div class="ttl sm" style="margin-top:4px;">CASI LISTO</div>
+    <div class="mono" style="margin-top:16px; margin-bottom:5px;">¿LESIÓN O ZONA A EVITAR?</div>
+    <div class="field" style="height:46px;">rodilla, lumbar, hombro… (vacío = ninguna)</div>
+    <div class="mono" style="margin-top:14px; margin-bottom:6px;">¿INCLUIR DÍAS DE CARDIO?</div>
+    <div style="display:flex; flex-direction:column; gap:6px;">
+      <div class="box" style="padding:10px 12px; font:600 11px system-ui; color:#6a655c;">Solo AMRAP · 4 días/sem</div>
+      <div class="box" style="padding:10px 12px; border-color:#2b2b2b; background:#2b2b2b0a;"><div style="font:600 11px system-ui; color:#2b2b2b;">● AMRAP + Cardio</div><div class="mono" style="margin-top:2px;">Cardio en los días libres</div></div>
+    </div>
+    <div class="mono" style="margin-top:12px; margin-bottom:6px;">TIPO DE CARDIO</div>
+    <div style="display:flex; flex-wrap:wrap; gap:5px;">
+      <span class="chip" style="border-color:#2b2b2b;">Running</span><span class="chip">Bici</span><span class="chip">Natación</span><span class="chip">Fútbol</span>
+    </div>
+    <div class="btn pri" style="margin-top:auto;">✦ GENERAR MI PROGRAMA</div>
+  </div>
+</div>
+
+<!-- A7 Programa generado -->
+<div class="pf" style="left:2360px; top:160px;">
+  <div class="pl">A7 · Programa generado</div>
+  <div class="scr"><div class="notch"></div>
+    <div class="eyb" style="margin-top:12px;">Javi · 4 días/sem · Intermedio</div>
+    <div class="ttl" style="margin-top:4px;">TU PROGRAMA<br>DE 4 SEMANAS</div>
+    <div style="display:flex; flex-direction:column; gap:8px; margin-top:16px;">
+      <div class="box" style="padding:11px 13px; border-left:5px solid #16a34a;"><div style="display:flex; justify-content:space-between; align-items:center;"><span style="font:400 18px 'Bebas Neue';">SEMANA 1 · BASE</span><span class="mono">4 días</span></div><div class="mono" style="margin-top:2px;">Fundamentos · Movilidad</div></div>
+      <div class="box" style="padding:11px 13px; border-left:5px solid #2563eb;"><div style="display:flex; justify-content:space-between; align-items:center;"><span style="font:400 18px 'Bebas Neue';">SEMANA 2 · AMPLITUD</span><span class="mono">4 días</span></div><div class="mono" style="margin-top:2px;">Progresión · Fuerza</div></div>
+      <div class="box" style="padding:11px 13px; border-left:5px solid #9333ea;"><div style="display:flex; justify-content:space-between; align-items:center;"><span style="font:400 18px 'Bebas Neue';">SEMANA 3 · DENSIDAD</span><span class="mono">4 días</span></div><div class="mono" style="margin-top:2px;">Intensidad · Detalle</div></div>
+      <div class="box" style="padding:11px 13px; border-left:5px solid #ea580c;"><div style="display:flex; justify-content:space-between; align-items:center;"><span style="font:400 18px 'Bebas Neue';">SEMANA 4 · QUEMA TOTAL</span><span class="mono">4 días</span></div><div class="mono" style="margin-top:2px;">Full Body · Metabólico</div></div>
+    </div>
+    <div class="btn pri" style="margin-top:auto;">EMPEZAR HOY →</div>
+  </div>
+</div>
+
+<div style="position:absolute; left:2360px; top:810px; width:230px;" class="post">Hay DOS modos al arrancar: en solitario (todo local, offline) o plan COMPARTIDO con amigos/familia en remoto, vía enlace. Ver Sección F.</div>
+
+<!-- ════════ SECCIÓN B ════════ -->
+<div style="position:absolute; left:80px; top:920px;">
+  <div class="sec">B · Hoy &amp; Constancia</div>
+  <div class="secn">El corazón emocional de la app: ver la racha, no romperla. La función con mayor retorno.</div>
+</div>
+
+<!-- B1 Home Hoy -->
+<div class="pf" style="left:80px; top:980px;">
+  <div class="pl">B1 · Home «Hoy»</div>
+  <div class="scr"><div class="notch"></div>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+      <div><div class="eyb">Martes · Semana 2</div><div class="ttl" style="margin-top:2px;">HOLA, JAVI</div></div>
+      <div style="width:34px; height:34px; border-radius:50%; background:#2563eb22; border:1.5px solid #2563eb;"></div>
+    </div>
+    <div class="box" style="margin-top:14px; padding:12px 14px; background:#ea580c10; border-color:#ea580c;">
+      <div style="display:flex; align-items:center; gap:10px;"><div style="font:400 38px 'Bebas Neue'; color:#ea580c; line-height:1;">🔥 6</div><div><div style="font:600 12px system-ui; color:#2b2b2b;">días de racha</div><div class="mono">3 de 4 sesiones esta semana</div></div></div>
+      <div style="display:flex; gap:5px; margin-top:10px;"><div style="flex:1; height:6px; border-radius:3px; background:#16a34a;"></div><div style="flex:1; height:6px; border-radius:3px; background:#16a34a;"></div><div style="flex:1; height:6px; border-radius:3px; background:#16a34a;"></div><div style="flex:1; height:6px; border-radius:3px; background:#e6e3dd;"></div></div>
+    </div>
+    <div class="mono" style="margin-top:16px; margin-bottom:6px;">SESIÓN DE HOY</div>
+    <div class="box" style="padding:14px; border-left:5px solid #2563eb;">
+      <div style="display:flex; justify-content:space-between; align-items:baseline;"><span style="font:400 24px 'Bebas Neue';">DÍA 2 · PIERNAS</span><span class="mono">~28 min</span></div>
+      <div style="display:flex; gap:6px; margin-top:10px;">
+        <div style="flex:1; text-align:center; padding:7px 0; border-radius:8px; background:#f0efeb;"><div class="mono">CALENT.</div><div style="font:600 11px system-ui;">5'</div></div>
+        <div style="flex:2; text-align:center; padding:7px 0; border-radius:8px; background:#2563eb18;"><div class="mono" style="color:#2563eb;">AMRAP</div><div style="font:600 11px system-ui;">20'</div></div>
+        <div style="flex:1; text-align:center; padding:7px 0; border-radius:8px; background:#9333ea14;"><div class="mono" style="color:#9333ea;">ENFRI.</div><div style="font:600 11px system-ui;">5'</div></div>
+      </div>
+    </div>
+    <div class="btn pri" style="margin-top:14px;">▶ EMPEZAR SESIÓN</div>
+    <div class="btn" style="margin-top:8px; font-size:11px;">⚡ Sesión exprés (12 min)</div>
+    <div class="nav"><div class="navi on"><div style="width:16px;height:16px;border:1.6px solid #2b2b2b;border-radius:4px;"></div>HOY</div><div class="navi"><div style="width:16px;height:16px;border:1.6px solid #b3ada3;border-radius:4px;"></div>PROGRESO</div><div class="navi"><div style="width:16px;height:16px;border:1.6px solid #b3ada3;border-radius:4px;"></div>CALEND.</div><div class="navi"><div style="width:16px;height:16px;border:1.6px solid #b3ada3;border-radius:50%;"></div>PERFIL</div></div>
+  </div>
+</div>
+
+<!-- B2 Calendario constancia -->
+<div class="pf" style="left:460px; top:980px;">
+  <div class="pl">B2 · Calendario de constancia</div>
+  <div class="scr"><div class="notch"></div>
+    <div class="eyb" style="margin-top:12px;">Tu historial</div>
+    <div class="ttl" style="margin-top:2px;">CONSTANCIA</div>
+    <div style="display:flex; gap:10px; margin-top:14px;">
+      <div class="box" style="flex:1; padding:11px; text-align:center;"><div style="font:400 32px 'Bebas Neue'; color:#ea580c;">6</div><div class="mono">RACHA ACTUAL</div></div>
+      <div class="box" style="flex:1; padding:11px; text-align:center;"><div style="font:400 32px 'Bebas Neue'; color:#2b2b2b;">14</div><div class="mono">MEJOR RACHA</div></div>
+    </div>
+    <div class="mono" style="margin-top:16px; margin-bottom:8px;">ÚLTIMAS 10 SEMANAS</div>
+    <div class="box" style="padding:12px;">
+      <div style="display:grid; grid-template-columns:repeat(10,1fr); gap:4px;">
+        <!-- heatmap cells -->
+        <div style="aspect-ratio:1; border-radius:3px; background:#e6e3dd;"></div><div style="aspect-ratio:1; border-radius:3px; background:#16a34a55;"></div><div style="aspect-ratio:1; border-radius:3px; background:#16a34a;"></div><div style="aspect-ratio:1; border-radius:3px; background:#e6e3dd;"></div><div style="aspect-ratio:1; border-radius:3px; background:#2563eb;"></div><div style="aspect-ratio:1; border-radius:3px; background:#16a34a;"></div><div style="aspect-ratio:1; border-radius:3px; background:#16a34a;"></div><div style="aspect-ratio:1; border-radius:3px; background:#e6e3dd;"></div><div style="aspect-ratio:1; border-radius:3px; background:#9333ea;"></div><div style="aspect-ratio:1; border-radius:3px; background:#16a34a55;"></div>
+        <div style="aspect-ratio:1; border-radius:3px; background:#16a34a;"></div><div style="aspect-ratio:1; border-radius:3px; background:#16a34a;"></div><div style="aspect-ratio:1; border-radius:3px; background:#e6e3dd;"></div><div style="aspect-ratio:1; border-radius:3px; background:#2563eb;"></div><div style="aspect-ratio:1; border-radius:3px; background:#16a34a;"></div><div style="aspect-ratio:1; border-radius:3px; background:#16a34a55;"></div><div style="aspect-ratio:1; border-radius:3px; background:#16a34a;"></div><div style="aspect-ratio:1; border-radius:3px; background:#e6e3dd;"></div><div style="aspect-ratio:1; border-radius:3px; background:#16a34a;"></div><div style="aspect-ratio:1; border-radius:3px; background:#2563eb;"></div>
+        <div style="aspect-ratio:1; border-radius:3px; background:#16a34a;"></div><div style="aspect-ratio:1; border-radius:3px; background:#e6e3dd;"></div><div style="aspect-ratio:1; border-radius:3px; background:#16a34a;"></div><div style="aspect-ratio:1; border-radius:3px; background:#16a34a;"></div><div style="aspect-ratio:1; border-radius:3px; background:#9333ea;"></div><div style="aspect-ratio:1; border-radius:3px; background:#16a34a;"></div><div style="aspect-ratio:1; border-radius:3px; background:#e6e3dd;"></div><div style="aspect-ratio:1; border-radius:3px; background:#16a34a55;"></div><div style="aspect-ratio:1; border-radius:3px; background:#16a34a;"></div><div style="aspect-ratio:1; border-radius:3px; background:#16a34a;"></div>
+      </div>
+      <div style="display:flex; gap:12px; margin-top:12px; flex-wrap:wrap;">
+        <span class="mono" style="display:flex; align-items:center; gap:5px;"><i style="width:9px; height:9px; border-radius:2px; background:#16a34a; display:inline-block;"></i>AMRAP</span>
+        <span class="mono" style="display:flex; align-items:center; gap:5px;"><i style="width:9px; height:9px; border-radius:2px; background:#2563eb; display:inline-block;"></i>Cardio</span>
+        <span class="mono" style="display:flex; align-items:center; gap:5px;"><i style="width:9px; height:9px; border-radius:2px; background:#9333ea; display:inline-block;"></i>Ambos</span>
+      </div>
+    </div>
+    <div class="box" style="margin-top:12px; padding:10px 12px; background:#f6f5f2; font:500 10px system-ui; color:#7a756c; line-height:1.4;">Se rellena solo: cada sesión completada marca el día. No hay que «fichar».</div>
+  </div>
+</div>
+
+<!-- B3 Aviso regreso -->
+<div class="pf" style="left:840px; top:980px;">
+  <div class="pl">B3 · Vuelta tras pausa (no punitivo)</div>
+  <div class="scr"><div class="notch"></div>
+    <div style="margin:auto 0;">
+      <div style="font-size:40px; text-align:center; margin-bottom:8px;">👋</div>
+      <div class="ttl" style="text-align:center; line-height:1;">TE HEMOS<br>ECHADO<br>DE MENOS</div>
+      <div style="display:flex; flex-direction:column; gap:6px; margin:16px 24px;">
+        <div class="bar" style="width:100%;"></div><div class="bar" style="width:80%; margin:0 auto;"></div>
+      </div>
+      <div class="box" style="margin:0 6px; padding:13px 14px; background:#16a34a0e; border-color:#16a34a; text-align:center; font:500 12px system-ui; color:#3a3631; line-height:1.5;">Llevas <b>5 días</b> sin entrenar. Sin dramas. ¿Retomamos hoy con algo corto?</div>
+    </div>
+    <div class="btn pri" style="margin-top:auto;">⚡ Sesión exprés · 12 min</div>
+    <div class="btn" style="margin-top:8px;">Sesión completa · 28 min</div>
+    <div class="mono" style="text-align:center; margin-top:12px; color:#b3ada3;">NUNCA culpa. Solo una mano para volver.</div>
+  </div>
+</div>
+
+<!-- Desktop view -->
+<div style="position:absolute; left:1240px; top:980px; width:680px;">
+  <div data-drags-parent="1" class="pl" style="position:absolute; top:-25px;">B-PC · Vista escritorio (misma app, layout amplio)</div>
+  <div style="background:#fdfcfa; border:1.6px solid #2b2b2b; border-radius:12px; box-shadow:0 4px 14px rgba(0,0,0,.14); overflow:hidden;">
+    <div style="height:30px; background:#f0efeb; border-bottom:1.4px solid #e6e3dd; display:flex; align-items:center; gap:6px; padding:0 12px;"><div style="width:9px; height:9px; border-radius:50%; background:#cdcac4;"></div><div style="width:9px; height:9px; border-radius:50%; background:#cdcac4;"></div><div style="width:9px; height:9px; border-radius:50%; background:#cdcac4;"></div></div>
+    <div style="display:flex; height:520px;">
+      <!-- sidebar -->
+      <div style="width:160px; border-right:1.4px solid #e6e3dd; padding:18px 14px; background:#faf9f6;">
+        <div style="font:400 22px 'Bebas Neue'; color:#2b2b2b; margin-bottom:18px;">AMRAP</div>
+        <div style="display:flex; flex-direction:column; gap:4px;">
+          <div style="padding:8px 10px; border-radius:8px; background:#2b2b2b; color:#fff; font:600 11px system-ui;">Hoy</div>
+          <div style="padding:8px 10px; font:600 11px system-ui; color:#7a756c;">Mi programa</div>
+          <div style="padding:8px 10px; font:600 11px system-ui; color:#7a756c;">Progreso &amp; cargas</div>
+          <div style="padding:8px 10px; font:600 11px system-ui; color:#7a756c;">Constancia</div>
+          <div style="padding:8px 10px; font:600 11px system-ui; color:#7a756c;">Cardio</div>
+        </div>
+        <div style="margin-top:auto; padding-top:160px;"><div style="display:flex; align-items:center; gap:8px;"><div style="width:28px; height:28px; border-radius:50%; background:#2563eb22; border:1.5px solid #2563eb;"></div><span style="font:600 11px system-ui; color:#2b2b2b;">Javi</span></div></div>
+      </div>
+      <!-- main -->
+      <div style="flex:1; padding:22px 24px; overflow:hidden;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+          <div><div class="eyb">Martes · Semana 2</div><div style="font:400 30px 'Bebas Neue'; color:#2b2b2b;">BUENOS DÍAS, JAVI</div></div>
+          <div class="box" style="padding:8px 14px; background:#ea580c10; border-color:#ea580c; display:flex; align-items:center; gap:8px;"><span style="font:400 26px 'Bebas Neue'; color:#ea580c;">🔥 6</span><span class="mono">RACHA</span></div>
+        </div>
+        <div style="display:flex; gap:14px; margin-top:18px;">
+          <div class="box" style="flex:1; padding:16px; border-left:5px solid #2563eb;">
+            <div class="mono">SESIÓN DE HOY</div>
+            <div style="font:400 22px 'Bebas Neue'; margin:4px 0 10px;">DÍA 2 · PIERNAS</div>
+            <div style="display:flex; gap:6px;"><div style="flex:1; text-align:center; padding:6px 0; border-radius:6px; background:#f0efeb;"><div class="mono">5' CAL</div></div><div style="flex:2; text-align:center; padding:6px 0; border-radius:6px; background:#2563eb18;"><div class="mono" style="color:#2563eb;">20' AMRAP</div></div><div style="flex:1; text-align:center; padding:6px 0; border-radius:6px; background:#9333ea14;"><div class="mono" style="color:#9333ea;">5' ENF</div></div></div>
+            <div class="btn pri" style="margin-top:12px;">▶ EMPEZAR</div>
+          </div>
+          <div class="box" style="flex:1; padding:16px;">
+            <div class="mono" style="margin-bottom:8px;">ESTA SEMANA · 3 DE 4</div>
+            <div style="display:grid; grid-template-columns:repeat(7,1fr); gap:4px;">
+              <div style="aspect-ratio:1; border-radius:3px; background:#16a34a;"></div><div style="aspect-ratio:1; border-radius:3px; background:#2563eb;"></div><div style="aspect-ratio:1; border-radius:3px; background:#16a34a;"></div><div style="aspect-ratio:1; border-radius:3px; background:#e6e3dd;"></div><div style="aspect-ratio:1; border-radius:3px; background:#e6e3dd;"></div><div style="aspect-ratio:1; border-radius:3px; background:#e6e3dd;"></div><div style="aspect-ratio:1; border-radius:3px; background:#e6e3dd;"></div>
+            </div>
+            <div class="mono" style="margin:12px 0 8px;">CARGAS A SUBIR (2)</div>
+            <div style="display:flex; flex-direction:column; gap:5px;"><div class="box" style="padding:6px 9px; font:600 10px system-ui; color:#2b2b2b;">Sentadilla → +5%</div><div class="box" style="padding:6px 9px; font:600 10px system-ui; color:#2b2b2b;">Press hombro → +5%</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="position:absolute; left:1240px; top:1600px; width:250px;" class="post">Móvil = primario (entrenas con el teléfono al lado). Escritorio = revisar plan, cargas y constancia con más espacio.</div>
+
+<!-- ════════ SECCIÓN C ════════ -->
+<div style="position:absolute; left:80px; top:1740px;">
+  <div class="sec">C · El flujo de una sesión</div>
+  <div class="secn">Estructura fija ≈28 min · Chequeo → Calentamiento → AMRAP → Enfriamiento → RPE. Cada bloque con su propio cronómetro.</div>
+</div>
+
+<!-- C1 Chequeo pre-sesión -->
+<div class="pf" style="left:80px; top:1800px;">
+  <div class="pl">C1 · Chequeo pre-sesión</div>
+  <div class="scr"><div class="notch"></div>
+    <div class="eyb" style="margin-top:12px;">Antes de empezar · 5 seg</div>
+    <div class="ttl" style="margin-top:4px;">¿CÓMO TE<br>ENCUENTRAS<br>HOY?</div>
+    <div style="display:flex; flex-direction:column; gap:9px; margin-top:18px;">
+      <div class="box" style="padding:14px; display:flex; align-items:center; gap:12px;"><span style="font-size:26px;">😃</span><div><div style="font:600 13px system-ui; color:#2b2b2b;">Genial</div><div class="mono">A tope de energía</div></div></div>
+      <div class="box" style="padding:14px; display:flex; align-items:center; gap:12px; border-color:#2b2b2b; background:#2b2b2b08;"><span style="font-size:26px;">🙂</span><div><div style="font:600 13px system-ui; color:#2b2b2b;">Normal</div><div class="mono">Listo para entrenar</div></div></div>
+      <div class="box" style="padding:14px; display:flex; align-items:center; gap:12px;"><span style="font-size:26px;">😣</span><div><div style="font:600 13px system-ui; color:#2b2b2b;">Con molestias</div><div class="mono">Te preguntamos dónde →</div></div></div>
+    </div>
+    <div class="box" style="margin-top:14px; padding:11px 13px; background:#f6f5f2; border-style:dashed;">
+      <div class="mono" style="margin-bottom:7px;">SI HAY MOLESTIA, ¿DÓNDE?</div>
+      <div style="display:flex; flex-wrap:wrap; gap:5px;"><span class="chip">Rodilla</span><span class="chip">Lumbar</span><span class="chip">Hombro</span><span class="chip">Muñeca</span></div>
+    </div>
+    <div class="btn pri" style="margin-top:auto;">CONTINUAR →</div>
+  </div>
+</div>
+
+<!-- C2 Calentamiento -->
+<div class="pf" style="left:460px; top:1800px;">
+  <div class="pl">C2 · Calentamiento (NUEVO)</div>
+  <div class="scr"><div class="notch"></div>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;"><div class="eyb" style="color:#9a958c;">Bloque 1 de 3 · dinámico</div><span class="chip" style="border-color:#9a958c; color:#6a655c;">GRIS = CALENT.</span></div>
+    <div class="ttl" style="margin-top:4px; color:#6a655c;">CALENTAMIENTO</div>
+    <div class="box" style="margin-top:12px; padding:16px; text-align:center; background:#f0efeb; border-color:#b3ada3;">
+      <div class="mono" style="color:#9a958c;">CRONÓMETRO PROPIO</div>
+      <div style="font:400 50px 'Bebas Neue'; color:#6a655c; line-height:1;">04:32</div>
+      <div style="height:5px; background:#dad8d3; border-radius:3px; margin-top:8px; overflow:hidden;"><div style="width:35%; height:100%; background:#9a958c;"></div></div>
+    </div>
+    <div class="mono" style="margin-top:14px; margin-bottom:7px;">MOVILIDAD · 30–40s C/U · SIN DESCANSO</div>
+    <div style="display:flex; flex-direction:column; gap:6px;">
+      <div class="box" style="padding:9px 12px; display:flex; justify-content:space-between; align-items:center; background:#f0efeb;"><span style="font:600 11px system-ui; color:#2b2b2b;">Círculos de hombro</span><span class="mono">✓ 40s</span></div>
+      <div class="box" style="padding:9px 12px; display:flex; justify-content:space-between; align-items:center; border-color:#6a655c;"><span style="font:600 11px system-ui; color:#2b2b2b;">● Sentadillas sin peso</span><span class="mono">0:18</span></div>
+      <div class="box" style="padding:9px 12px; display:flex; justify-content:space-between; align-items:center;"><span style="font:600 11px system-ui; color:#6a655c;">Balanceos de cadera</span><span class="mono">40s</span></div>
+      <div class="box" style="padding:9px 12px; display:flex; justify-content:space-between; align-items:center;"><span style="font:600 11px system-ui; color:#6a655c;">Elevaciones de talón</span><span class="mono">30s</span></div>
+    </div>
+    <div class="btn pri" style="margin-top:auto;">EMPEZAR AMRAP →</div>
+  </div>
+</div>
+
+<!-- C3 Ejercicio + demo visual -->
+<div class="pf" style="left:840px; top:1800px;">
+  <div class="pl">C3 · Demo de ejercicio (NUEVO · A+B)</div>
+  <div class="scr"><div class="notch"></div>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;"><div class="eyb">Ejercicio 02 · piernas</div><span class="chip" style="border-color:#ea580c; color:#ea580c; background:#ea580c12;">⚠ Cuida rodilla</span></div>
+    <div class="ttl sm" style="margin-top:4px;">SENTADILLA SUMO</div>
+    <span class="chip" style="display:inline-block; margin-top:6px; border-color:#2563eb; color:#2563eb;">12 reps</span>
+    <div class="ph box" style="margin-top:12px; height:150px; border-color:#2b2b2b;">[ figura de palo animada<br>(canvas, vista por defecto) ]</div>
+    <div style="display:flex; gap:6px; margin-top:8px;">
+      <div class="ph box" style="flex:1; height:46px;">inicio</div>
+      <div class="ph box" style="flex:1; height:46px; border-color:#2b2b2b;">medio</div>
+      <div class="ph box" style="flex:1; height:46px;">final</div>
+    </div>
+    <div class="mono" style="text-align:center; margin-top:5px;">↑ toca para ampliar (3 frames clave)</div>
+    <div class="box" style="margin-top:10px; padding:10px 12px; background:#ea580c0a; border-color:#ea580c40;">
+      <div class="mono" style="color:#ea580c; margin-bottom:5px;">ERRORES COMUNES</div>
+      <div style="font:500 10.5px system-ui; color:#3a3631; line-height:1.5;">· Rodillas no entran hacia dentro<br>· El pecho no cae hacia delante</div>
+    </div>
+    <div style="display:flex; gap:8px; margin-top:auto;"><div class="btn" style="flex:1;">← Anterior</div><div class="btn pri" style="flex:1;">Siguiente →</div></div>
+  </div>
+</div>
+
+<!-- C4 AMRAP principal -->
+<div class="pf" style="left:1220px; top:1800px;">
+  <div class="pl">C4 · AMRAP principal</div>
+  <div class="scr"><div class="notch"></div>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;"><div class="eyb" style="color:#2563eb;">Bloque 2 de 3 · máximas rondas</div><span class="chip" style="border-color:#2563eb; color:#2563eb;">SEM 2</span></div>
+    <div class="ttl" style="margin-top:4px; color:#2563eb;">AMRAP</div>
+    <div class="box" style="margin-top:12px; padding:14px; text-align:center; border-color:#2563eb;">
+      <div class="mono" style="color:#2563eb;">EN MARCHA ●</div>
+      <div style="font:400 58px 'Bebas Neue'; color:#2563eb; line-height:1;">12:48</div>
+      <div style="height:5px; background:#e6e3dd; border-radius:3px; margin-top:6px; overflow:hidden;"><div style="width:64%; height:100%; background:#2563eb;"></div></div>
+    </div>
+    <div class="box" style="margin-top:10px; padding:12px 14px; display:flex; align-items:center; gap:12px;">
+      <div style="flex:1;"><div class="mono">RONDAS</div><div style="font:400 40px 'Bebas Neue'; color:#2563eb; line-height:1;">5</div><div class="mono">mejor: 7</div></div>
+      <div style="display:flex; flex-direction:column; gap:6px;"><div style="width:34px; height:34px; border:1.5px solid #2b2b2b; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:20px;">+</div><div style="width:34px; height:34px; border:1.5px solid #cdcac4; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:20px; color:#b3ada3;">−</div></div>
+    </div>
+    <div class="mono" style="margin-top:12px; margin-bottom:6px;">CIRCUITO · 1 RONDA</div>
+    <div style="display:flex; flex-direction:column; gap:5px;">
+      <div class="box" style="padding:7px 11px; font:600 10.5px system-ui; color:#2b2b2b; border-left:4px solid #2563eb;">Sentadilla sumo · 12</div>
+      <div class="box" style="padding:7px 11px; font:600 10.5px system-ui; color:#2b2b2b; border-left:4px solid #2563eb;">Zancadas traseras · 10/lado</div>
+      <div class="box" style="padding:7px 11px; font:600 10.5px system-ui; color:#2b2b2b; border-left:4px solid #2563eb;">Burpees · 8</div>
+      <div class="box" style="padding:7px 11px; font:600 10.5px system-ui; color:#2b2b2b; border-left:4px solid #2563eb;">Escaladores · 30</div>
+    </div>
+    <div class="btn" style="margin-top:auto;">⏸ Pausar</div>
+  </div>
+</div>
+
+<!-- C5 Enfriamiento -->
+<div class="pf" style="left:1600px; top:1800px;">
+  <div class="pl">C5 · Enfriamiento + respiración (NUEVO)</div>
+  <div class="scr"><div class="notch"></div>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;"><div class="eyb" style="color:#9333ea;">Bloque 3 de 3 · estático</div><span class="chip" style="border-color:#9333ea; color:#9333ea;">MORADO</span></div>
+    <div class="ttl" style="margin-top:4px; color:#9333ea;">ENFRIAMIENTO</div>
+    <div class="mono" style="margin-top:12px; margin-bottom:6px;">ESTIRA · 20–30s POR POSICIÓN</div>
+    <div style="display:flex; flex-direction:column; gap:6px;">
+      <div class="box" style="padding:9px 12px; display:flex; justify-content:space-between; border-color:#9333ea40;"><span style="font:600 11px system-ui; color:#2b2b2b;">Gato–Vaca</span><span class="mono">30s</span></div>
+      <div class="box" style="padding:9px 12px; display:flex; justify-content:space-between; border-color:#9333ea40;"><span style="font:600 11px system-ui; color:#2b2b2b;">Cobra a Niño</span><span class="mono">30s</span></div>
+      <div class="box" style="padding:9px 12px; display:flex; justify-content:space-between; border-color:#9333ea40;"><span style="font:600 11px system-ui; color:#2b2b2b;">90/90 de cadera</span><span class="mono">30s</span></div>
+    </div>
+    <div class="box" style="margin-top:14px; padding:16px; text-align:center; background:#9333ea0c; border-color:#9333ea;">
+      <div class="mono" style="color:#9333ea;">RESPIRACIÓN GUIADA · 1 MIN</div>
+      <div style="width:78px; height:78px; border-radius:50%; border:2px solid #9333ea; margin:12px auto 8px; display:flex; align-items:center; justify-content:center; background:#9333ea18;"><span style="font:600 12px system-ui; color:#9333ea;">Inhala<br>4s</span></div>
+      <div class="mono" style="color:#7a756c;">inhala 4s · exhala 6s · baja pulsaciones</div>
+    </div>
+    <div class="btn pri" style="margin-top:auto; background:#9333ea; border-color:#9333ea;">TERMINAR SESIÓN →</div>
+  </div>
+</div>
+
+<!-- C6 RPE post-sesión -->
+<div class="pf" style="left:1980px; top:1800px;">
+  <div class="pl">C6 · RPE + cierre</div>
+  <div class="scr"><div class="notch"></div>
+    <div class="eyb" style="margin-top:12px;">Sesión completada 🎉</div>
+    <div class="ttl" style="margin-top:4px;">¿CÓMO HA<br>IDO?</div>
+    <div class="mono" style="margin-top:14px; margin-bottom:7px;">ESFUERZO PERCIBIDO (RPE)</div>
+    <div style="display:flex; flex-direction:column; gap:8px;">
+      <div class="box" style="padding:12px; display:flex; align-items:center; gap:11px;"><span style="font-size:24px;">😌</span><div><div style="font:600 12px system-ui; color:#2b2b2b;">Fácil</div><div class="mono">Podría hacer más rondas</div></div></div>
+      <div class="box" style="padding:12px; display:flex; align-items:center; gap:11px; border-color:#16a34a; background:#16a34a0e;"><span style="font-size:24px;">😤</span><div><div style="font:600 12px system-ui; color:#2b2b2b;">Justo</div><div class="mono">Llegué al límite</div></div></div>
+      <div class="box" style="padding:12px; display:flex; align-items:center; gap:11px;"><span style="font-size:24px;">🥵</span><div><div style="font:600 12px system-ui; color:#2b2b2b;">Muy duro</div><div class="mono">No pude completar bien</div></div></div>
+    </div>
+    <div class="box" style="margin-top:12px; padding:10px 12px; background:#2563eb0a; border-color:#2563eb40;">
+      <div class="mono" style="color:#2563eb; margin-bottom:4px;">SUGERENCIA (NUNCA OBLIGA)</div>
+      <div style="font:500 10.5px system-ui; color:#3a3631; line-height:1.5;">Lo notas fácil 2 veces → ¿subes la sentadilla un 5–10%?</div>
+    </div>
+    <div class="box" style="margin-top:8px; padding:9px 12px; background:#f6f5f2; font:500 10px system-ui; color:#7a756c;">💧 Bebe agua — acabas de perder líquido.</div>
+    <div class="btn pri" style="margin-top:auto;">GUARDAR Y CERRAR</div>
+  </div>
+</div>
+
+<div style="position:absolute; left:80px; top:2450px; width:300px;" class="post">Cambio clave v2: la elasticidad sale del AMRAP y pasa a su propio bloque de cierre. El AMRAP queda limpio en sus 20 min.</div>
+<div style="position:absolute; left:460px; top:2450px; width:260px;" class="post">Demo visual = recomendación A+B: figura animada por defecto + 3 fotos (inicio/medio/final) sacadas de la propia animación. Cero assets extra.</div>
+
+<!-- ════════ SECCIÓN D ════════ -->
+<div style="position:absolute; left:80px; top:2600px;">
+  <div class="sec">D · Progreso, cargas &amp; programa</div>
+  <div class="secn">La progresión inteligente por RPE — lo que evita estancarse — y el seguimiento opcional y sensible del cuerpo.</div>
+</div>
+
+<!-- D1 Cargas + progresión -->
+<div class="pf" style="left:80px; top:2660px;">
+  <div class="pl">D1 · Tus cargas + progresión (NUEVO)</div>
+  <div class="scr"><div class="notch"></div>
+    <div class="eyb" style="margin-top:12px;">Peso por ejercicio · evoluciona contigo</div>
+    <div class="ttl" style="margin-top:4px;">TUS CARGAS</div>
+    <div class="box" style="margin-top:14px; padding:12px 13px; border-color:#16a34a; background:#16a34a0c;">
+      <div class="mono" style="color:#16a34a; margin-bottom:5px;">★ RECOMENDACIÓN</div>
+      <div style="font:500 12px system-ui; color:#3a3631; line-height:1.5;">Llevas <b>4 semanas</b> con el mismo peso en <b>Sentadilla</b>. Buen momento para una pequeña subida.</div>
+      <div style="display:flex; gap:8px; margin-top:10px;"><div class="btn pri" style="flex:1; padding:8px; font-size:11px; background:#16a34a; border-color:#16a34a;">Subir a 10 kg</div><div class="btn" style="flex:1; padding:8px; font-size:11px;">Mantener</div></div>
+    </div>
+    <div class="mono" style="margin-top:16px; margin-bottom:7px;">REGISTRO ACTUAL</div>
+    <div style="display:flex; flex-direction:column; gap:6px;">
+      <div class="box" style="padding:10px 12px; display:flex; justify-content:space-between; align-items:center;"><div><div style="font:600 11px system-ui; color:#2b2b2b;">Sentadilla</div><div class="mono">RPE: 😌 😌 😤</div></div><span class="chip" style="border-color:#2b2b2b;">2×8 kg ✎</span></div>
+      <div class="box" style="padding:10px 12px; display:flex; justify-content:space-between; align-items:center;"><div><div style="font:600 11px system-ui; color:#2b2b2b;">Press de hombros</div><div class="mono">RPE: 😤 😤 😤</div></div><span class="chip" style="border-color:#2b2b2b;">2×6 kg ✎</span></div>
+      <div class="box" style="padding:10px 12px; display:flex; justify-content:space-between; align-items:center;"><div><div style="font:600 11px system-ui; color:#2b2b2b;">Jalón con banda</div><div class="mono">RPE: 🥵 🥵 😤</div></div><span class="chip" style="border-color:#2b2b2b;">Media ✎</span></div>
+    </div>
+    <div class="btn" style="margin-top:auto;">Ver historial completo</div>
+  </div>
+</div>
+
+<!-- D2 Medidas corporales -->
+<div class="pf" style="left:460px; top:2660px;">
+  <div class="pl">D2 · Medidas corporales (opcional)</div>
+  <div class="scr"><div class="notch"></div>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;"><div class="eyb">Tu evolución</div><span class="chip" style="border-style:dashed;">OPCIONAL</span></div>
+    <div class="ttl" style="margin-top:4px;">MEDIDAS</div>
+    <div style="display:flex; gap:10px; margin-top:14px;">
+      <div class="box" style="flex:1; padding:12px;"><div class="mono">PESO</div><div class="field" style="margin-top:5px; color:#2b2b2b; font-weight:600;">78 kg</div></div>
+      <div class="box" style="flex:1; padding:12px;"><div class="mono">CINTURA</div><div class="field" style="margin-top:5px; color:#2b2b2b; font-weight:600;">88 cm</div></div>
+    </div>
+    <div class="mono" style="margin-top:16px; margin-bottom:7px;">EVOLUCIÓN · 4 MESES</div>
+    <div class="box ph" style="height:120px; flex-direction:column; gap:4px;">[ gráfico de línea simple ]<span style="font:600 8px ui-monospace; color:#b3ada3;">peso · cintura — nunca comparativo</span></div>
+    <div class="box" style="margin-top:14px; padding:11px 13px; background:#f6f5f2; border-style:dashed;">
+      <div style="font:500 11px system-ui; color:#3a3631; line-height:1.5;">🔒 Privado, solo para ti. Un dato al mes, nunca obligatorio, nunca comparado con nadie.</div>
+    </div>
+    <div class="btn" style="margin-top:auto;">+ Añadir medida de este mes</div>
+  </div>
+</div>
+
+<!-- D3 Programa semana detalle -->
+<div class="pf" style="left:840px; top:2660px;">
+  <div class="pl">D3 · Mi programa (semana · día)</div>
+  <div class="scr"><div class="notch"></div>
+    <div class="eyb" style="margin-top:12px;">Navega tu plan completo</div>
+    <div class="ttl sm" style="margin-top:4px;">MI PROGRAMA</div>
+    <div class="mono" style="margin-top:14px; margin-bottom:6px;">SEMANA</div>
+    <div style="display:flex; gap:5px;">
+      <div class="chip" style="flex:1; text-align:center; border-color:#16a34a; color:#16a34a;">1</div>
+      <div class="chip" style="flex:1; text-align:center; border-color:#2563eb; background:#2563eb; color:#fff;">2</div>
+      <div class="chip" style="flex:1; text-align:center; border-color:#9333ea; color:#9333ea;">3</div>
+      <div class="chip" style="flex:1; text-align:center; border-color:#ea580c; color:#ea580c;">4</div>
+    </div>
+    <div class="mono" style="margin-top:14px; margin-bottom:6px;">DÍA</div>
+    <div style="display:flex; gap:5px;">
+      <div class="chip" style="flex:1; text-align:center;">1</div>
+      <div class="chip" style="flex:1; text-align:center; border-color:#2563eb; background:#2563eb; color:#fff;">2</div>
+      <div class="chip" style="flex:1; text-align:center;">3</div>
+      <div class="chip" style="flex:1; text-align:center;">4</div>
+    </div>
+    <div class="box" style="margin-top:14px; padding:13px; border-left:5px solid #2563eb;">
+      <div style="display:flex; justify-content:space-between; align-items:baseline;"><span style="font:400 22px 'Bebas Neue';">DÍA 2 · PIERNAS</span><span class="mono">~28 min</span></div>
+      <div class="mono" style="margin-top:2px;">Cuádriceps · Glúteo · Gemelos</div>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:6px; margin-top:10px;">
+      <div class="box" style="padding:8px 11px; display:flex; justify-content:space-between; background:#f0efeb;"><span class="mono" style="color:#6a655c;">CALENTAMIENTO</span><span class="mono">5'</span></div>
+      <div class="box" style="padding:8px 11px; display:flex; justify-content:space-between; background:#2563eb12;"><span class="mono" style="color:#2563eb;">AMRAP · 5 ejercicios</span><span class="mono">20'</span></div>
+      <div class="box" style="padding:8px 11px; display:flex; justify-content:space-between; background:#9333ea10;"><span class="mono" style="color:#9333ea;">ENFRIAMIENTO</span><span class="mono">5'</span></div>
+    </div>
+    <div class="btn pri" style="margin-top:auto;">▶ EMPEZAR ESTE DÍA</div>
+  </div>
+</div>
+
+<div style="position:absolute; left:1220px; top:2660px; width:250px;" class="post">Progresión por RPE (autorregulación): se sugiere, nunca se fuerza. Mejor que subir % ciegos cada semana.</div>
+<div style="position:absolute; left:1220px; top:2790px; width:250px;" class="post">Semana de descarga: al repetir ciclo, ofrecer la Semana 1 con −20-30% rondas. Toggle manual, no automático.</div>
+
+<!-- ════════ SECCIÓN E ════════ -->
+<div style="position:absolute; left:80px; top:3380px;">
+  <div class="sec">E · Cardio &amp; descanso</div>
+  <div class="secn">El AMRAP no sustituye el cardio cíclico. Días libres con guía, sin presión.</div>
+</div>
+
+<!-- E1 Cardio -->
+<div class="pf" style="left:80px; top:3440px;">
+  <div class="pl">E1 · Día de cardio (NUEVO)</div>
+  <div class="scr"><div class="notch"></div>
+    <div class="eyb" style="margin-top:12px; color:#2563eb;">Día libre de AMRAP</div>
+    <div class="ttl" style="margin-top:4px; color:#2563eb;">CARDIO<br>ZONA 2</div>
+    <div class="mono" style="margin-top:14px; margin-bottom:6px;">TIPO</div>
+    <div style="display:flex; flex-wrap:wrap; gap:5px;"><span class="chip" style="border-color:#2563eb; background:#2563eb; color:#fff;">Running</span><span class="chip">Bici</span><span class="chip">Natación</span><span class="chip">Fútbol</span></div>
+    <div class="box" style="margin-top:14px; padding:12px 13px; background:#2563eb0a; border-color:#2563eb40;">
+      <div class="mono" style="color:#2563eb; margin-bottom:5px;">RITMO CONVERSACIONAL</div>
+      <div style="font:500 11.5px system-ui; color:#3a3631; line-height:1.5;">Puedes hablar sin ahogarte. Esto es lo que más quema grasa de base — y casi nadie lo hace bien.</div>
+    </div>
+    <div class="mono" style="margin-top:14px; margin-bottom:6px;">ESTRUCTURA DE LA SEMANA</div>
+    <div style="display:flex; flex-direction:column; gap:6px;">
+      <div class="box" style="padding:9px 12px; font:600 11px system-ui; color:#2b2b2b;">2× Zona 2 · 25–40 min</div>
+      <div class="box" style="padding:9px 12px; font:600 11px system-ui; color:#6a655c; border-style:dashed;">1× Intervalos (opcional) · 6–8×1'</div>
+    </div>
+    <div class="mono" style="margin-top:14px; margin-bottom:6px;">AL TERMINAR REGISTRAS</div>
+    <div style="display:flex; gap:8px;"><div class="box" style="flex:1; padding:9px; text-align:center;"><div class="mono">DURACIÓN</div><div style="font:600 12px system-ui;">32'</div></div><div class="box" style="flex:1; padding:9px; text-align:center;"><div class="mono">RPE</div><div style="font-size:16px;">😤</div></div></div>
+    <div class="btn pri" style="margin-top:auto; background:#2563eb; border-color:#2563eb;">REGISTRAR CARDIO</div>
+  </div>
+</div>
+
+<!-- E2 Descanso activo -->
+<div class="pf" style="left:460px; top:3440px;">
+  <div class="pl">E2 · Descanso activo</div>
+  <div class="scr"><div class="notch"></div>
+    <div style="margin:auto 0;">
+      <div style="font-size:38px; text-align:center; margin-bottom:8px;">🌱</div>
+      <div class="ttl" style="text-align:center; line-height:1; color:#16a34a;">DESCANSO<br>ACTIVO</div>
+      <div style="display:flex; flex-direction:column; gap:6px; margin:14px 26px;"><div class="bar" style="width:100%;"></div><div class="bar" style="width:75%; margin:0 auto;"></div></div>
+      <div style="display:flex; flex-direction:column; gap:8px; margin:0 6px;">
+        <div class="box" style="padding:12px 13px; display:flex; align-items:center; gap:10px;"><span style="font-size:20px;">🚶</span><div><div style="font:600 12px system-ui; color:#2b2b2b;">Caminar 20–30 min</div><div class="mono">Recuperación suave</div></div></div>
+        <div class="box" style="padding:12px 13px; display:flex; align-items:center; gap:10px;"><span style="font-size:20px;">🧘</span><div><div style="font:600 12px system-ui; color:#2b2b2b;">Estiramientos del enfriamiento</div><div class="mono">Sin cronómetro</div></div></div>
+      </div>
+    </div>
+    <div class="box" style="margin-top:auto; padding:11px 13px; background:#16a34a0c; border-color:#16a34a40; text-align:center; font:500 11px system-ui; color:#3a3631; line-height:1.5;">Sin presión de rendimiento. Hacer algo &gt; no hacer nada — y la racha sigue viva.</div>
+  </div>
+</div>
+
+<div style="position:absolute; left:840px; top:3440px; width:270px;" class="post">Tu objetivo de verdad: constancia y fuerza de voluntad. Por eso lo central es la racha, la sesión exprés para días malos, y un tono que nunca culpa. La app empuja sin presionar.</div>
+<div style="position:absolute; left:840px; top:3620px; width:270px;" class="post">Técnico (briefing §10): PWA offline, datos en el dispositivo, fuentes de sistema, animación en canvas nativo. Estos wireframes son el plano — el siguiente paso es el diseño en alta fidelidad y luego funcional.</div>
+
+<!-- ════════ SECCIÓN F ════════ -->
+<div style="position:absolute; left:80px; top:4180px;">
+  <div class="sec">F · Plan con amigos &amp; familia (en remoto)</div>
+  <div class="secn">F1 es la PRIMERA pantalla real de la app, antes del onboarding. El modo compartido sincroniza por enlace — distintos dispositivos, distintas ciudades, mismo plan.</div>
+</div>
+
+<!-- F1 Modo: solo o con amigos -->
+<div class="pf" style="left:80px; top:4240px;">
+  <div class="pl">F1 · Pantalla de inicio (NUEVO)</div>
+  <div class="scr"><div class="notch"></div>
+    <div class="eyb" style="margin-top:12px;">AMRAP · Personal</div>
+    <div class="ttl" style="margin-top:auto;">¿CÓMO<br>QUIERES<br>ENTRENAR?</div>
+    <div style="display:flex; flex-direction:column; gap:11px; margin:20px 0 auto;">
+      <div class="box" style="padding:16px; border-color:#2b2b2b;">
+        <div style="display:flex; align-items:center; gap:11px;"><span style="font-size:26px;">🧍</span><div><div style="font:600 14px system-ui; color:#2b2b2b;">Yo solo</div><div class="mono">Mi perfil, en este dispositivo · offline</div></div></div>
+      </div>
+      <div class="box" style="padding:16px; border-color:#ea580c; background:#ea580c0c;">
+        <div style="display:flex; align-items:center; gap:11px;"><span style="font-size:26px;">👥</span><div><div style="font:600 14px system-ui; color:#2b2b2b;">Con amigos o familia</div><div class="mono">Mismo plan, en remoto, vía enlace</div></div></div>
+      </div>
+    </div>
+    <div class="mono" style="text-align:center; color:#b3ada3;">Cada uno entrena desde donde quiera</div>
+  </div>
+</div>
+
+<!-- F2 Crear plan compartido -->
+<div class="pf" style="left:460px; top:4240px;">
+  <div class="pl">F2 · Crear plan compartido</div>
+  <div class="scr"><div class="notch"></div>
+    <div class="eyb" style="margin-top:12px;">Modo con amigos</div>
+    <div class="ttl sm" style="margin-top:4px;">INVITA A TU<br>GENTE</div>
+    <div class="box ph" style="margin-top:16px; height:130px; width:130px; align-self:center; border-color:#2b2b2b;">[ QR del plan ]</div>
+    <div class="box" style="margin-top:14px; padding:11px 13px; display:flex; justify-content:space-between; align-items:center; border-color:#2b2b2b;">
+      <span class="mono" style="color:#2b2b2b;">amrap.app/u/RETO-7K2</span>
+      <span class="chip" style="border-color:#2b2b2b;">Copiar</span>
+    </div>
+    <div class="mono" style="margin-top:14px; margin-bottom:6px;">COMPARTIR POR</div>
+    <div style="display:flex; gap:6px; flex-wrap:wrap;">
+      <span class="chip">WhatsApp</span><span class="chip">Telegram</span><span class="chip">Mensaje</span><span class="chip">Más…</span>
+    </div>
+    <div class="box" style="margin-top:14px; padding:10px 12px; background:#f6f5f2; border-style:dashed; font:500 10px system-ui; color:#7a756c; line-height:1.4;">El que crea el plan es el «host». Los demás se unen con el enlace y siguen su propio progreso dentro del grupo.</div>
+    <div class="btn pri" style="margin-top:auto;">CONTINUAR AL ONBOARDING →</div>
+  </div>
+</div>
+
+<!-- F3 Unirse con enlace -->
+<div class="pf" style="left:840px; top:4240px;">
+  <div class="pl">F3 · Unirse con enlace</div>
+  <div class="scr"><div class="notch"></div>
+    <div class="eyb" style="margin-top:12px;">Te han invitado</div>
+    <div class="ttl sm" style="margin-top:4px;">ÚNETE AL RETO</div>
+    <div class="box" style="margin-top:16px; padding:16px; text-align:center; border-color:#ea580c; background:#ea580c0a;">
+      <div style="font:400 24px 'Bebas Neue'; color:#2b2b2b;">RETO VERANO 💪</div>
+      <div class="mono" style="margin-top:4px;">Creado por Javi · 3 miembros</div>
+      <div style="display:flex; justify-content:center; gap:-8px; margin-top:12px;">
+        <div style="width:34px; height:34px; border-radius:50%; background:#16a34a22; border:1.5px solid #16a34a;"></div>
+        <div style="width:34px; height:34px; border-radius:50%; background:#2563eb22; border:1.5px solid #2563eb; margin-left:-8px;"></div>
+        <div style="width:34px; height:34px; border-radius:50%; background:#9333ea22; border:1.5px solid #9333ea; margin-left:-8px;"></div>
+      </div>
+    </div>
+    <div class="mono" style="margin-top:16px; margin-bottom:6px;">O INTRODUCE EL CÓDIGO</div>
+    <div class="field" style="text-align:center; letter-spacing:.15em; font-weight:700; color:#2b2b2b;">RETO-7K2</div>
+    <div class="box" style="margin-top:14px; padding:10px 12px; background:#f6f5f2; border-style:dashed; font:500 10px system-ui; color:#7a756c; line-height:1.4;">Tu plan se genera con TU físico y nivel — compartís el reto y la motivación, no la rutina exacta.</div>
+    <div class="btn pri" style="margin-top:auto; background:#ea580c; border-color:#ea580c;">UNIRME AL GRUPO →</div>
+  </div>
+</div>
+
+<!-- F4 Panel del grupo -->
+<div class="pf" style="left:1220px; top:4240px;">
+  <div class="pl">F4 · Panel del grupo (NUEVO)</div>
+  <div class="scr"><div class="notch"></div>
+    <div class="eyb" style="margin-top:12px;">Reto Verano · 4 miembros</div>
+    <div class="ttl sm" style="margin-top:4px;">EL EQUIPO</div>
+    <div class="box" style="margin-top:14px; padding:11px 13px; background:#16a34a0c; border-color:#16a34a;">
+      <div class="mono" style="color:#16a34a;">ESTA SEMANA · EN GRUPO</div>
+      <div style="display:flex; align-items:baseline; gap:8px; margin-top:2px;"><span style="font:400 30px 'Bebas Neue'; color:#16a34a;">11</span><span style="font:600 11px system-ui; color:#3a3631;">sesiones entre todos · ¡vais por delante!</span></div>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:7px; margin-top:14px;">
+      <div class="box" style="padding:10px 12px; display:flex; align-items:center; gap:10px;"><div style="width:32px; height:32px; border-radius:50%; background:#16a34a22; border:1.5px solid #16a34a; flex-shrink:0;"></div><div style="flex:1;"><div style="font:600 12px system-ui; color:#2b2b2b;">Javi <span class="mono" style="color:#16a34a;">· entrenó hoy ✓</span></div><div class="mono">🔥 racha 6</div></div><span class="chip" style="border-color:#16a34a; color:#16a34a;">👏 +5</span></div>
+      <div class="box" style="padding:10px 12px; display:flex; align-items:center; gap:10px;"><div style="width:32px; height:32px; border-radius:50%; background:#9333ea22; border:1.5px solid #9333ea; flex-shrink:0;"></div><div style="flex:1;"><div style="font:600 12px system-ui; color:#2b2b2b;">Ana <span class="mono" style="color:#16a34a;">· entrenó hoy ✓</span></div><div class="mono">🔥 racha 11</div></div><span class="chip" style="border-color:#16a34a; color:#16a34a;">👏 +5</span></div>
+      <div class="box" style="padding:10px 12px; display:flex; align-items:center; gap:10px; border-color:#ea580c40;"><div style="width:32px; height:32px; border-radius:50%; background:#2563eb22; border:1.5px solid #2563eb; flex-shrink:0;"></div><div style="flex:1;"><div style="font:600 12px system-ui; color:#2b2b2b;">Marcos <span class="mono" style="color:#ea580c;">· 6 días fuera</span></div><div class="mono">racha en pausa</div></div><span class="chip" style="border-color:#ea580c; color:#ea580c; background:#ea580c12;">💪 Animar</span></div>
+    </div>
+    <div class="btn" style="margin-top:auto;">Ver clasificación del reto</div>
+  </div>
+</div>
+
+<!-- F5 Avisos / animar -->
+<div class="pf" style="left:1600px; top:4240px;">
+  <div class="pl">F5 · Avisos &amp; ánimos (NUEVO)</div>
+  <div class="scr"><div class="notch"></div>
+    <div class="eyb" style="margin-top:12px;">Notificaciones del grupo</div>
+    <div class="ttl sm" style="margin-top:4px;">EMPUJAOS<br>ENTRE TODOS</div>
+    <div style="display:flex; flex-direction:column; gap:8px; margin-top:16px;">
+      <div class="box" style="padding:11px 12px; border-color:#16a34a40; background:#16a34a08;"><div style="font:600 11px system-ui; color:#2b2b2b;">🔔 Javi acaba de entrenar 💪</div><div class="mono" style="margin-top:3px;">Choca esos cinco → 👏</div></div>
+      <div class="box" style="padding:11px 12px; border-color:#ea580c40; background:#ea580c08;"><div style="font:600 11px system-ui; color:#2b2b2b;">🔔 Marcos lleva 6 días sin entrenar</div><div class="mono" style="margin-top:3px;">¿Le mandas un ánimo? → 💪</div></div>
+      <div class="box" style="padding:11px 12px; border-color:#9333ea40; background:#9333ea08;"><div style="font:600 11px system-ui; color:#2b2b2b;">🔔 Ana batió su récord: 9 rondas 🏆</div><div class="mono" style="margin-top:3px;">Felicítala → 🎉</div></div>
+    </div>
+    <div class="box" style="margin-top:14px; padding:11px 13px;">
+      <div class="mono" style="margin-bottom:8px;">AJUSTES DE AVISOS</div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:7px;"><span style="font:500 11px system-ui; color:#3a3631;">Cuando un amigo entrena</span><div style="width:30px; height:17px; border-radius:10px; background:#16a34a; position:relative;"><div style="position:absolute; right:2px; top:2px; width:13px; height:13px; border-radius:50%; background:#fff;"></div></div></div>
+      <div style="display:flex; justify-content:space-between; align-items:center;"><span style="font:500 11px system-ui; color:#3a3631;">Recordar animar a inactivos</span><div style="width:30px; height:17px; border-radius:10px; background:#16a34a; position:relative;"><div style="position:absolute; right:2px; top:2px; width:13px; height:13px; border-radius:50%; background:#fff;"></div></div></div>
+    </div>
+    <div class="mono" style="text-align:center; margin-top:auto; color:#b3ada3;">Ánimo, sí. Presión, nunca.</div>
+  </div>
+</div>
+
+<div style="position:absolute; left:1980px; top:4240px; width:250px;" class="post">El modo compartido SÍ necesita conexión + sync (ej. Supabase). El modo solo sigue 100% offline. Son dos caminos desde F1.</div>
+<div style="position:absolute; left:1980px; top:4430px; width:250px;" class="post">Cada amig@ tiene SU plan según su físico — lo que se comparte es el reto, la racha y los ánimos. La rutina no tiene por qué ser idéntica.</div>
+
+<!-- ════════ SECCIÓN G ════════ -->
+<div style="position:absolute; left:80px; top:5020px;">
+  <div class="sec">G · Animaciones de ejercicio (en vivo)</div>
+  <div class="secn">Opción A del briefing, funcionando: figura de palo animada en canvas, ligera y offline. Las 3 fotos fijas son capturas de esta misma animación.</div>
+</div>
+
+<!-- G1 Demo en vivo (phone) -->
+<div class="pf" style="left:80px; top:5080px;">
+  <div class="pl">G1 · Demo en vivo + 3 capturas</div>
+  <div class="scr"><div class="notch"></div>
+    <div class="eyb" style="margin-top:12px;">Vista por defecto · animada</div>
+    <div class="ttl sm" style="margin-top:4px;">SENTADILLA</div>
+    <span class="chip" style="display:inline-block; margin-top:6px; border-color:#16a34a; color:#16a34a;">12 reps</span>
+    <div class="box" style="margin-top:12px; background:#fbfaf7; border-color:#16a34a; overflow:hidden;">
+      <canvas data-ex="squat" style="width:100%; height:178px; display:block;"></canvas>
+    </div>
+    <div style="display:flex; gap:6px; margin-top:8px;">
+      <div style="flex:1; text-align:center;"><div class="box" style="background:#fbfaf7; overflow:hidden;"><canvas data-ex="squat" data-freeze="0" style="width:100%; height:52px; display:block;"></canvas></div><div class="mono" style="margin-top:3px;">inicio</div></div>
+      <div style="flex:1; text-align:center;"><div class="box" style="background:#fbfaf7; overflow:hidden; border-color:#2b2b2b;"><canvas data-ex="squat" data-freeze="0.55" style="width:100%; height:52px; display:block;"></canvas></div><div class="mono" style="margin-top:3px;">medio</div></div>
+      <div style="flex:1; text-align:center;"><div class="box" style="background:#fbfaf7; overflow:hidden;"><canvas data-ex="squat" data-freeze="1" style="width:100%; height:52px; display:block;"></canvas></div><div class="mono" style="margin-top:3px;">final</div></div>
+    </div>
+    <div class="box" style="margin-top:12px; padding:10px 12px; background:#ea580c0a; border-color:#ea580c40;">
+      <div class="mono" style="color:#ea580c; margin-bottom:5px;">ERRORES COMUNES</div>
+      <div style="font:500 10.5px system-ui; color:#3a3631; line-height:1.5;">· Rodillas no entran hacia dentro<br>· El pecho no cae hacia delante</div>
+    </div>
+    <div class="mono" style="text-align:center; margin-top:auto;">Animación generada por código · 0 KB de descarga</div>
+  </div>
+</div>
+
+<!-- G cards -->
+<div style="position:absolute; left:460px; top:5080px; width:220px;">
+  <div data-drags-parent="1" class="pl" style="position:absolute; top:-25px;">G2 · Flexiones</div>
+  <div style="background:#fdfcfa; border:1.6px solid #2b2b2b; border-radius:20px; box-shadow:0 4px 14px rgba(0,0,0,.14); padding:14px;">
+    <div class="box" style="background:#fbfaf7; border-color:#2563eb; overflow:hidden;"><canvas data-ex="pushup" style="width:100%; height:150px; display:block;"></canvas></div>
+    <div style="font:400 22px 'Bebas Neue'; margin-top:10px; color:#2b2b2b;">FLEXIONES</div>
+    <div class="mono" style="margin-top:2px;">Pecho · Tríceps · al fallo</div>
+  </div>
+</div>
+<div style="position:absolute; left:700px; top:5080px; width:220px;">
+  <div data-drags-parent="1" class="pl" style="position:absolute; top:-25px;">G3 · Saltos de tijera</div>
+  <div style="background:#fdfcfa; border:1.6px solid #2b2b2b; border-radius:20px; box-shadow:0 4px 14px rgba(0,0,0,.14); padding:14px;">
+    <div class="box" style="background:#fbfaf7; border-color:#ea580c; overflow:hidden;"><canvas data-ex="jack" style="width:100%; height:150px; display:block;"></canvas></div>
+    <div style="font:400 22px 'Bebas Neue'; margin-top:10px; color:#2b2b2b;">SALTOS DE TIJERA</div>
+    <div class="mono" style="margin-top:2px;">Cardio · 30 reps</div>
+  </div>
+</div>
+<div style="position:absolute; left:940px; top:5080px; width:220px;">
+  <div data-drags-parent="1" class="pl" style="position:absolute; top:-25px;">G4 · Zancadas</div>
+  <div style="background:#fdfcfa; border:1.6px solid #2b2b2b; border-radius:20px; box-shadow:0 4px 14px rgba(0,0,0,.14); padding:14px;">
+    <div class="box" style="background:#fbfaf7; border-color:#9333ea; overflow:hidden;"><canvas data-ex="lunge" style="width:100%; height:150px; display:block;"></canvas></div>
+    <div style="font:400 22px 'Bebas Neue'; margin-top:10px; color:#2b2b2b;">ZANCADAS</div>
+    <div class="mono" style="margin-top:2px;">Piernas · 10 / pierna</div>
+  </div>
+</div>
+
+<div style="position:absolute; left:1200px; top:5080px; width:250px;" class="post">Estas figuras corren de verdad (canvas). En la app cada ejercicio de la librería tendrá la suya. Color = grupo muscular / bloque.</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    const NAVY = '#2c3a5e', NAVD = '#1c2640', SHEEN = '#5f73a8';
+    const ACC = { squat:'#16a34a', pushup:'#2563eb', jack:'#ea580c', lunge:'#9333ea' };
+    const PER = { squat:2000, pushup:1500, jack:1050, lunge:2200 };
+    const ease = (t) => (1 - Math.cos(2 * Math.PI * t)) / 2;          // 0→1→0
+    const phase = (now, per) => (now % per) / per;
+
+    // Poses live in a 240×172 box, ground at y=158. s ∈ [0,1].
+    const POSE = {
+      squat(s) {
+        const hipX = 112, hipY = 80 + 32 * s;
+        const hip = [hipX, hipY], sh = [hipX + 5 + 6 * s, hipY - 46];
+        return { view:'side', dumbbell:true, hip, sh,
+          neck:[sh[0] + 4, sh[1] - 7], head:[sh[0] + 7, sh[1] - 22],
+          knee:[132 + 12 * s, 118 + 4 * s], foot:[123, 158],
+          knee2:[122 + 12 * s, 120 + 4 * s], foot2:[104, 158],
+          elbow:[sh[0] + 14, (sh[1] + hipY) / 2 + 8], hand:[sh[0] + 18, hipY + 4],
+          elbow2:[sh[0] + 4, (sh[1] + hipY) / 2 + 8], hand2:[sh[0] + 8, hipY + 6] };
+      },
+      pushup(d) {
+        const sh = [136, 106 + 16 * d];
+        return { view:'side', dumbbell:false, hip:[96, 116], sh,
+          neck:[sh[0] + 8, sh[1] - 1], head:[sh[0] + 18, sh[1] - 3],
+          knee:[68, 134], foot:[40, 150], knee2:[68, 137], foot2:[40, 153],
+          elbow:[146, 128 + 8 * d], hand:[150, 150],
+          elbow2:[148, 131 + 8 * d], hand2:[150, 150] };
+      },
+      jack(o) {
+        const cx = 120, bob = -6 * Math.sin(Math.PI * o);
+        const sh = [cx, 58 + bob], hip = [cx, 100 + bob];
+        return { view:'front', dumbbell:false, hip, sh,
+          neck:[cx, 51 + bob], head:[cx, 41 + bob],
+          knee:[cx - 8 - 12 * o, 130], foot:[cx - 10 - 26 * o, 158],
+          knee2:[cx + 8 + 12 * o, 130], foot2:[cx + 10 + 26 * o, 158],
+          elbow:[cx - 18 - 14 * o, sh[1] + 22 - 46 * o], hand:[cx - 26 - 22 * o, sh[1] + 42 - 86 * o],
+          elbow2:[cx + 18 + 14 * o, sh[1] + 22 - 46 * o], hand2:[cx + 26 + 22 * o, sh[1] + 42 - 86 * o] };
+      },
+      lunge(l) {
+        const hipX = 120, hipY = 76 + 20 * l;
+        const hip = [hipX, hipY], sh = [hipX, hipY - 44];
+        return { view:'side', dumbbell:true, hip, sh,
+          neck:[hipX, sh[1] - 6], head:[hipX, sh[1] - 21],
+          knee:[150, 116 + 18 * l], foot:[152, 158],
+          knee2:[100, 124 + 8 * l], foot2:[86, 158],
+          elbow:[hipX + 11, (sh[1] + hipY) / 2 + 6], hand:[hipX + 14, hipY + 2],
+          elbow2:[hipX - 11, (sh[1] + hipY) / 2 + 6], hand2:[hipX - 14, hipY + 2] };
+      }
+    };
+
+    const cap = (ctx, a, b, w, col) => {
+      ctx.strokeStyle = col; ctx.lineWidth = w; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+    };
+    const off = (p) => [p[0] - 2.6, p[1] - 2.6];
+    function dumbbell(ctx, p, acc) {
+      ctx.strokeStyle = acc; ctx.lineWidth = 4.5; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(p[0] - 7, p[1]); ctx.lineTo(p[0] + 7, p[1]); ctx.stroke();
+      ctx.fillStyle = acc;
+      ctx.beginPath(); ctx.arc(p[0] - 7, p[1], 5.5, 0, 7); ctx.fill();
+      ctx.beginPath(); ctx.arc(p[0] + 7, p[1], 5.5, 0, 7); ctx.fill();
+      ctx.fillStyle = 'rgba(255,255,255,.5)';
+      ctx.beginPath(); ctx.arc(p[0] - 8.5, p[1] - 1.5, 1.6, 0, 7); ctx.fill();
+      ctx.beginPath(); ctx.arc(p[0] + 5.5, p[1] - 1.5, 1.6, 0, 7); ctx.fill();
+    }
+    function drawFigure(ctx, P, acc) {
+      // ground shadow
+      ctx.fillStyle = 'rgba(35,40,60,.10)';
+      ctx.beginPath(); ctx.ellipse(120, 160, 48, 6.5, 0, 0, 7); ctx.fill();
+      // back limbs (darker, sit behind)
+      cap(ctx, P.hip, P.knee2, 15, NAVD); cap(ctx, P.knee2, P.foot2, 11, NAVD);
+      cap(ctx, P.sh, P.elbow2, 11, NAVD); cap(ctx, P.elbow2, P.hand2, 8, NAVD);
+      // torso mass
+      cap(ctx, P.hip, P.sh, 27, NAVY);
+      // front leg + arm
+      cap(ctx, P.hip, P.knee, 16, NAVY); cap(ctx, P.knee, P.foot, 12, NAVY);
+      cap(ctx, P.sh, P.elbow, 12, NAVY); cap(ctx, P.elbow, P.hand, 9, NAVY);
+      // neck + head
+      cap(ctx, P.sh, P.neck, 11, NAVY);
+      ctx.fillStyle = NAVY; ctx.beginPath(); ctx.arc(P.head[0], P.head[1], 13, 0, 7); ctx.fill();
+      // sheen highlights (muscle definition)
+      cap(ctx, off(P.hip), off(P.sh), 10, SHEEN);
+      cap(ctx, off(P.hip), off(P.knee), 6.5, SHEEN); cap(ctx, off(P.knee), off(P.foot), 4.5, SHEEN);
+      cap(ctx, off(P.sh), off(P.elbow), 4.5, SHEEN); cap(ctx, off(P.elbow), off(P.hand), 3, SHEEN);
+      ctx.fillStyle = SHEEN; ctx.beginPath(); ctx.arc(P.head[0] - 3.5, P.head[1] - 3.5, 5, 0, 7); ctx.fill();
+      // dumbbells last
+      if (P.dumbbell) { dumbbell(ctx, P.hand2, acc); dumbbell(ctx, P.hand, acc); }
+    }
+
+    const dpr = () => window.devicePixelRatio || 1;
+    const setup = (cv) => {
+      const r = dpr(); const w = cv.clientWidth || 220, h = cv.clientHeight || 150;
+      cv.width = Math.round(w * r); cv.height = Math.round(h * r);
+      return { cv, ctx: cv.getContext('2d'), w, h };
+    };
+    let items = [];
+    const measure = () => { items = Array.from(document.querySelectorAll('canvas[data-ex]')).map(setup); };
+    measure();
+
+    const frame = (now) => {
+      const r = dpr();
+      items.forEach((it) => {
+        const ex = it.cv.getAttribute('data-ex');
+        const fz = it.cv.getAttribute('data-freeze');
+        const s = fz != null ? parseFloat(fz) : ease(phase(now, PER[ex] || 1600));
+        it.ctx.setTransform(r, 0, 0, r, 0, 0);
+        it.ctx.clearRect(0, 0, it.w, it.h);
+        const sc = Math.min(it.w / 240, it.h / 172);
+        it.ctx.translate((it.w - 240 * sc) / 2, (it.h - 172 * sc) / 2);
+        it.ctx.scale(sc, sc);
+        drawFigure(it.ctx, (POSE[ex] || POSE.squat)(s), ACC[ex] || '#16a34a');
+      });
+      this.raf = requestAnimationFrame(frame);
+    };
+    this.raf = requestAnimationFrame(frame);
+    this._rz = () => measure();
+    window.addEventListener('resize', this._rz);
+  }
+  componentWillUnmount() {
+    if (this.raf) cancelAnimationFrame(this.raf);
+    if (this._rz) window.removeEventListener('resize', this._rz);
+  }
+}
+</script>
+</body>
+</html>

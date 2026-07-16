@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AMRAP</title>
+<meta name="theme-color" content="#050509">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AMRAP">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;background:#050509;font-family:system-ui,sans-serif;overflow:hidden}
+  .splash{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(120% 80% at 50% 30%,#12122a,#050509 65%);color:#f3f1ec}
+  .logo{font-family:'Bebas Neue';font-size:64px;letter-spacing:.32em;color:#4f8cff;text-indent:.32em;animation:pulse 1.6s ease-in-out infinite}
+  .tag{font-family:'Bebas Neue';font-size:15px;letter-spacing:.42em;color:#5d5a78;margin-top:6px;text-indent:.42em}
+  .bar{margin-top:34px;width:120px;height:4px;border-radius:3px;background:#1c1c34;overflow:hidden}
+  .bar>div{height:100%;width:40%;border-radius:3px;background:#4f8cff;animation:slide 1.1s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+  @keyframes slide{0%{transform:translateX(-120%)}100%{transform:translateX(320%)}}
+</style>
+</head>
+<body>
+<div class="splash">
+  <div class="logo">AMRAP</div>
+  <div class="tag">ENTRENO ADAPTATIVO</div>
+  <div class="bar"><div></div></div>
+</div>
+<script>
+// Router de entrada: si ya hay perfil → hub; si no → onboarding
+(function(){
+  // registra el service worker (PWA offline)
+  if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
+  let hasProfile=false;
+  try{const d=JSON.parse(localStorage.getItem('amrap_fn')||'{}');hasProfile=!!(d&&d.name);}catch(e){}
+  const dest=hasProfile?'hub.html':'onboarding.html';
+  setTimeout(()=>{location.replace(dest);},900);
+})();
+</script>
+</body>
+</html>

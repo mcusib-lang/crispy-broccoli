@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<script>(function(){try{var t=localStorage.getItem('amrap_theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AMRAP · Configuración</title>
+<meta name="theme-color" content="var(--bg-page)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-page:#050509; --bg-stage-a:#0d0d1f; --bg-phone-a:#0a0a16; --bg-phone-b:#08080f;
+    --card-a:#14142a; --card-b:#101022; --panel:#121226; --panel2:#12122a;
+    --text:#f3f1ec; --text2:#eeecf6; --text3:#e6e3f2;
+    --muted:#8b88a8; --muted2:#7a7796; --muted3:#a7a4c2; --muted4:#5d5a78; --muted5:#4a4863; --muted6:#c9c6de;
+    --border:#ffffff10; --border2:#ffffff0d; --border3:#ffffff12; --border4:#ffffff14; --border5:#ffffff0a; --border6:#ffffff08; --border7:#ffffff18; --border8:#ffffff22;
+    --field-border:#2a2a48; --field-border2:#3a3a5a; --field-border3:#20203a;
+    --navbar-bg:#08080fcc;
+  }
+  [data-theme="light"]{
+    --bg-page:#f2f1f7; --bg-stage-a:#e7e5f2; --bg-phone-a:#ffffff; --bg-phone-b:#f4f3f9;
+    --card-a:#ffffff; --card-b:#f3f2f9; --panel:#eeedf6; --panel2:#e9e7f4;
+    --text:#18172a; --text2:#18172a; --text3:#18172a;
+    --muted:#615e78; --muted2:#726f8c; --muted3:#4c495e; --muted4:#8a87a0; --muted5:#a3a0b8; --muted6:#403d54;
+    --border:#00000014; --border2:#0000000e; --border3:#00000016; --border4:#00000018; --border5:#0000000a; --border6:#00000008; --border7:#0000001c; --border8:#00000026;
+    --field-border:#d8d5e6; --field-border2:#c7c4da; --field-border3:#d8d5e6;
+    --navbar-bg:#ffffffcc;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+  html,body{background:var(--bg-page);font-family:'Barlow Semi Condensed',system-ui,sans-serif;min-height:100dvh}
+  .stage{min-height:100dvh;display:flex;align-items:flex-start;justify-content:center;background:radial-gradient(120% 80% at 50% 0%,var(--bg-stage-a) 0%,var(--bg-page) 60%)}
+  .phone{width:100%;max-width:440px;min-height:100dvh;background:linear-gradient(180deg,var(--bg-phone-a),var(--bg-phone-b));position:relative;display:flex;flex-direction:column;color:var(--text);border-left:1px solid var(--border);border-right:1px solid var(--border)}
+  .bebas{font-family:'Bebas Neue';font-weight:400}
+  ::-webkit-scrollbar{width:0}
+  .body{flex:1;padding:8px 24px 20px}
+  .foot{padding:14px 24px calc(14px + env(safe-area-inset-bottom));border-top:1px solid #ffffff0e;background:var(--bg-phone-b);position:sticky;bottom:0;z-index:5}
+  .kicker{font:600 11px/1 'Barlow Semi Condensed';letter-spacing:.2em;color:var(--muted2);text-transform:uppercase}
+  .title{font:400 46px/.9 'Bebas Neue';margin-top:12px}
+  .sub{font:500 14px/1.45 'Barlow Semi Condensed';color:var(--muted);margin-top:10px}
+  .opt{display:flex;align-items:center;gap:14px;padding:16px 16px;border-radius:15px;background:var(--card-b);border:1.5px solid var(--border3);cursor:pointer;transition:all .15s}
+  .opt .em{font-size:26px;width:30px;text-align:center;flex-shrink:0}
+  .opt .ico{color:var(--muted);flex-shrink:0;display:flex}
+  .opt .t{font:600 15px/1.1 'Barlow Semi Condensed';color:var(--text)}
+  .opt .d{font:500 12px/1.25 'Barlow Semi Condensed';color:var(--muted);margin-top:3px}
+  .opt .chk{margin-left:auto;width:22px;height:22px;border-radius:7px;border:1.5px solid var(--field-border2);flex-shrink:0}
+  .btnP{padding:16px;border-radius:15px;background:#4f8cff;text-align:center;font:600 15px/1 'Barlow Semi Condensed';letter-spacing:.06em;color:#04132e;cursor:pointer;box-shadow:0 10px 30px -8px #4f8cff66}
+  .btnP.off{background:#1a1a30;color:var(--muted5);box-shadow:none;cursor:default}
+  .field{width:100%;padding:15px 16px;border-radius:13px;background:var(--panel);border:1.5px solid var(--field-border);color:var(--text);font:600 16px/1 'Barlow Semi Condensed';outline:none}
+  .field:focus{border-color:#4f8cff}
+  .seg{display:flex;gap:9px}
+  .seg .s{flex:1;text-align:center;padding:15px 0;border-radius:13px;background:var(--card-b);border:1.5px solid var(--border3);font:600 14px/1 'Barlow Semi Condensed';color:var(--muted3);cursor:pointer}
+  .num{display:flex;gap:8px;flex-wrap:wrap}
+  .num .n{width:52px;height:52px;border-radius:13px;background:var(--card-b);border:1.5px solid var(--border3);display:flex;align-items:center;justify-content:center;font:400 24px/1 'Bebas Neue';color:var(--muted3);cursor:pointer}
+  .fade{animation:fade .28s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="phone">
+    <div style="padding:20px 24px 4px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div id="backBtn" onclick="prev()" style="width:34px;height:34px;border-radius:10px;background:var(--panel2);border:1px solid var(--border3);display:flex;align-items:center;justify-content:center;color:var(--muted6);font-size:18px;cursor:pointer">‹</div>
+        <div style="flex:1;height:6px;border-radius:4px;background:#1c1c34;overflow:hidden"><div id="bar" style="height:100%;background:#4f8cff;border-radius:4px;width:10%;transition:width .3s"></div></div>
+        <div id="stepN" style="font:600 11px/1 'Barlow Semi Condensed';color:var(--muted2);min-width:34px;text-align:right">1/9</div>
+        <div onclick="toggleTheme()" id="themeBtn" style="width:34px;height:34px;border-radius:10px;background:var(--panel2);border:1px solid var(--border3);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;flex-shrink:0">🌙</div>
+      </div>
+    </div>
+    <div class="body" id="body"></div>
+    <div class="foot"><div class="btnP" id="next" onclick="next()">Continuar</div></div>
+  </div>
+</div>
+
+<script>
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
+const ic=(p)=>`<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+
+const P={name:'',sexo:'',edad:'',altura:'',peso:'',objetivos:[],level:'',days:0,weeks:8,equipamiento:[],lesiones:[],lesionesNivel:{},modoCardio:'',cardioType:'Running'};
+try{const prev=JSON.parse(localStorage.getItem('amrap_fn')||'{}');if(prev&&prev.name){P.name=prev.name;P.sexo=prev.sexo||'';P.edad=prev.edad||'';P.altura=prev.altura||'';P.peso=prev.peso||'';P.objetivos=Array.isArray(prev.objetivos)?prev.objetivos.slice():[];P.level=prev.level||prev.nivel||'';P.days=prev.days||prev.diasPorSemana||0;P.weeks=prev.weeks||8;P.equipamiento=Array.isArray(prev.equipamiento)?prev.equipamiento.slice():[];P.lesiones=Array.isArray(prev.lesiones)?prev.lesiones.slice():[];P.lesionesNivel=Object.assign({},prev.lesionesNivel||{});P.modoCardio=prev.modoCardio||'';P.cardioType=prev.cardioType||'Running';}}catch(e){}
+
+// Modo edición: si ya había perfil O si viene ?edit=1, saltamos la bienvenida
+const IS_EDIT = (!!P.name) || /[?&]edit=1/.test(location.search || '');
+let step = IS_EDIT ? 1 : 0;
+const STEPS=['welcome','datos','cuerpo','objetivos','nivel','dias','duracion','equip','lesiones','cardio','resumen'];
+const TOTAL=STEPS.length-1;
+
+function render(){
+  const b=document.getElementById('body');
+  const key=STEPS[step];
+  document.getElementById('bar').style.width=(step===0?6:(step)/(TOTAL)*100)+'%';
+  document.getElementById('stepN').textContent=step===0?'':`${step}/${TOTAL}`;
+  document.getElementById('backBtn').style.visibility=step===0?'hidden':'visible';
+  b.scrollTop=0;b.className='body';b.classList.add('fade');
+
+  if(key==='welcome'){
+    b.innerHTML=`
+      <div style="position:relative;margin:-8px -24px 0;height:230px;border-radius:0 0 24px 24px;overflow:hidden">
+        <img src="./assets/img/hero-woman-dumbbell.jpg" alt="" style="width:100%;height:100%;object-fit:cover;display:block">
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,5,9,.15),var(--bg-phone-b) 92%)"></div>
+      </div>
+      <div style="text-align:center;margin-top:-6px">
+        <div class="bebas" style="font-size:26px;letter-spacing:.35em;color:#4f8cff">AMRAP</div>
+        <div style="margin:26px auto 0;width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#4f8cff33,#4f8cff10);border:1.5px solid #4f8cff44;display:flex;align-items:center;justify-content:center;color:#4f8cff"><svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5h11M6.5 17.5h11M9 6.5v11M15 6.5v11M4 9v6M20 9v6"/></svg></div>
+      </div>
+      <div class="title" style="text-align:center;font-size:52px;margin-top:24px">TU ENTRENO,<br><span style="color:#4f8cff">A TU MEDIDA</span></div>
+      <div class="sub" style="text-align:center;max-width:340px;margin:14px auto 0">Responde unas preguntas rápidas y te montamos un plan AMRAP adaptado a tu nivel, tu material y tu cuerpo. Menos de 2 minutos.</div>
+      <div style="margin-top:26px;display:flex;flex-direction:column;gap:10px">
+        ${featRow('<path d="M12 2v20M2 12h20"/>','Adaptado a tu material','Casa, viaje o parque de calistenia')}
+        ${featRow('<path d="M20.8 5.6a5.5 5.5 0 0 0-8.8 1.4A5.5 5.5 0 0 0 3.2 5.6C1 7.8 1 11.3 3.2 13.5L12 22l8.8-8.5c2.2-2.2 2.2-5.7 0-7.9z"/>','Cuida tus lesiones','Evita ejercicios que carguen zonas sensibles')}
+        ${featRow('<path d="M3 20h18M6 16l4-5 3 3 5-7"/>','Progresa sin estancarte','Autorregulación por sensación (RPE)')}
+      </div>
+      <div onclick="resetAll()" style="text-align:center;margin-top:22px;font:600 11px/1 'Barlow Semi Condensed';letter-spacing:.05em;color:var(--muted5);cursor:pointer">Empezar de cero (borrar datos)</div>`;
+    setNext('Empezar',true);
+  }
+  else if(key==='datos'){
+    b.innerHTML=`
+      <div class="kicker">Paso 1 · sobre ti</div>
+      <div class="title">¿CÓMO TE<br>LLAMAS?</div>
+      <input class="field" id="fName" placeholder="Tu nombre" value="${P.name||''}" maxlength="18" style="margin-top:22px" oninput="P.name=this.value.trim();refresh()">
+      <div class="kicker" style="margin-top:26px">Sexo <span style="color:var(--muted5)">· para tu figura y cálculos</span></div>
+      <div class="seg" style="margin-top:12px">
+        ${segBtn('sexo','Hombre','Hombre')}${segBtn('sexo','Mujer','Mujer')}${segBtn('sexo','Otro','Otro')}
+      </div>
+      <div class="kicker" style="margin-top:24px">Edad</div>
+      <input class="field" id="fEdad" type="number" inputmode="numeric" placeholder="Ej. 32" value="${P.edad||''}" style="margin-top:12px" oninput="P.edad=this.value;refresh()">`;
+    setNext('Continuar');refresh();
+  }
+  else if(key==='cuerpo'){
+    b.innerHTML=`
+      <div class="kicker">Paso 2 · tu cuerpo</div>
+      <div class="title">ALTURA Y<br>PESO</div>
+      <div class="sub">Opcional pero útil para estimar intensidad y seguir tu evolución. Siempre privado.</div>
+      <div class="kicker" style="margin-top:24px">Altura (cm)</div>
+      <input class="field" id="fAlt" type="number" inputmode="numeric" placeholder="Ej. 178" value="${P.altura||''}" style="margin-top:12px" oninput="P.altura=this.value">
+      <div class="kicker" style="margin-top:22px">Peso (kg)</div>
+      <input class="field" id="fPeso" type="number" inputmode="decimal" placeholder="Ej. 76" value="${P.peso||''}" style="margin-top:12px" oninput="P.peso=this.value">`;
+    setNext('Continuar',true);
+  }
+  else if(key==='objetivos'){
+    const O=[['grasa','🔥','Perder grasa','Reducir vientre y costados'],['musculo','💪','Ganar músculo','Volumen y definición'],['fuerza','🏋️','Ganar fuerza','Levantar y rendir más'],['salud','❤️','Salud y constancia','Sentirme mejor cada día'],['resistencia','🏃','Resistencia','Aguantar más, mejor cardio']];
+    b.innerHTML=`
+      <div class="kicker">Paso 3 · objetivos</div>
+      <div class="title">¿QUÉ QUIERES<br>CONSEGUIR?</div>
+      <div class="sub">Elige uno o varios. Ajustamos el enfoque del plan.</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px">${O.map(([k,e,t,d])=>optMulti('objetivos',k,e,'',t,d)).join('')}</div>`;
+    setNext('Continuar');refresh();
+  }
+  else if(key==='nivel'){
+    const L=[['principiante','Principiante','Poca o ninguna experiencia entrenando'],['intermedio','Intermedio','Entreno con cierta regularidad'],['avanzado','Avanzado','Años de experiencia y buena técnica']];
+    b.innerHTML=`
+      <div class="kicker">Paso 4 · experiencia</div>
+      <div class="title">¿CUÁL ES TU<br>NIVEL?</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:22px">${L.map(([k,t,d],i)=>optSingle('level',k,String(i+1),t,d)).join('')}</div>`;
+    setNext('Continuar');refresh();
+  }
+  else if(key==='dias'){
+    b.innerHTML=`
+      <div class="kicker">Paso 5 · frecuencia</div>
+      <div class="title">¿CUÁNTOS DÍAS<br>POR SEMANA?</div>
+      <div class="sub">Sé realista: la constancia importa más que la cantidad.</div>
+      <div class="num" style="margin-top:24px;justify-content:center">${[2,3,4,5,6].map(n=>`<div class="n" onclick="P.days=${n};render()" style="${P.days===n?'background:#4f8cff22;border-color:#4f8cff;color:#9cc0ff':''}">${n}</div>`).join('')}</div>
+      <div style="text-align:center;margin-top:20px;font:500 13px/1.5 'Barlow Semi Condensed';color:var(--muted)">${daysHint()}</div>`;
+    setNext('Continuar');refresh();
+  }
+  else if(key==='duracion'){
+    const opts=[4,5,6,7,8,9,10,11,12,13,14,15,16];
+    b.innerHTML=`
+      <div class="kicker">Paso 6 · duración</div>
+      <div class="title">¿CUÁNTAS SEMANAS<br>DURA TU PLAN?</div>
+      <div class="sub">Al terminarlas, reevaluamos tu nivel y empezamos un plan nuevo desde donde estés. Podrás cambiarlo después.</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-top:22px">${opts.map(n=>`<div onclick="P.weeks=${n};render()" style="aspect-ratio:1;border-radius:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;border:1.5px solid ${P.weeks===n?'#4f8cff':'var(--border4)'};background:${P.weeks===n?'#4f8cff22':'var(--card-b)'}"><div style="font:600 20px/1 'Barlow Semi Condensed';color:${P.weeks===n?'#9cc0ff':'var(--text3)'}">${n}</div><div style="font:600 8px/1 'Barlow Semi Condensed';letter-spacing:.08em;color:var(--muted2);margin-top:3px">SEM.</div></div>`).join('')}</div>
+      <div style="text-align:center;margin-top:20px;font:500 13px/1.5 'Barlow Semi Condensed';color:var(--muted)">${P.weeks<=6?'Corto y enfocado — ideal para un objetivo puntual.':P.weeks<=10?'Duración equilibrada para ver progreso real.':'Plan largo. Máximo recomendado: 16 semanas (4 meses).'}</div>`;
+    setNext('Continuar');refresh();
+  }
+  else if(key==='equip'){
+    const E=[['Ninguno','Sin material','Solo tu peso corporal','<path d="M12.4 13a5 5 0 0 1 9.6 2c0 3.9-4 7-9 7-4 0-8.2-.8-10.4-2.5-.4-.3-.6-.8-.6-1.4C2.1 12.7 2.6 2 10 2a3 3 0 0 1 3 3 2 2 0 0 1-2 2c-1.1 0-1.6-.4-2-1"/><path d="M15 14a5 5 0 0 0-7.6 2"/>'],['Mancuerna','Mancuernas','Fijas o ajustables','<path d="M3 8v8M6 6v12M18 6v12M21 8v8M6 12h12"/>'],['Kettlebell','Kettlebell','Pesa rusa','<path d="M9 6.5a3 3 0 1 1 6 0"/><path d="M8.5 6.5C6 8 5 11 5 14a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4c0-3-1-6-3.5-7.5"/>'],['Goma','Gomas elásticas','Bandas de resistencia','<path d="M4 12c0-3 2-5 5-5s5 2 5 5-2 5-5 5"/><path d="M14 8l6-2M14 16l6 2M20 6v12"/>'],['Barra','Barra / parque','Dominadas y calistenia','<path d="M4 4v16M20 4v16M4 9h16M4 15h16"/>'],['Banco','Banco o cajón','Superficie elevada','<path d="M3 10h18v3H3z"/><path d="M5 13v6M19 13v6"/>'],['Comba','Comba','Cuerda de saltar','<path d="M5 4v3M19 4v3"/><path d="M5 7c0 8 3 13 7 13s7-5 7-13"/>']];
+    b.innerHTML=`
+      <div class="kicker">Paso 7 · material</div>
+      <div class="title">¿QUÉ MATERIAL<br>TIENES?</div>
+      <div class="sub">Marca todo lo que tengas a mano. Solo propondremos ejercicios que puedas hacer.</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px">${E.map(([k,t,d,i])=>optMulti('equipamiento',k,'',i,t,d)).join('')}</div>`;
+    setNext('Continuar');refresh();
+  }
+  else if(key==='lesiones'){
+    const Z=[['ninguna','Ninguna, todo bien'],['Rodilla','Rodilla'],['Lumbar','Lumbar / espalda baja'],['Hombro','Hombro'],['Muñeca','Muñeca'],['Tobillo','Tobillo'],['Cadera','Cadera']];
+    const LP={Rodilla:{prot:'Evitamos saltos, impacto y zancadas profundas.',ref:'Reforzamos cuádriceps, isquios y gemelo para estabilizar la rodilla.'},Lumbar:{prot:'Evitamos cargar con la espalda flexionada e impacto.',ref:'Reforzamos glúteo y core (plancha) para proteger la zona lumbar.'},Hombro:{prot:'Evitamos press por encima de la cabeza y flexiones exigentes.',ref:'Reforzamos espalda y hombro posterior con remo y tracción.'},'Muñeca':{prot:'Evitamos apoyar el peso sobre la muñeca.',ref:'Sustituimos por variantes sobre antebrazos o de pie.'},Tobillo:{prot:'Evitamos saltos y cambios de dirección.',ref:'Reforzamos gemelo y glúteo con trabajo controlado.'},Cadera:{prot:'Evitamos rangos extremos y zancadas profundas.',ref:'Reforzamos glúteo e isquios con puente y peso muerto.'}};
+    const sel=P.lesiones.filter(l=>l!=='ninguna');
+    b.innerHTML=`
+      <div class="kicker">Paso 8 · cuidado</div>
+      <div class="title">¿ALGUNA MOLESTIA<br>O LESIÓN?</div>
+      <div class="sub">Marca las zonas y su intensidad. Adaptamos los ejercicios para protegerlas y reforzar lo que las estabiliza.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:9px;margin-top:22px">${Z.map(([k,t])=>`<div onclick="toggleLes('${k}')" style="padding:12px 16px;border-radius:14px;border:1.5px solid ${P.lesiones.includes(k)?'#ef4444':'var(--border4)'};background:${P.lesiones.includes(k)?'#ef444418':'var(--card-b)'};color:${P.lesiones.includes(k)?'#f9a8a8':'var(--muted3)'};font:600 13px/1 'Barlow Semi Condensed';cursor:pointer">${t}</div>`).join('')}</div>
+      ${sel.length?`<div style="margin-top:18px;display:flex;flex-direction:column;gap:12px">${sel.map(z=>{const lp=LP[z]||{};const lvl=P.lesionesNivel[z]||'leve';const nivs=[['leve','Leve'],['moderada','Moderada'],['fuerte','Fuerte']];return `<div style="padding:14px 15px;border-radius:14px;background:var(--card-b);border:1px solid #ef444426"><div style="font:600 13px/1 'Barlow Semi Condensed';color:#f9a8a8">${z}</div><div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:var(--muted2);margin:11px 0 7px">INTENSIDAD DE LA MOLESTIA</div><div style="display:flex;gap:7px">${nivs.map(([nk,nl])=>`<div onclick="setLesNivel('${z}','${nk}')" style="flex:1;text-align:center;padding:9px 0;border-radius:10px;cursor:pointer;font:600 12px/1 'Barlow Semi Condensed';border:1px solid ${lvl===nk?'#ef4444':'var(--border4)'};background:${lvl===nk?'#ef444422':'var(--panel2)'};color:${lvl===nk?'#f9a8a8':'var(--muted)'}">${nl}</div>`).join('')}</div><div style="margin-top:11px;font:500 11.5px/1.5 'Barlow Semi Condensed';color:var(--muted3)"><b style="color:#7fd0a0">Protección:</b> ${lp.prot||''}</div><div style="margin-top:5px;font:500 11.5px/1.5 'Barlow Semi Condensed';color:var(--muted3)"><b style="color:#9cc0ff">Refuerzo:</b> ${lp.ref||''}</div></div>`;}).join('')}</div>`:''}`;
+    setNext('Continuar',true);
+  }
+  else if(key==='cardio'){
+    b.innerHTML=`
+      <div class="kicker">Paso 9 · cardio</div>
+      <div class="title">¿AÑADIMOS<br>CARDIO?</div>
+      <div class="sub">Además del AMRAP de fuerza, puedes incluir días de cardio en tus días libres.</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px">
+        ${optSingleCardio('ninguno','Solo AMRAP','4 días de fuerza a la semana')}
+        ${optSingleCardio('amrap_mas_cardio','AMRAP + Cardio','Fuerza + cardio en los días libres')}
+      </div>
+      <div style="${P.modoCardio==='amrap_mas_cardio'?'':'display:none'};margin-top:22px">
+        <div class="kicker">Tu actividad de cardio preferida</div>
+        <div style="display:flex;flex-wrap:wrap;gap:9px;margin-top:12px">${['Running','Ciclismo','Natación','Fútbol','Otro'].map(t=>`<div onclick="P.cardioType='${t}';render()" style="padding:11px 16px;border-radius:20px;border:1.5px solid ${P.cardioType===t?'#ea580c':'var(--border4)'};background:${P.cardioType===t?'#ea580c22':'var(--panel2)'};color:${P.cardioType===t?'#f0a070':'var(--muted)'};font:600 13px/1 'Barlow Semi Condensed';cursor:pointer">${t}</div>`).join('')}</div>
+        <div style="margin-top:16px;padding:13px 15px;border-radius:13px;background:#14100c;border:1px solid #ea580c2e;font:500 12px/1.5 'Barlow Semi Condensed';color:#c9b3a0">Recomendado: 2 sesiones/semana en Zona 2 (ritmo conversacional) + 1 de intervalos opcional.</div>
+      </div>`;
+    setNext('Continuar');refresh();
+  }
+  else if(key==='resumen'){
+    const objMap={grasa:'Perder grasa',musculo:'Ganar músculo',fuerza:'Fuerza',salud:'Salud',resistencia:'Resistencia'};
+    const lvlMap={principiante:'Principiante',intermedio:'Intermedio',avanzado:'Avanzado'};
+    const eqMap={Ninguno:'Sin material',Mancuerna:'Mancuernas',Kettlebell:'Kettlebell',Goma:'Gomas',Barra:'Barra/parque',Banco:'Banco',Comba:'Comba'};
+    b.innerHTML=`
+      <div class="kicker">Casi listo</div>
+      <div class="title">TU PLAN<br><span style="color:#4f8cff">ESTÁ LISTO</span></div>
+      <div class="sub">Revisa el resumen. Podrás cambiar todo esto más adelante.</div>
+      <div style="margin-top:22px;display:flex;flex-direction:column;gap:1px;border-radius:16px;overflow:hidden;border:1px solid var(--border)">
+        ${sumRow('Nombre',P.name||'Atleta')}
+        ${sumRow('Perfil',[P.sexo,P.edad?P.edad+' años':''].filter(Boolean).join(' · ')||'—')}
+        ${sumRow('Objetivos',P.objetivos.map(o=>objMap[o]).join(', ')||'—')}
+        ${sumRow('Nivel',lvlMap[P.level]||'—')}
+        ${sumRow('Frecuencia',P.days?P.days+' días/semana':'—')}
+        ${sumRow('Duración del plan',P.weeks+' semanas')}
+        ${sumRow('Material',P.equipamiento.map(e=>eqMap[e]).join(', ')||'—')}
+        ${sumRow('Lesiones',P.lesiones.filter(l=>l!=='ninguna').join(', ')||'Ninguna')}
+        ${sumRow('Cardio',P.modoCardio==='amrap_mas_cardio'?('Sí · '+P.cardioType):'Solo AMRAP')}
+      </div>`;
+    setNext(IS_EDIT ? '✓ Guardar cambios' : '▶  Crear mi plan',true);
+  }
+}
+
+function featRow(path,t,d){return `<div style="display:flex;align-items:center;gap:14px;padding:13px 15px;border-radius:14px;background:var(--card-b);border:1px solid var(--border)"><div style="color:#4f8cff;flex-shrink:0">${ic(path)}</div><div><div style="font:600 13.5px/1.1 'Barlow Semi Condensed';color:var(--text2)">${t}</div><div style="font:500 11.5px/1.25 'Barlow Semi Condensed';color:var(--muted);margin-top:3px">${d}</div></div></div>`;}
+function segBtn(field,val,label){const on=P[field]===val;return `<div class="s" onclick="P.${field}='${val}';render()" style="${on?'background:#4f8cff1e;border-color:#4f8cff;color:#9cc0ff':''}">${label}</div>`;}
+function optSingle(field,k,badge,t,d){const on=P[field]===k;return `<div class="opt" onclick="P.${field}='${k}';render()" style="${on?'border-color:#4f8cff;background:#4f8cff12':''}"><div class="em" style="color:${on?'#4f8cff':'var(--muted4)'};font-family:'Bebas Neue';font-size:26px">${badge}</div><div><div class="t">${t}</div><div class="d">${d}</div></div><div class="chk" style="${on?'background:#4f8cff;border-color:#4f8cff':''}">${on?'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#04132e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>':''}</div></div>`;}
+function optSingleCardio(k,t,d){const on=P.modoCardio===k;return `<div class="opt" onclick="P.modoCardio='${k}';render()" style="${on?'border-color:#ea580c;background:#ea580c12':''}"><div class="ico" style="color:${on?'#ea580c':'var(--muted4)'}">${ic('<path d="M20.8 5.6a5.5 5.5 0 0 0-8.8 1.4A5.5 5.5 0 0 0 3.2 5.6C1 7.8 1 11.3 3.2 13.5L12 22l8.8-8.5c2.2-2.2 2.2-5.7 0-7.9z"/>')}</div><div><div class="t">${t}</div><div class="d">${d}</div></div><div class="chk" style="${on?'background:#ea580c;border-color:#ea580c':''}">${on?'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#170a03" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>':''}</div></div>`;}
+function optMulti(field,k,emoji,iconPath,t,d){const on=P[field].includes(k);const media=emoji?`<div class="em">${emoji}</div>`:`<div class="ico" style="color:${on?'#4f8cff':'var(--muted)'}">${ic(iconPath)}</div>`;return `<div class="opt" onclick="toggleMulti('${field}','${k}')" style="${on?'border-color:#4f8cff;background:#4f8cff12':''}">${media}<div><div class="t">${t}</div>${d?`<div class="d">${d}</div>`:''}</div><div class="chk" style="${on?'background:#4f8cff;border-color:#4f8cff':''}">${on?'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#04132e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>':''}</div></div>`;}
+function sumRow(l,v){return `<div style="display:flex;gap:12px;padding:13px 15px;background:var(--card-b)"><div style="font:600 12px/1.3 'Barlow Semi Condensed';color:var(--muted2);min-width:88px">${l}</div><div style="font:600 13px/1.3 'Barlow Semi Condensed';color:var(--text3);flex:1;text-align:right">${v}</div></div>`;}
+function daysHint(){const h={2:'Perfecto para empezar o mantener con poco tiempo.',3:'El punto dulce para la mayoría: buen progreso y recuperación.',4:'Ritmo sólido. Ideal si combinas fuerza y cardio.',5:'Alto compromiso. Cuida el descanso.',6:'Solo si tu recuperación y descanso lo permiten.'};return h[P.days]||'Elige los días que puedas cumplir de verdad.';}
+
+function toggleMulti(field,k){const a=P[field];const i=a.indexOf(k);if(i>=0)a.splice(i,1);else a.push(k);render();}
+function toggleLes(k){if(k==='ninguna'){P.lesiones=P.lesiones.includes('ninguna')?[]:['ninguna'];P.lesionesNivel={};}else{P.lesiones=P.lesiones.filter(x=>x!=='ninguna');const i=P.lesiones.indexOf(k);if(i>=0){P.lesiones.splice(i,1);delete P.lesionesNivel[k];}else{P.lesiones.push(k);P.lesionesNivel[k]=P.lesionesNivel[k]||'leve';}}render();}
+function setLesNivel(z,n){P.lesionesNivel[z]=n;render();}
+function setNext(label,enabled){const n=document.getElementById('next');n.textContent=label;n._forceEnabled=enabled;refresh();}
+function canAdvance(){const key=STEPS[step];if(key==='datos')return !!(P.name&&P.name.trim());if(key==='objetivos')return P.objetivos.length>0;if(key==='nivel')return !!P.level;if(key==='dias')return P.days>0;if(key==='equip')return P.equipamiento.length>0;if(key==='cardio')return !!P.modoCardio;return true;}
+function refresh(){const n=document.getElementById('next');const ok=n._forceEnabled||canAdvance();n.classList.toggle('off',!ok);}
+function next(){if(document.getElementById('next').classList.contains('off'))return;if(step<STEPS.length-1){step++;render();}else finish();}
+function prev(){if(step>0){step--;render();}}
+function resetAll(){if(confirm('¿Borrar todos tus datos y empezar de cero? Se perderá tu racha e historial.')){try{localStorage.removeItem('amrap_fn');}catch(e){}P.name='';P.sexo='';P.edad='';P.altura='';P.peso='';P.objetivos=[];P.level='';P.days=0;P.equipamiento=[];P.lesiones=[];P.lesionesNivel={};P.modoCardio='';P.cardioType='Running';alert('Datos borrados. Empezamos de cero.');}}
+function finish(){
+  const goalMap={grasa:'fatloss',musculo:'upper',fuerza:'full',salud:'full',resistencia:'fatloss'};
+  let prev={};try{prev=JSON.parse(localStorage.getItem('amrap_fn')||'{}');}catch(e){}
+  const wasNew = !prev.name;
+  const data=Object.assign({},prev,{name:(P.name||'Atleta').slice(0,18),sexo:P.sexo,edad:P.edad,altura:P.altura,peso:P.peso,objetivos:P.objetivos,goal:goalMap[P.objetivos[0]]||'full',level:P.level||'principiante',nivel:P.level,days:P.days||3,diasPorSemana:P.days||3,weeks:P.weeks||8,equipamiento:P.equipamiento,lesiones:P.lesiones.filter(l=>l!=='ninguna'),lesionesNivel:P.lesionesNivel,modoCardio:P.modoCardio||'ninguno',cardioType:P.cardioType,startDate:prev.startDate||new Date().toISOString(),streak:prev.streak||0,bestRounds:prev.bestRounds||0,history:prev.history||[]});
+  try{localStorage.setItem('amrap_fn',JSON.stringify(data));}catch(e){}
+  // primer alta → arma el flag para el tour
+  if (wasNew) { try { localStorage.setItem('amrap_tour','pending'); } catch(e){} }
+  if(window.AMRAPSync&&window.AMRAPSync.enabled&&window.AMRAPSync.enabled()){window.AMRAPSync.push(data).finally(()=>location.href='hub.html');}
+  else location.href='hub.html';
+}
+function toggleTheme(){const cur=document.documentElement.getAttribute('data-theme')==='light'?'light':'dark';const next=cur==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',next);try{localStorage.setItem('amrap_theme',next);}catch(e){}const b=document.getElementById('themeBtn');if(b)b.textContent=next==='light'?'☀️':'🌙';}
+(function(){const b=document.getElementById('themeBtn');if(b){const t=(function(){try{return localStorage.getItem('amrap_theme')||'dark';}catch(e){return 'dark';}})();b.textContent=t==='light'?'☀️':'🌙';}})();
+render();
+</script>
+</body>
+</html>

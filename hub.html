@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<script>(function(){try{var t=localStorage.getItem('amrap_theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AMRAP · Inicio</title>
+<meta name="theme-color" content="var(--bg-page)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-page:#050509; --bg-stage-a:#0d0d1f; --bg-phone-a:#0a0a16; --bg-phone-b:#08080f;
+    --card-a:#14142a; --card-b:#101022; --panel:#121226; --panel2:#12122a;
+    --text:#f3f1ec; --text2:#eeecf6; --text3:#e6e3f2;
+    --muted:#8b88a8; --muted2:#7a7796; --muted3:#a7a4c2; --muted4:#5d5a78; --muted5:#4a4863; --muted6:#c9c6de;
+    --border:#ffffff10; --border2:#ffffff0d; --border3:#ffffff12; --border4:#ffffff14; --border5:#ffffff0a; --border6:#ffffff08; --border7:#ffffff18; --border8:#ffffff22;
+    --field-border:#2a2a48; --field-border2:#3a3a5a; --field-border3:#20203a;
+    --navbar-bg:#08080fcc;
+    --tint-green:#12160f; --tint-amber-a:#1d1407; --tint-amber-b:#14110a; --tint-amber-c:#1a1410; --tint-amber-d:#1a1208; --tint-purple:#15102a;
+    --txt-green:#a7d8a0; --txt-amber:#caa86a; --txt-amber-sub:#a99873; --txt-amber-warn:#e3c07a;
+    --track:#1c1c34; --tint-slate:#1a1a30; --row-blue:#0f1420; --row-orange:#14100c; --row-locked:#0d0d18;
+    --txt-blue-sub:#cdd6ea;
+  }
+  [data-theme="light"]{
+    --bg-page:#f2f1f7; --bg-stage-a:#e7e5f2; --bg-phone-a:#ffffff; --bg-phone-b:#f4f3f9;
+    --card-a:#ffffff; --card-b:#f3f2f9; --panel:#eeedf6; --panel2:#e9e7f4;
+    --text:#18172a; --text2:#18172a; --text3:#18172a;
+    --muted:#615e78; --muted2:#726f8c; --muted3:#4c495e; --muted4:#8a87a0; --muted5:#a3a0b8; --muted6:#403d54;
+    --border:#00000014; --border2:#0000000e; --border3:#00000016; --border4:#00000018; --border5:#0000000a; --border6:#00000008; --border7:#0000001c; --border8:#00000026;
+    --field-border:#d8d5e6; --field-border2:#c7c4da; --field-border3:#d8d5e6;
+    --navbar-bg:#ffffffcc;
+    --tint-green:#eafbea; --tint-amber-a:#fff3d8; --tint-amber-b:#fff8e8; --tint-amber-c:#fff3d8; --tint-amber-d:#fff3d8; --tint-purple:#f3ecff;
+    --txt-green:#1f7a3d; --txt-amber:#8a5a12; --txt-amber-sub:#7a5a20; --txt-amber-warn:#8a5a12;
+    --track:#e5e3ef; --tint-slate:#ece9f6; --row-blue:#eef3ff; --row-orange:#fff3ea; --row-locked:#f1eff8;
+    --txt-blue-sub:#28497a;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+  html,body{background:var(--bg-page);font-family:'Barlow Semi Condensed',system-ui,sans-serif;min-height:100dvh}
+  .stage{min-height:100dvh;display:flex;align-items:flex-start;justify-content:center;background:radial-gradient(120% 80% at 50% 0%,var(--bg-stage-a) 0%,var(--bg-page) 60%)}
+  .phone{width:100%;max-width:440px;min-height:100dvh;background:linear-gradient(180deg,var(--bg-phone-a),var(--bg-phone-b));position:relative;display:flex;flex-direction:column;color:var(--text);border-left:1px solid var(--border);border-right:1px solid var(--border)}
+  .bebas{font-family:'Bebas Neue';font-weight:400}
+  ::-webkit-scrollbar{width:0;height:0}
+  .scroll{flex:1;padding:0 22px 20px}
+  .tab{display:none}
+  .tab.on{display:block}
+  .fade{animation:fade .3s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .card{border-radius:18px;background:linear-gradient(180deg,var(--card-a),var(--card-b));border:1px solid var(--border)}
+  .stat{flex:1;padding:13px 0;border-radius:13px;background:var(--panel);border:1px solid var(--border2);text-align:center}
+  .statN{font:400 28px/1 'Bebas Neue';color:var(--text)}
+  .statL{font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:var(--muted2);margin-top:4px}
+  .sec{font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.14em;color:var(--muted2);text-transform:uppercase}
+  .btnP{padding:16px;border-radius:15px;background:#4f8cff;text-align:center;font:600 15px/1 'Barlow Semi Condensed';letter-spacing:.06em;color:#04132e;cursor:pointer;box-shadow:0 10px 30px -8px #4f8cff66;text-decoration:none;display:block}
+  .btnG{padding:13px;border-radius:13px;border:1px solid var(--border4);text-align:center;font:600 12px/1 'Barlow Semi Condensed';letter-spacing:.04em;color:var(--muted3);cursor:pointer;text-decoration:none;display:block}
+  .chip{white-space:nowrap;padding:9px 15px;border-radius:20px;font:600 12px/1 'Barlow Semi Condensed';cursor:pointer;border:1px solid var(--border4);background:var(--panel2);color:var(--muted);transition:all .15s}
+  .navbar{display:flex;justify-content:space-around;align-items:center;border-top:1px solid var(--border);background:var(--bg-phone-b);backdrop-filter:blur(8px);padding:10px 0 calc(8px + env(safe-area-inset-bottom));position:sticky;bottom:0;z-index:10}}
+  .navb{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;flex:1}
+  .navb .lbl{font:700 8px/1 'Barlow Semi Condensed';letter-spacing:.08em}
+  input,select{font-family:'Barlow Semi Condensed'}
+  .field{width:100%;padding:12px 14px;border-radius:12px;background:var(--panel);border:1.5px solid var(--field-border);color:var(--text);font:600 14px/1 'Barlow Semi Condensed';outline:none}
+  /* ==== ESCRITORIO ==== */
+  @media(min-width:900px){
+    .stage{align-items:stretch;background-image:linear-gradient(180deg,rgba(5,5,9,.82),rgba(5,5,9,.9)),url('./assets/img/gym-wide-black.jpg');background-size:cover;background-position:center}
+    [data-theme="light"] .stage{background-image:linear-gradient(180deg,rgba(242,241,247,.88),rgba(242,241,247,.94)),url('./assets/img/gym-wide-black.jpg')}
+    .phone{max-width:1000px;min-height:100dvh}
+    .navbar{order:-1;border-top:none;border-bottom:1px solid var(--border);justify-content:center;gap:46px;padding:16px 0;position:sticky;top:0;bottom:auto}
+    .navb{flex:0 0 auto;flex-direction:row;gap:10px}
+    .navb .lbl{font-size:11px}
+    .scroll{padding-left:48px;padding-right:48px}
+    .scroll>*{max-width:660px;margin-left:auto;margin-right:auto}
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="phone">
+    <div style="flex:1;display:flex;flex-direction:column">
+
+      <!-- ══════════ HOY ══════════ -->
+      <div class="tab on" id="tab-hoy" style="flex:1;flex-direction:column">
+        <div class="scroll" style="padding-top:24px">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between">
+            <div>
+              <div class="sec" style="letter-spacing:.18em" id="dateLine">—</div>
+              <div class="bebas" style="font-size:42px;line-height:.84;margin-top:8px">Hola,<br><span style="color:#4f8cff" id="userName">Atleta</span></div>
+            </div>
+            <div style="display:flex;gap:8px;flex-shrink:0">
+              <div onclick="toggleTheme()" id="themeBtn" style="width:38px;height:38px;border-radius:50%;background:var(--panel);border:1.5px solid var(--border4);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px">🌙</div>
+              <div id="avatar" onclick="openAccount()" style="width:42px;height:42px;border-radius:50%;background:#4f8cff22;border:1.5px solid #4f8cff;display:flex;align-items:center;justify-content:center;font:600 16px/1 'Barlow Semi Condensed';color:#9cc0ff;flex-shrink:0;cursor:pointer">A</div>
+            </div>
+          </div>
+
+          <div id="nudge" style="display:none;margin-top:16px;padding:13px 15px;border-radius:14px;background:var(--tint-green);border:1px solid #22c55e33">
+            <div style="font:600 13px/1.4 'Barlow Semi Condensed';color:var(--txt-green)" id="nudgeTxt"></div>
+          </div>
+
+          <div style="margin-top:18px;padding:18px 18px 16px;border-radius:18px;background:linear-gradient(180deg,var(--tint-amber-a),var(--tint-amber-b));border:1px solid #f5a52433;position:relative;overflow:hidden">
+            <div style="position:absolute;inset:0;background:radial-gradient(70% 90% at 85% 8%,#f5a52420,transparent 60%)"></div>
+            <div style="position:relative;display:flex;align-items:center;gap:14px">
+              <div style="font-size:34px">🔥</div>
+              <div style="flex:1">
+                <div style="display:flex;align-items:baseline;gap:9px">
+                  <span class="bebas" style="font-size:48px;line-height:.78;color:#f5a524" id="streakN">0</span>
+                  <span style="font:600 12px/1.05 'Barlow Semi Condensed';color:var(--txt-amber)">DÍAS DE<br>RACHA</span>
+                </div>
+                <div style="font:500 12px/1.3 'Barlow Semi Condensed';color:var(--txt-amber-sub);margin-top:6px" id="streakSub">Empieza hoy tu racha</div>
+              </div>
+            </div>
+            <div style="position:relative;margin-top:15px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px">
+                <span style="font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:#8a7d5e">ESTA SEMANA</span>
+                <span style="font:600 10px/1 'Barlow Semi Condensed';color:#f5a524" id="weekFrac">0 / 4</span>
+              </div>
+              <div style="display:flex;gap:6px" id="weekBars"></div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:9px;margin-top:11px">
+            <div class="stat"><div class="statN" id="bestStreak">0</div><div class="statL">MEJOR RACHA</div></div>
+            <div class="stat"><div class="statN" id="totalSes">0</div><div class="statL">SESIONES</div></div>
+            <div class="stat"><div class="statN" style="color:#4f8cff" id="bestRounds">0</div><div class="statL">RÉCORD RONDAS</div></div>
+          </div>
+
+          <div class="sec" style="margin:20px 0 9px">Sesión de hoy</div>
+          <div class="card" id="todayCard" style="overflow:hidden"></div>
+          <div id="focusPicker" style="display:none;margin-top:10px"></div>
+          <div id="quoteBox" style="margin-top:12px;padding:14px 15px;border-radius:14px;background:var(--card-b);border:1px solid var(--border2)">
+            <div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:#4f8cff;margin-bottom:6px">💬 PARA HOY</div>
+            <div style="font:500 13px/1.45 'Barlow Semi Condensed';color:var(--muted3)" id="quoteTxt"></div>
+          </div>
+
+          <a class="btnP" style="margin-top:14px" href="sesion.dc.html">▶&nbsp;&nbsp;EMPEZAR SESIÓN</a>
+          <a class="btnG" style="margin-top:9px" href="sesion.dc.html">⚡&nbsp;&nbsp;Sesión exprés · 12 min</a>
+
+          <div class="sec" style="margin:22px 0 9px">Accesos</div>
+          <div style="display:flex;gap:10px">
+            <a href="biblioteca.html" style="flex:1;text-decoration:none;padding:16px;border-radius:15px;background:var(--card-b);border:1px solid var(--border);display:flex;flex-direction:column;gap:8px">
+              <span id="acLibro" style="color:#f59e0b"></span>
+              <span style="font:600 13px/1.15 'Barlow Semi Condensed';color:var(--text2)">Librería<br>de ejercicios</span>
+              <span style="font:500 10px/1 'Barlow Semi Condensed';color:var(--muted2)">108 ejercicios</span>
+            </a>
+            <div onclick="go('cardio')" style="flex:1;cursor:pointer;padding:16px;border-radius:15px;background:var(--card-b);border:1px solid var(--border);display:flex;flex-direction:column;gap:8px">
+              <span style="color:#ea580c" id="acCardio"></span>
+              <span style="font:600 13px/1.15 'Barlow Semi Condensed';color:var(--text2)">Cardio<br>de hoy</span>
+              <span style="font:500 10px/1 'Barlow Semi Condensed';color:var(--muted2)" id="acCardioSub">Zona 2 · 30 min</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════ CALENDARIO ══════════ -->
+      <div class="tab" id="tab-calend" style="flex:1;flex-direction:column">
+        <div class="scroll" style="padding-top:24px">
+          <div class="sec" style="letter-spacing:.18em">Constancia</div>
+          <div class="bebas" style="font-size:40px;line-height:.9;margin-top:6px">CALENDARIO</div>
+          <div style="display:flex;gap:9px;margin-top:16px">
+            <div class="stat" style="background:var(--tint-amber-a);border-color:#f5a52433"><div class="statN" style="color:#f5a524" id="calStreak">0</div><div class="statL">RACHA ACTUAL</div></div>
+            <div class="stat"><div class="statN" id="calWeek">0/4</div><div class="statL">ESTA SEMANA</div></div>
+            <div class="stat"><div class="statN" id="calMonth">0</div><div class="statL">ESTE MES</div></div>
+          </div>
+          <div id="calNudge" style="display:none;margin-top:14px;padding:13px 15px;border-radius:14px;background:var(--tint-green);border:1px solid #22c55e33;font:600 13px/1.4 'Barlow Semi Condensed';color:var(--txt-green)"></div>
+
+          <!-- ── sub-tabs Programa / Historial ── -->
+          <div style="display:flex;gap:0;margin:20px 0 4px;padding:4px;border-radius:12px;background:var(--panel2);border:1px solid var(--border3)">
+            <div id="calSubTabPrograma" onclick="setCalSub('programa')" style="flex:1;padding:9px;border-radius:9px;text-align:center;font:600 12px/1 'Barlow Semi Condensed';letter-spacing:.06em;cursor:pointer;transition:all .15s">PROGRAMA</div>
+            <div id="calSubTabHistorial" onclick="setCalSub('historial')" style="flex:1;padding:9px;border-radius:9px;text-align:center;font:600 12px/1 'Barlow Semi Condensed';letter-spacing:.06em;cursor:pointer;transition:all .15s">HISTORIAL</div>
+          </div>
+
+          <!-- ── SUB-TAB PROGRAMA ── -->
+          <div id="calSub-programa" style="display:block">
+          <div class="sec" style="margin:14px 0 9px">Tu programa</div>
+          <div id="programCard" style="padding:14px 15px;border-radius:16px;background:var(--card-b);border:1px solid var(--border);margin-bottom:8px"></div>
+          <div id="programList" style="display:flex;flex-direction:column;gap:8px"></div>
+          </div>
+
+          <!-- ── SUB-TAB HISTORIAL ── -->
+          <div id="calSub-historial" style="display:none">
+
+          <div style="display:flex;align-items:center;justify-content:space-between;margin:22px 0 12px">
+            <div class="sec" id="calTitle">—</div>
+            <div style="display:flex;gap:8px">
+              <div onclick="calMove(-1)" style="width:30px;height:30px;border-radius:9px;background:var(--panel2);border:1px solid var(--border3);display:flex;align-items:center;justify-content:center;color:var(--muted6);cursor:pointer">‹</div>
+              <div onclick="calMove(1)" style="width:30px;height:30px;border-radius:9px;background:var(--panel2);border:1px solid var(--border3);display:flex;align-items:center;justify-content:center;color:var(--muted6);cursor:pointer">›</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:8px">
+            <div style="text-align:center;font:600 9px/1 'Barlow Semi Condensed';color:#4f4d69">L</div><div style="text-align:center;font:600 9px/1 'Barlow Semi Condensed';color:#4f4d69">M</div><div style="text-align:center;font:600 9px/1 'Barlow Semi Condensed';color:#4f4d69">X</div><div style="text-align:center;font:600 9px/1 'Barlow Semi Condensed';color:#4f4d69">J</div><div style="text-align:center;font:600 9px/1 'Barlow Semi Condensed';color:#4f4d69">V</div><div style="text-align:center;font:600 9px/1 'Barlow Semi Condensed';color:#4f4d69">S</div><div style="text-align:center;font:600 9px/1 'Barlow Semi Condensed';color:#4f4d69">D</div>
+          </div>
+          <div id="calGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px"></div>
+          <div id="calDetail" style="display:none;margin-top:14px"></div>
+          <div style="display:flex;gap:16px;margin-top:18px;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;gap:7px"><div style="width:12px;height:12px;border-radius:4px;background:#4f8cff"></div><span style="font:500 11px/1 'Barlow Semi Condensed';color:var(--muted)">AMRAP</span></div>
+            <div style="display:flex;align-items:center;gap:7px"><div style="width:12px;height:12px;border-radius:4px;background:#ea580c"></div><span style="font:500 11px/1 'Barlow Semi Condensed';color:var(--muted)">Cardio</span></div>
+            <div style="display:flex;align-items:center;gap:7px"><div style="width:12px;height:12px;border-radius:4px;background:linear-gradient(135deg,#4f8cff 50%,#ea580c 50%)"></div><span style="font:500 11px/1 'Barlow Semi Condensed';color:var(--muted)">Ambos</span></div>
+            <div style="display:flex;align-items:center;gap:7px"><div style="width:12px;height:12px;border-radius:4px;background:var(--tint-slate)"></div><span style="font:500 11px/1 'Barlow Semi Condensed';color:var(--muted)">Descanso</span></div>
+          </div>
+          <div style="margin-top:22px;padding:16px 17px;border-radius:16px;background:var(--card-b);border:1px solid var(--border)">
+            <div class="sec" style="margin-bottom:6px">Por qué importa</div>
+            <div style="font:500 13px/1.5 'Barlow Semi Condensed';color:#b8b4d0">La constancia es el predictor nº1 del resultado real, por encima del programa concreto. Un plan mediocre hecho 4 días/semana gana a uno perfecto hecho 1 día.</div>
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════ CARDIO ══════════ -->
+      <div class="tab" id="tab-cardio" style="flex:1;flex-direction:column">
+        <div class="scroll" style="padding-top:24px">
+          <div class="sec" style="letter-spacing:.18em;color:#ea580c">Resistencia</div>
+          <div class="bebas" style="font-size:40px;line-height:.9;margin-top:6px">CARDIO</div>
+          <div class="sec" style="margin:20px 0 9px">Tu actividad</div>
+          <div id="cardioTypes" style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px"></div>
+          <div class="sec" style="margin:22px 0 9px">Plan semanal · <span id="planActLbl" style="color:#ea580c">correr</span></div>
+          <div id="cardioPlan" style="display:flex;flex-direction:column;gap:0"></div>
+          <div class="sec" style="margin:24px 0 9px">Registrar sesión de cardio</div>
+          <div style="padding:16px;border-radius:16px;background:var(--card-b);border:1px solid var(--border)">
+            <div style="display:flex;gap:10px">
+              <div style="flex:1"><div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:var(--muted2);margin-bottom:6px">DURACIÓN (MIN)</div><input id="cDur" class="field" type="number" placeholder="30" inputmode="numeric"></div>
+              <div style="flex:1.3"><div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:var(--muted2);margin-bottom:6px">TIPO</div><select id="cType" class="field"><option>Zona 2</option><option>Intervalos</option><option>Recuperación</option></select></div>
+            </div>
+            <div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:var(--muted2);margin:14px 0 8px">ESFUERZO (RPE)</div>
+            <div id="cRpe" style="display:flex;gap:8px"></div>
+            <div onclick="saveCardio()" class="btnP" style="margin-top:16px;background:#ea580c;color:#170a03;box-shadow:0 10px 30px -8px #ea580c66">Guardar cardio</div>
+          </div>
+          <div class="sec" style="margin:24px 0 9px">Últimas sesiones</div>
+          <div id="cardioLog" style="display:flex;flex-direction:column;gap:8px"></div>
+        </div>
+      </div>
+
+      <!-- ══════════ PROGRESO ══════════ -->
+      <div class="tab" id="tab-progreso" style="flex:1;flex-direction:column">
+        <div class="scroll" style="padding-top:24px">
+          <div class="sec" style="letter-spacing:.18em;color:#4f8cff">Evolución</div>
+          <div class="bebas" style="font-size:40px;line-height:.9;margin-top:6px">PROGRESO</div>
+          <div id="rpeBanner" style="display:none;margin-top:16px;padding:14px 16px;border-radius:14px;background:var(--row-blue);border:1px solid #4f8cff33">
+            <div style="font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:#4f8cff;margin-bottom:6px">SUGERENCIA DEL ENTRENADOR</div>
+            <div style="font:500 13px/1.45 'Barlow Semi Condensed';color:var(--txt-blue-sub)" id="rpeBannerTxt"></div>
+          </div>
+          <div class="sec" style="margin:22px 0 10px">Carga por ejercicio</div>
+          <div id="loadList" style="display:flex;flex-direction:column;gap:9px"></div>
+          <div style="margin-top:20px;padding:15px 16px;border-radius:15px;background:var(--card-b);border:1px solid var(--border);display:flex;align-items:center;gap:12px">
+            <div style="flex:1"><div style="font:600 14px/1.1 'Barlow Semi Condensed';color:var(--text2)">Semana de descarga</div><div style="font:500 11.5px/1.35 'Barlow Semi Condensed';color:var(--muted);margin-top:3px">Al repetir ciclo: −25% rondas y mantener el peso. Evita el estancamiento.</div></div>
+            <div id="deloadTgl" onclick="toggleDeload()" style="width:48px;height:28px;border-radius:16px;background:var(--field-border);position:relative;cursor:pointer;flex-shrink:0;transition:.2s"><div style="position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--text);transition:.2s"></div></div>
+          </div>
+          <div class="sec" style="margin:24px 0 10px">Medidas corporales <span style="color:#4f4d69">· opcional</span></div>
+          <div style="padding:16px;border-radius:16px;background:var(--card-b);border:1px solid var(--border)">
+            <div style="display:flex;align-items:flex-end;gap:14px;height:76px" id="measChart"></div>
+            <div style="display:flex;gap:10px;margin-top:14px">
+              <div style="flex:1"><div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:var(--muted2);margin-bottom:6px">PESO (KG)</div><input id="mW" class="field" type="number" placeholder="—" inputmode="decimal"></div>
+              <div style="flex:1"><div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:var(--muted2);margin-bottom:6px">CINTURA (CM)</div><input id="mC" class="field" type="number" placeholder="—" inputmode="decimal"></div>
+            </div>
+            <div onclick="saveMeasure()" class="btnG" style="margin-top:12px;border-color:#4f8cff44;color:#9cc0ff">Guardar medida del mes</div>
+            <div style="font:500 10.5px/1.4 'Barlow Semi Condensed';color:var(--muted4);margin-top:10px;text-align:center">Privado, solo en tu dispositivo (o tu cuenta si sincronizas).</div>
+          </div>
+          <div style="height:8px"></div>
+        </div>
+      </div>
+
+    </div>
+    <div class="navbar" id="navbar"></div>
+  </div>
+</div>
+
+<!-- overlay Cuenta / Sync -->
+<div id="accountOverlay" style="display:none;position:fixed;inset:0;z-index:60;background:#04040bcc;backdrop-filter:blur(3px);align-items:flex-end;justify-content:center">
+  <div style="width:100%;max-width:440px;background:linear-gradient(180deg,var(--card-b),var(--card-b));border-top-left-radius:24px;border-top-right-radius:24px;border:1px solid var(--border3);border-bottom:none;padding:12px 22px calc(24px + env(safe-area-inset-bottom));animation:fade .25s ease">
+    <div style="width:38px;height:4px;border-radius:3px;background:var(--border8);margin:0 auto 16px"></div>
+    <div id="accountBody"></div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="supabase-sync.js"></script>
+<script>
+const ic=(p,c)=>`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="${c||'currentColor'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const ICONS={hoy:'<path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/>',calend:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/>',cardio:'<path d="M20.8 5.6a5.5 5.5 0 0 0-8.8 1.4A5.5 5.5 0 0 0 3.2 5.6C1 7.8 1 11.3 3.2 13.5L12 22l8.8-8.5c2.2-2.2 2.2-5.7 0-7.9z"/>',progreso:'<path d="M3 20h18"/><path d="M6 16l4-5 3 3 5-7"/>',libro:'<path d="M4 4h13a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2z"/><path d="M4 4v14"/>'};
+document.querySelector('#acCardio').innerHTML=ic(ICONS.cardio,'#ea580c');
+document.querySelector('#acLibro').innerHTML=ic(ICONS.libro,'#f59e0b');
+
+const TABS=[['hoy','Hoy',ICONS.hoy,'#4f8cff'],['calend','Calend.',ICONS.calend,'#4f8cff'],['cardio','Cardio',ICONS.cardio,'#ea580c'],['progreso','Progreso',ICONS.progreso,'#4f8cff']];
+let active='hoy';
+function renderNav(){document.getElementById('navbar').innerHTML=TABS.map(([id,lbl,path,col])=>{const on=id===active;const c=on?col:'var(--muted4)';return `<div class="navb" onclick="go('${id}')"><span style="color:${c}">${ic(path,c)}</span><span class="lbl" style="color:${c}">${lbl.toUpperCase()}</span></div>`;}).join('');}
+function go(id){active=id;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));const el=document.getElementById('tab-'+id);el.classList.add('on');el.querySelector('.scroll').classList.add('fade');renderNav();if(id==='calend')renderCal();else if(id==='cardio')renderCardio();else if(id==='progreso')renderProgreso();else renderHoy();}
+window.go=go;
+
+function load(){try{return JSON.parse(localStorage.getItem('amrap_fn')||'{}')}catch(e){return{}}}
+function save(d){try{localStorage.setItem('amrap_fn',JSON.stringify(d))}catch(e){}}
+let DB=load();
+DB.history=DB.history||[];
+DB.cardio=DB.cardio||[];
+DB.measures=DB.measures||[];
+DB.loads=DB.loads||[];
+DB.cardioType=DB.cardioType||'Running';
+const WEEK_TARGET=DB.diasPorSemana||DB.days||DB.weekTarget||4;
+function persist(){save(DB);if(window.AMRAPSync&&window.AMRAPSync.enabled&&window.AMRAPSync.enabled())window.AMRAPSync.push(DB);}
+
+// Catálogo de planes (espejo de la sesión)
+const GOALS={
+  full:{label:'Cuerpo completo',muscles:'Pecho · Espalda · Piernas · Core'},
+  legs:{label:'Piernas y glúteo',muscles:'Cuádriceps · Glúteo · Isquios'},
+  upper:{label:'Tren superior',muscles:'Pecho · Espalda · Hombro · Brazo'},
+  core:{label:'Core y abdomen',muscles:'Abdomen · Lumbar · Estabilidad'},
+  fatloss:{label:'Quemar grasa',muscles:'Cardio · Full body · Quema'}
+};
+const GOAL_ORDER=['full','legs','upper','core','fatloss'];
+const LEVEL_MIN={beginner:18,principiante:18,intermediate:20,intermedio:20,advanced:22,avanzado:22};
+
+// ─── PLAN ENGINE: secuencia de sesiones sin fechas fijas ───
+// Cada sesión del plan es { n, focus, done, doneDate }.
+// "Sesión de hoy" = primera sin hacer. Si te saltas un día, no pasa nada:
+// la sesión se queda ahí hasta que la hagas, y el resto se desplaza solo.
+const FOCUS_ROTATION = {
+  full:    ['full','legs','upper','core'],
+  legs:    ['legs','full','core','legs'],
+  upper:   ['upper','core','upper','core'],
+  core:    ['core','full','core','upper'],
+  fatloss: ['fatloss','full','fatloss','core']
+};
+function ensurePlan(){
+  const weeks = DB.weeks || 8;
+  const days  = DB.diasPorSemana || DB.days || 3;
+  const total = weeks * days;
+  const baseGoal = DB.goal || 'full';
+  const rot = FOCUS_ROTATION[baseGoal] || FOCUS_ROTATION.full;
+  if (!Array.isArray(DB.plan) || DB.plan.length !== total || DB.planBaseGoal !== baseGoal){
+    // reconstruir preservando lo que se había hecho ya
+    const prev = Array.isArray(DB.plan) ? DB.plan : [];
+    DB.plan = Array.from({length: total}).map((_, i) => {
+      const old = prev[i];
+      return {
+        n: i + 1,
+        focus: (old && old.focus) || rot[i % rot.length],
+        done: !!(old && old.done),
+        doneDate: (old && old.doneDate) || null
+      };
+    });
+    DB.planBaseGoal = baseGoal;
+    persist();
+  }
+  return DB.plan;
+}
+function currentPlanIdx(){
+  const plan = ensurePlan();
+  const i = plan.findIndex(s => !s.done);
+  return i === -1 ? plan.length - 1 : i;
+}
+function currentPlanSession(){
+  const plan = ensurePlan();
+  const i = currentPlanIdx();
+  return plan[i] || null;
+}
+// Trae una sesión futura a HOY: intercambia su focus con la sesión actual.
+function swapPlanToNow(targetN){
+  const plan = ensurePlan();
+  const curIdx = currentPlanIdx();
+  const tgtIdx = plan.findIndex(s => s.n === targetN);
+  if (tgtIdx < 0 || tgtIdx === curIdx || plan[tgtIdx].done) return;
+  const tmp = plan[curIdx].focus;
+  plan[curIdx].focus = plan[tgtIdx].focus;
+  plan[tgtIdx].focus = tmp;
+  persist();
+  renderHoy();
+  if (active==='calend') renderCal();
+}
+window.swapPlanToNow = swapPlanToNow;
+
+function computePlan(){
+  ensurePlan();
+  // El focus del día viene del plan (si existe). El usuario puede sobreescribirlo
+  // desde el picker temporalmente con DB.goalToday, pero por defecto: plan.
+  const sess = currentPlanSession();
+  const goal = DB.goalToday || (sess && sess.focus) || DB.goal || 'full';
+  const g = GOALS[goal] || GOALS.full;
+  const amrapMin = LEVEL_MIN[DB.level||DB.nivel||'beginner'] || 20;
+  const dayNum = sess ? sess.n : ((DB.history||[]).length + 1);
+  const weeksN = DB.weeks || 8;
+  let weekNum = 1;
+  if (DB.startDate){ weekNum = Math.min(weeksN, Math.floor((Date.now()-new Date(DB.startDate))/6048e5)+1); }
+  return { goal, focus:g.label, muscles:g.muscles, amrapMin, dayNum, weekNum, weeksN, planSess: sess };
+}
+
+const DOW=(d)=>(d.getDay()+6)%7;
+const key=(d)=>d.toISOString().slice(0,10);
+function dayType(k){const a=(DB.history||[]).some(e=>e.date.slice(0,10)===k);const c=(DB.cardio||[]).some(e=>e.date.slice(0,10)===k);if(a&&c)return'both';if(a)return'amrap';if(c)return'cardio';return'none';}
+function allDatesSet(){const s=new Set();(DB.history||[]).forEach(e=>s.add(e.date.slice(0,10)));(DB.cardio||[]).forEach(e=>s.add(e.date.slice(0,10)));return s;}
+function currentStreak(){const s=allDatesSet();let n=0;const d=new Date();if(!s.has(key(d)))d.setDate(d.getDate()-1);while(s.has(key(d))){n++;d.setDate(d.getDate()-1);}return n;}
+function sessionsThisWeek(){const now=new Date();const monday=new Date(now);monday.setDate(now.getDate()-DOW(now));monday.setHours(0,0,0,0);const s=allDatesSet();let n=0;s.forEach(k=>{const d=new Date(k+'T12:00');if(d>=monday)n++;});return n;}
+function sessionsThisMonth(){const now=new Date();const s=allDatesSet();let n=0;s.forEach(k=>{const d=new Date(k+'T12:00');if(d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear())n++;});return n;}
+function daysSinceLast(){const s=allDatesSet();if(!s.size)return 99;let best=99;const t=new Date();s.forEach(k=>{const d=new Date(k+'T12:00');const diff=Math.floor((t-d)/86400000);if(diff>=0&&diff<best)best=diff;});return best;}
+
+const RPE_LABEL={facil:'Fácil',justo:'Justo',alto:'Alto'};
+function renderHoy(){
+  const now=new Date();
+  const meses=['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+  const dias=['DOMINGO','LUNES','MARTES','MIÉRCOLES','JUEVES','VIERNES','SÁBADO'];
+  document.getElementById('dateLine').textContent=`${dias[now.getDay()]} · ${now.getDate()} ${meses[now.getMonth()]}`;
+  const name=DB.name||'Atleta';
+  document.getElementById('userName').textContent=name;
+  document.getElementById('avatar').textContent=name[0].toUpperCase();
+  const st=currentStreak();
+  document.getElementById('streakN').textContent=st;
+  document.getElementById('streakSub').textContent=st>0?'¡Sigue así! No rompas la cadena.':'Empieza hoy tu racha';
+  const wk=sessionsThisWeek();
+  document.getElementById('weekFrac').textContent=`${wk} / ${WEEK_TARGET}`;
+  document.getElementById('weekBars').innerHTML=Array.from({length:WEEK_TARGET}).map((_,i)=>`<div style="flex:1;height:7px;border-radius:4px;background:${i<wk?'#f5a524':'var(--track)'}"></div>`).join('');
+  document.getElementById('bestStreak').textContent=Math.max(DB.bestStreak||0,st);
+  document.getElementById('totalSes').textContent=(DB.history||[]).length+(DB.cardio||[]).length;
+  document.getElementById('bestRounds').textContent=DB.bestRounds||0;
+  document.querySelector('#acCardioSub').textContent=`${DB.cardioType} · Zona 2`;
+  const ds=daysSinceLast();const nu=document.getElementById('nudge');
+  if(ds>=4&&ds<90){nu.style.display='block';document.getElementById('nudgeTxt').textContent=`Llevas ${ds} días sin entrenar. ¿Retomamos hoy con una sesión corta?`;}else nu.style.display='none';
+  renderTodayCard();
+  const QUOTES=['Nadie dijo que fuera fácil. Solo dijeron que valdría la pena.','Hoy no tienes que ser perfecto. Solo tienes que presentarte.','Cada ronda cuenta, aunque no la ganes toda.','Tu yo de mañana te va a agradecer el de hoy.','La constancia gana a la intensidad. Sigue viniendo.','No se trata de motivación, se trata de no rendirte.','Un día más entrenando es un día menos dudando de ti.','Lo difícil de hoy es el progreso de mañana.','No compares tu día 3 con el día 100 de otro.','Descansa si lo necesitas. Pero no abandones.','El cuerpo que quieres se construye con los días que no tienes ganas.','Pequeños pasos, todos los días, ganan.'];
+  const qi=Math.abs((DB.history||[]).length+(DB.streak||0)+new Date().getDate())%QUOTES.length;
+  const qEl=document.getElementById('quoteTxt');if(qEl)qEl.textContent=QUOTES[qi];
+}
+let focusOpen=false;
+function toggleFocus(){focusOpen=!focusOpen;renderTodayCard();}
+function setGoalToday(k){
+  // Si hay plan y la sesión actual no tiene ese focus, intenta traer una futura con ese focus.
+  const plan = Array.isArray(DB.plan) ? DB.plan : null;
+  if (plan && plan.length){
+    const curIdx = currentPlanIdx();
+    const cur = plan[curIdx];
+    if (cur && cur.focus !== k){
+      // busca la siguiente sesión pendiente con ese focus
+      const swapIdx = plan.findIndex((s,i) => i > curIdx && !s.done && s.focus === k);
+      if (swapIdx > -1){
+        const tmp = plan[curIdx].focus;
+        plan[curIdx].focus = plan[swapIdx].focus;
+        plan[swapIdx].focus = tmp;
+      } else {
+        // no hay ninguna futura con ese focus → simplemente reemplaza el de hoy
+        plan[curIdx].focus = k;
+      }
+      delete DB.goalToday;
+      persist();
+      focusOpen = false;
+      renderTodayCard();
+      if (active === 'calend') renderProgram();
+      return;
+    }
+  }
+  // sin plan: modo antiguo (override temporal)
+  DB.goalToday = k;
+  persist();
+  focusOpen = false;
+  renderTodayCard();
+}
+window.toggleFocus=toggleFocus;window.setGoalToday=setGoalToday;
+function renderTodayCard(){
+  const p=computePlan();
+  const tc=document.getElementById('todayCard');if(!tc)return;
+  tc.innerHTML=`<div style="padding:16px 17px 15px;border-left:3px solid #4f8cff">
+      <div style="display:flex;align-items:baseline;justify-content:space-between">
+        <div class="bebas" style="font-size:30px;line-height:.9">SESIÓN ${p.dayNum}${p.planSess?` / ${(DB.plan||[]).length}`:''} · <span style="color:#4f8cff">${p.focus.toUpperCase()}</span></div>
+        <div style="font:600 11px/1 'Barlow Semi Condensed';color:var(--muted)">Semana ${p.weekNum}</div>
+      </div>
+      <div style="font:500 12px/1 'Barlow Semi Condensed';color:var(--muted);margin-top:6px">${p.muscles}</div>
+      <div style="display:flex;gap:7px;margin-top:13px">
+        <div style="flex:1;text-align:center;padding:8px 0;border-radius:10px;background:var(--tint-amber-c);border:1px solid #f5a52426"><div class="bebas" style="font-size:17px;color:#f5a524">5'</div><div style="font:600 8px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:var(--muted2);margin-top:3px">CALENTAR</div></div>
+        <div style="flex:1.7;text-align:center;padding:8px 0;border-radius:10px;background:#4f8cff14;border:1px solid #4f8cff33"><div class="bebas" style="font-size:17px;color:#4f8cff">${p.amrapMin}'</div><div style="font:600 8px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:#7e9fd8;margin-top:3px">AMRAP</div></div>
+        <div style="flex:1;text-align:center;padding:8px 0;border-radius:10px;background:var(--tint-purple);border:1px solid #a855f726"><div class="bebas" style="font-size:17px;color:#a855f7">5'</div><div style="font:600 8px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:var(--muted2);margin-top:3px">ENFRIAR</div></div>
+      </div>
+      <div onclick="toggleFocus()" style="margin-top:13px;text-align:center;font:600 11px/1 'Barlow Semi Condensed';letter-spacing:.04em;color:#7e9fd8;cursor:pointer">${focusOpen?'Cerrar':'Cambiar enfoque de hoy'}&nbsp;&nbsp;${focusOpen?'▲':'▾'}</div>
+    </div>`;
+  const fp=document.getElementById('focusPicker');
+  if(focusOpen){fp.style.display='block';fp.innerHTML=GOAL_ORDER.map(k=>{const on=k===p.goal;const g=GOALS[k];return `<div onclick="setGoalToday('${k}')" style="display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-radius:13px;margin-bottom:8px;cursor:pointer;background:${on?'#4f8cff14':'var(--card-b)'};border:1.5px solid ${on?'#4f8cff':'var(--border3)'}"><div><div style="font:600 14px/1 'Barlow Semi Condensed';color:var(--text2)">${g.label}</div><div style="font:500 11px/1 'Barlow Semi Condensed';color:var(--muted);margin-top:4px">${g.muscles}</div></div><div style="width:18px;height:18px;border-radius:50%;border:1.5px solid #3a3a58;background:${on?'#4f8cff':'transparent'};flex-shrink:0"></div></div>`;}).join('');}
+  else fp.style.display='none';
+}
+
+let calRef=new Date();calRef.setDate(1);
+let calSub = 'programa';
+function setCalSub(k){
+  calSub = k;
+  document.getElementById('calSub-programa').style.display  = k==='programa'  ? 'block' : 'none';
+  document.getElementById('calSub-historial').style.display = k==='historial' ? 'block' : 'none';
+  const on = 'background:var(--card-b);color:var(--text);box-shadow:0 1px 3px #00000033';
+  const off = 'color:var(--muted3)';
+  document.getElementById('calSubTabPrograma').setAttribute('style',  'flex:1;padding:9px;border-radius:9px;text-align:center;font:600 12px/1 \'Barlow Semi Condensed\';letter-spacing:.06em;cursor:pointer;transition:all .15s;'+(k==='programa'?on:off));
+  document.getElementById('calSubTabHistorial').setAttribute('style', 'flex:1;padding:9px;border-radius:9px;text-align:center;font:600 12px/1 \'Barlow Semi Condensed\';letter-spacing:.06em;cursor:pointer;transition:all .15s;'+(k==='historial'?on:off));
+}
+window.setCalSub = setCalSub;
+function renderCal(){
+  document.getElementById('calStreak').textContent=currentStreak();
+  document.getElementById('calWeek').textContent=`${sessionsThisWeek()}/${WEEK_TARGET}`;
+  document.getElementById('calMonth').textContent=sessionsThisMonth();
+  setCalSub(calSub);
+  renderProgram();
+  const ds=daysSinceLast();const cn=document.getElementById('calNudge');
+  if(ds>=4&&ds<90){cn.style.display='block';cn.textContent=`Llevas ${ds} días sin sesión. Un paseo o una sesión exprés cuentan para la racha.`;}else cn.style.display='none';
+  const meses=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  document.getElementById('calTitle').textContent=`${meses[calRef.getMonth()]} ${calRef.getFullYear()}`;
+  const first=new Date(calRef);const pad=DOW(first);
+  const days=new Date(calRef.getFullYear(),calRef.getMonth()+1,0).getDate();
+  const cells=[];for(let i=0;i<pad;i++)cells.push('<div></div>');
+  const todayK=key(new Date());
+  for(let d=1;d<=days;d++){const date=new Date(calRef.getFullYear(),calRef.getMonth(),d);const k=key(date);const t=dayType(k);const isToday=k===todayK;let bg='var(--tint-slate)',fg='var(--muted4)';if(t==='amrap'){bg='#4f8cff';fg='#04132e';}else if(t==='cardio'){bg='#ea580c';fg='#170a03';}else if(t==='both'){bg='linear-gradient(135deg,#4f8cff 50%,#ea580c 50%)';fg='#fff';}const clickable=t!=='none';cells.push(`<div onclick="calDay('${k}')" style="aspect-ratio:1;border-radius:9px;background:${bg};display:flex;align-items:center;justify-content:center;font:600 12px/1 'Barlow Semi Condensed';color:${fg};cursor:${clickable?'pointer':'default'};${isToday?'box-shadow:0 0 0 2px var(--text)':''}${calSelKey===k?'outline:2px solid #9cc0ff;outline-offset:1px':''}">${d}</div>`);}
+  document.getElementById('calGrid').innerHTML=cells.join('');
+  renderCalDetail();
+}
+let calSelKey=null;
+
+// ─── vista del programa ───
+function renderProgram(){
+  const plan = ensurePlan();
+  const cur = currentPlanIdx();
+  const done = plan.filter(s=>s.done).length;
+  const total = plan.length;
+  const pct = total ? Math.round(done/total*100) : 0;
+  const cardEl = document.getElementById('programCard');
+  if (cardEl){
+    cardEl.innerHTML = `
+      <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:9px">
+        <div class="bebas" style="font-size:22px;color:var(--text)">${done} / ${total}</div>
+        <div style="font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:var(--muted2)">SESIONES COMPLETADAS</div>
+      </div>
+      <div style="height:6px;border-radius:3px;background:var(--track);overflow:hidden"><div style="height:100%;width:${pct}%;background:linear-gradient(90deg,#4f8cff,#22c55e);border-radius:3px"></div></div>
+      <div style="margin-top:10px;padding:9px 11px;border-radius:10px;background:#4f8cff14;border:1px solid #4f8cff33;font:500 11.5px/1.4 'Barlow Semi Condensed';color:#9cc0ff">💡 Si te apetece adelantar una sesión, toca <b>HACER HOY</b> en cualquiera de las futuras.</div>
+    `;
+  }
+  const listEl = document.getElementById('programList');
+  if (!listEl) return;
+  // Ventana visible: 4 pasadas + hoy + 8 futuras, con separadores
+  const from = Math.max(0, cur - 4);
+  const to   = Math.min(plan.length, cur + 9);
+  const rows = [];
+  for (let i = from; i < to; i++){
+    const s = plan[i];
+    const g = GOALS[s.focus] || GOALS.full;
+    const isCur = (i === cur);
+    const isDone = s.done;
+    const isFuture = !isDone && !isCur;
+    let bg, border, dotBg, dotIcon, nameCol, subCol, right;
+    if (isDone){
+      bg = 'var(--card-b)'; border='var(--border)'; dotBg='#22c55e33'; dotIcon='✓';
+      nameCol='var(--muted3)'; subCol='var(--muted4)';
+      const d = s.doneDate ? new Date(s.doneDate) : null;
+      right = d ? `<div style="font:600 10px/1 'Barlow Semi Condensed';color:#22c55e">${d.getDate()} ${['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'][d.getMonth()]}</div>` : '';
+    } else if (isCur){
+      bg = 'linear-gradient(180deg,#4f8cff14,#4f8cff08)'; border='#4f8cff77'; dotBg='#4f8cff'; dotIcon='▶';
+      nameCol='var(--text)'; subCol='#9cc0ff';
+      right = `<div style="font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:#4f8cff">HOY</div>`;
+    } else {
+      bg = 'var(--panel2)'; border='var(--border3)'; dotBg='var(--panel)'; dotIcon = s.n;
+      nameCol='var(--muted2)'; subCol='var(--muted4)';
+      right = `<div onclick="event.stopPropagation();swapPlanToNow(${s.n})" style="padding:8px 12px;border-radius:10px;background:#4f8cff22;border:1px solid #4f8cff88;font:700 10.5px/1 'Barlow Semi Condensed';letter-spacing:.08em;color:#9cc0ff;cursor:pointer;white-space:nowrap">HACER HOY</div>`;
+    }
+    rows.push(`
+      <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:13px;background:${bg};border:1px solid ${border}">
+        <div style="width:32px;height:32px;border-radius:50%;background:${dotBg};display:flex;align-items:center;justify-content:center;font:600 13px/1 'Barlow Semi Condensed';color:${isCur?'#04132e':(isDone?'#22c55e':'var(--muted3)')};flex-shrink:0">${dotIcon}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font:600 13.5px/1.15 'Barlow Semi Condensed';color:${nameCol}">Sesión ${s.n} · ${g.label}</div>
+          <div style="font:500 11px/1.2 'Barlow Semi Condensed';color:${subCol};margin-top:3px">${g.muscles}</div>
+        </div>
+        <div style="flex-shrink:0">${right}</div>
+      </div>
+    `);
+  }
+  if (from > 0) rows.unshift(`<div style="text-align:center;font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.14em;color:var(--muted4);padding:4px 0">••• ${from} sesiones anteriores</div>`);
+  if (to < plan.length) rows.push(`<div style="text-align:center;font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.14em;color:var(--muted4);padding:4px 0">••• ${plan.length - to} sesiones después</div>`);
+  listEl.innerHTML = rows.join('');
+}
+function calDay(k){calSelKey=(calSelKey===k)?null:k;renderCal();}
+window.calDay=calDay;
+function renderCalDetail(){
+  const el=document.getElementById('calDetail');if(!el)return;
+  if(!calSelKey){el.style.display='none';return;}
+  const k=calSelKey;
+  const am=(DB.history||[]).filter(e=>e.date.slice(0,10)===k);
+  const cd=(DB.cardio||[]).filter(e=>e.date.slice(0,10)===k);
+  const d=new Date(k+'T12:00');
+  const dias=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const meses=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const head=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px"><div style="font:600 13px/1 'Barlow Semi Condensed';color:var(--text2)">${dias[d.getDay()]} ${d.getDate()} ${meses[d.getMonth()]}</div><div onclick="calDay('${k}')" style="font:600 11px/1 'Barlow Semi Condensed';color:var(--muted4);cursor:pointer">Cerrar ✕</div></div>`;
+  const RQ={facil:['#22c55e','Fácil'],justo:['#f5a524','Justo'],alto:['#ef4444','Alto']};
+  let rows='';
+  am.forEach(e=>{const [c,lbl]=RQ[e.rpe]||['var(--muted)','—'];rows+=`<div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:var(--row-blue);border:1px solid #4f8cff26;margin-bottom:8px"><div style="width:36px;height:36px;border-radius:10px;background:#4f8cff1e;color:#4f8cff;display:flex;align-items:center;justify-content:center;flex-shrink:0">${ic(ICONS.hoy,'#4f8cff')}</div><div style="flex:1"><div style="font:600 13px/1.1 'Barlow Semi Condensed';color:var(--text2)">Sesión AMRAP${e.focus?' · '+e.focus:''}</div><div style="font:500 11px/1 'Barlow Semi Condensed';color:var(--muted2);margin-top:3px">${e.rounds?e.rounds+' rondas':'completada'}</div></div><span style="font:600 10px/1 'Barlow Semi Condensed';color:${c};padding:4px 9px;border-radius:12px;background:${c}1e">${lbl}</span></div>`;});
+  cd.forEach(e=>{const [c,lbl]=RQ[e.rpe]||['var(--muted)','—'];rows+=`<div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:var(--row-orange);border:1px solid #ea580c26;margin-bottom:8px"><div style="width:36px;height:36px;border-radius:10px;background:#ea580c1e;color:#ea580c;display:flex;align-items:center;justify-content:center;flex-shrink:0">${ic(ICONS.cardio,'#ea580c')}</div><div style="flex:1"><div style="font:600 13px/1.1 'Barlow Semi Condensed';color:var(--text2)">Cardio · ${e.type}</div><div style="font:500 11px/1 'Barlow Semi Condensed';color:var(--muted2);margin-top:3px">${e.dur} min</div></div><span style="font:600 10px/1 'Barlow Semi Condensed';color:${c};padding:4px 9px;border-radius:12px;background:${c}1e">${lbl}</span></div>`;});
+  if(!rows)rows=`<div style="font:500 12px/1.4 'Barlow Semi Condensed';color:var(--muted4);text-align:center;padding:10px">Día de descanso.</div>`;
+  el.style.display='block';
+  el.innerHTML=`<div style="padding:15px 16px;border-radius:16px;background:var(--card-b);border:1px solid var(--border3)">${head}${rows}</div>`;
+}
+function calMove(n){calRef.setMonth(calRef.getMonth()+n);renderCal();}
+
+const CTYPES=[['Running','Correr'],['Ciclismo','Bici'],['Natación','Nadar'],['Fútbol','Fútbol'],['Otro','Otro']];
+const CARDIO_PLANS={
+  Running:{lbl:'correr',z2Title:'Rodaje suave · Zona 2',z2Desc:'A ritmo conversacional. Base aeróbica: lo que más quema grasa.',z2Freq:['2×','2×','2–3×'],z2Dur:['20–30 min','30–40 min','40–55 min'],intTitle:'Series',intDesc:['','6–8 × (1 min fuerte / 1–2 min trote).','8–10 × (1 min fuerte / 1 min trote). Sube ritmo y techo aeróbico.'],intFreq:['1×','1×','1–2×'],recTitle:'Recuperación',recDesc:'Días libres: caminar 20–30 min o movilidad. Sin cronómetro.'},
+  Ciclismo:{lbl:'bici',z2Title:'Salida · Zona 2',z2Desc:'A cadencia cómoda. Pedaleo fluido, puedes hablar.',z2Freq:['2×','2×','2–3×'],z2Dur:['30–45 min','45–70 min','70–90 min'],intTitle:'Intervalos en cuesta',intDesc:['','5–6 × (2 min fuerte / 3 min suave).','6–8 × (3 min fuerte / 3 min suave). Potencia sin impacto.'],intFreq:['1×','1×','1–2×'],recTitle:'Rodaje de recuperación',recDesc:'Día suave: 20–30 min girando ligero para soltar piernas.'},
+  Natación:{lbl:'nadar',z2Title:'Nado continuo · Zona 2',z2Desc:'Técnica y respiración por encima de la velocidad.',z2Freq:['2×','2×','2–3×'],z2Dur:['600–1000 m','800–1500 m','1500–2500 m'],intTitle:'Series por largos',intDesc:['','6–8 × 50 m con 30 s de descanso.','10–12 × 50 m fuerte con 20 s. Cuida la técnica al fatigarte.'],intFreq:['1×','1×','1–2×'],recTitle:'Nado suave / movilidad',recDesc:'Largos muy tranquilos o movilidad de hombro en seco.'},
+  Fútbol:{lbl:'fútbol',z2Title:'Partido o entreno',z2Desc:'El propio partido ya es tu cardio interválico de la semana.',z2Freq:['1×','1×','1–2×'],z2Dur:['partido','partido','partido + rodaje'],intTitle:'Sprints y cambios de ritmo',intDesc:['','6–8 × 20–30 m al 90% con recuperación completa.','8–10 × 20–30 m al 90%. Potencia y aceleración.'],intFreq:['1×','1×','1–2×'],recTitle:'Recuperación activa',recDesc:'Tras el partido: caminar, trote muy suave o movilidad de piernas.'},
+  Otro:{lbl:'tu actividad',z2Title:'Base · Zona 2',z2Desc:'A intensidad conversacional en tu actividad favorita.',z2Freq:['2×','2×','2–3×'],z2Dur:['20–30 min','25–40 min','40–55 min'],intTitle:'Intensidad',intDesc:['','Intervalos fuerte/suave adaptados a tu deporte.','Intervalos más largos. Solo si recuperas bien.'],intFreq:['1×','1×','1–2×'],recTitle:'Recuperación activa',recDesc:'Días libres: movimiento suave 20–30 min, sin buscar rendimiento.'}
+};
+const CLVL=['Base','Progresando','Sólido'];
+function isoWeekKey(d){const t=new Date(d);t.setHours(0,0,0,0);t.setDate(t.getDate()+3-((t.getDay()+6)%7));const w1=new Date(t.getFullYear(),0,4);return t.getFullYear()+'-'+(1+Math.round(((t-w1)/86400000-3+((w1.getDay()+6)%7))/7));}
+function cardioLevel(){const c=DB.cardio||[];const weeks=new Set(c.map(x=>isoWeekKey(x.date))).size;const total=c.length;const recentHigh=c.slice(-3).filter(x=>x.rpe==='alto').length;let lvl=0;if(weeks>=4&&total>=10)lvl=2;else if(weeks>=2&&total>=4)lvl=1;if(recentHigh>=2&&lvl>0)lvl=lvl-1;return{lvl,weeks,total,recentHigh};}
+function plate(col,badge,title,opt,desc,first){return `<div style="padding:15px 16px;border-radius:15px;background:${first?'var(--row-orange)':'var(--card-b)'};border:1px solid ${first?'#ea580c2e':'var(--border3)'};display:flex;align-items:center;gap:14px;margin-bottom:10px"><div style="width:44px;height:44px;border-radius:12px;background:${col}1e;display:flex;align-items:center;justify-content:center;color:${col};flex-shrink:0"><span class="bebas" style="font-size:${badge==='∞'?'20':'22'}px">${badge}</span></div><div style="flex:1"><div style="font:600 14px/1.1 'Barlow Semi Condensed';color:var(--text2)">${title}${opt?` <span style="color:var(--muted2);font-size:11px">· ${opt}</span>`:''}</div><div style="font:500 11.5px/1.35 'Barlow Semi Condensed';color:var(--muted);margin-top:3px">${desc}</div></div></div>`;}
+function renderCardioPlan(){
+  const p=CARDIO_PLANS[DB.cardioType]||CARDIO_PLANS.Otro;const {lvl,weeks,total,recentHigh}=cardioLevel();
+  const lblEl=document.getElementById('planActLbl');if(lblEl)lblEl.textContent=p.lbl;
+  const pct=[18,55,100][lvl];
+  const nextTxt=lvl===0?'Mantén 2 semanas seguidas para desbloquear los intervalos.':lvl===1?'Sigue así: al llegar a 4 semanas subes a "Sólido" con más volumen.':'¡Nivel sólido! Progresa subiendo poco a poco duración o intensidad.';
+  const autoTxt=recentHigh>=2?`<div style="margin-top:9px;padding:9px 12px;border-radius:10px;background:var(--tint-amber-d);border:1px solid #f5a52433;font:500 11.5px/1.4 'Barlow Semi Condensed';color:var(--txt-amber-warn)">Detectamos esfuerzo alto repetido. Mantén el volumen actual antes de subir.</div>`:'';
+  const levelCard=`<div style="padding:14px 16px;border-radius:15px;background:var(--card-b);border:1px solid var(--border);margin-bottom:10px"><div style="display:flex;align-items:center;justify-content:space-between"><div style="font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:var(--muted2);text-transform:uppercase">Nivel de cardio</div><div style="font:600 12px/1 'Barlow Semi Condensed';color:#ea580c">${CLVL[lvl]}</div></div><div style="height:7px;border-radius:5px;background:var(--track);margin-top:9px;overflow:hidden"><div style="height:100%;width:${pct}%;border-radius:5px;background:linear-gradient(90deg,#ea580c,#f5a524)"></div></div><div style="display:flex;gap:5px;margin-top:8px">${CLVL.map((n,i)=>`<div style="flex:1;text-align:center;font:600 8.5px/1 'Barlow Semi Condensed';letter-spacing:.06em;color:${i<=lvl?'#f0a070':'var(--muted5)'};text-transform:uppercase">${n}</div>`).join('')}</div><div style="font:500 11.5px/1.45 'Barlow Semi Condensed';color:var(--muted);margin-top:10px">${nextTxt}</div>${autoTxt}<div style="font:500 10px/1 'Barlow Semi Condensed';color:var(--muted4);margin-top:8px">${weeks} semana${weeks!==1?'s':''} con cardio · ${total} sesion${total!==1?'es':''} registradas</div></div>`;
+  const intUnlocked=lvl>=1;
+  const rowZ2=plate('#ea580c',p.z2Freq[lvl],p.z2Title+(p.z2Dur[lvl]&&p.z2Dur[lvl]!=='partido'?` · ${p.z2Dur[lvl]}`:''),'',p.z2Desc,true);
+  let rowInt;
+  if(intUnlocked){const opt=lvl===2?'recomendado':'opcional';rowInt=plate('#4f8cff',p.intFreq[lvl],p.intTitle,opt,p.intDesc[lvl]||p.intDesc[1],false);}
+  else{rowInt=`<div style="padding:15px 16px;border-radius:15px;background:var(--row-locked);border:1px dashed var(--border4);display:flex;align-items:center;gap:14px;opacity:.7;margin-bottom:10px"><div style="width:44px;height:44px;border-radius:12px;background:var(--border6);display:flex;align-items:center;justify-content:center;color:var(--muted4);flex-shrink:0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><div style="flex:1"><div style="font:600 14px/1.1 'Barlow Semi Condensed';color:var(--muted3)">${p.intTitle} · bloqueado</div><div style="font:500 11.5px/1.35 'Barlow Semi Condensed';color:var(--muted2);margin-top:3px">Primero construye tu base. Se desbloquea al mantener 2 semanas de cardio seguidas.</div></div></div>`;}
+  const rowRec=plate('#14b8a6','∞',p.recTitle,'',p.recDesc,false);
+  document.getElementById('cardioPlan').innerHTML=levelCard+rowZ2+rowInt+rowRec;
+}
+let cRpeSel=null;
+function renderCardio(){
+  renderCardioPlan();
+  document.getElementById('cardioTypes').innerHTML=CTYPES.map(([v,l])=>{const on=v===DB.cardioType;return `<div class="chip" onclick="setCType('${v}')" style="${on?'background:#ea580c22;border-color:#ea580c66;color:#f0a070':''}">${l}</div>`;}).join('');
+  document.getElementById('cRpe').innerHTML=[['facil','Fácil','#22c55e'],['justo','Justo','#f5a524'],['alto','Alto','#ef4444']].map(([v,l,c])=>{const on=v===cRpeSel;return `<div onclick="cRpeSel='${v}';renderCardio()" style="flex:1;text-align:center;padding:11px 0;border-radius:11px;cursor:pointer;font:600 12px/1 'Barlow Semi Condensed';border:1px solid ${on?c:'var(--border4)'};background:${on?c+'22':'var(--panel2)'};color:${on?c:'var(--muted)'}">${l}</div>`;}).join('');
+  const log=(DB.cardio||[]).slice().reverse().slice(0,6);
+  document.getElementById('cardioLog').innerHTML=log.length?log.map(c=>{const d=new Date(c.date);const meses=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];const rc={facil:'#22c55e',justo:'#f5a524',alto:'#ef4444'}[c.rpe]||'var(--muted)';return `<div style="display:flex;align-items:center;gap:12px;padding:13px 15px;border-radius:13px;background:var(--card-b);border:1px solid var(--border)"><div style="width:38px;height:38px;border-radius:10px;background:#ea580c1e;color:#ea580c;display:flex;align-items:center;justify-content:center;flex-shrink:0">${ic(ICONS.cardio,'#ea580c')}</div><div style="flex:1"><div style="font:600 13px/1.1 'Barlow Semi Condensed';color:var(--text2)">${c.type} · ${c.dur} min</div><div style="font:500 11px/1 'Barlow Semi Condensed';color:var(--muted2);margin-top:3px">${d.getDate()} ${meses[d.getMonth()]}</div></div><span style="font:600 10px/1 'Barlow Semi Condensed';color:${rc};padding:4px 9px;border-radius:12px;background:${rc}1e">${RPE_LABEL[c.rpe]||''}</span></div>`;}).join(''):`<div style="font:500 12px/1.4 'Barlow Semi Condensed';color:var(--muted4);text-align:center;padding:14px">Aún no hay sesiones de cardio registradas.</div>`;
+}
+function setCType(v){DB.cardioType=v;persist();renderCardio();renderHoy();}
+function saveCardio(){const dur=parseInt(document.getElementById('cDur').value,10);if(!dur||!cRpeSel){alert('Indica duración y esfuerzo.');return;}DB.cardio.push({date:new Date().toISOString(),dur,type:document.getElementById('cType').value,rpe:cRpeSel});persist();document.getElementById('cDur').value='';cRpeSel=null;renderCardio();renderHoy();renderCal();}
+
+function renderProgreso(){
+  const highs=(DB.loads||[]).filter(l=>l.rpe==='alto').length;const b=document.getElementById('rpeBanner');
+  if(highs){b.style.display='block';document.getElementById('rpeBannerTxt').textContent=`Tienes ${highs} ejercicio${highs>1?'s':''} marcados en RPE alto. Si se repite otra sesión, mantén el peso antes de subir.`;}else b.style.display='none';
+  const RC={facil:['#22c55e','Fácil · sube'],justo:['#f5a524','Justo'],alto:['#ef4444','Alto · mantén']};
+  // detecta el tipo si es antiguo (sin campo type)
+  const inferType = (l) => l.type || (/kg/i.test(l.w||'') ? 'weight' : (/reps/i.test(l.w||'') ? 'reps' : 'level'));
+  const rowHtml = (l, i, unitColor) => {
+    const [c,lbl]=RC[l.rpe]||['var(--muted)',''];
+    return `<div style="display:flex;align-items:center;gap:12px;padding:14px 15px;border-radius:14px;background:var(--card-b);border:1px solid var(--border)">
+      <div style="flex:1"><div style="font:600 13.5px/1.1 'Barlow Semi Condensed';color:var(--text2)">${l.ex}</div><div style="font:600 10px/1 'Barlow Semi Condensed';color:${c};margin-top:5px">${lbl}</div></div>
+      <div onclick="adjLoad(${i},-1)" style="width:32px;height:32px;border-radius:9px;background:var(--panel2);border:1px solid var(--border4);display:flex;align-items:center;justify-content:center;color:var(--muted6);cursor:pointer;font-size:18px">−</div>
+      <div style="min-width:64px;text-align:center;font:600 15px/1 'Barlow Semi Condensed';color:${unitColor}">${l.w}</div>
+      <div onclick="adjLoad(${i},1)" style="width:32px;height:32px;border-radius:9px;background:var(--panel2);border:1px solid var(--border4);display:flex;align-items:center;justify-content:center;color:var(--muted6);cursor:pointer;font-size:18px">+</div>
+    </div>`;
+  };
+  const withIdx = (DB.loads||[]).map((l,i)=>({ l, i, type:inferType(l) }));
+  const weighted = withIdx.filter(x => x.type==='weight' || x.type==='level');
+  const bodyweight = withIdx.filter(x => x.type==='reps');
+  const listEl = document.getElementById('loadList');
+  if (!weighted.length && !bodyweight.length){
+    listEl.innerHTML = `<div style="font:500 12.5px/1.5 'Barlow Semi Condensed';color:var(--muted4);text-align:center;padding:16px;border-radius:14px;background:var(--card-b);border:1px solid var(--border)">Cuando termines tu primera sesión, aquí verás cada ejercicio para ir progresando.</div>`;
+  } else {
+    let html = '';
+    if (weighted.length){
+      html += `<div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.14em;color:var(--muted2);margin:2px 0 -2px">CON CARGA</div>`;
+      html += weighted.map(x => rowHtml(x.l, x.i, '#4f8cff')).join('');
+    }
+    if (bodyweight.length){
+      html += `<div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.14em;color:var(--muted2);margin:${weighted.length?'12':'2'}px 0 -2px">PESO CORPORAL</div>`;
+      html += bodyweight.map(x => rowHtml(x.l, x.i, '#22c55e')).join('');
+    }
+    listEl.innerHTML = html;
+  }
+  const tg=document.getElementById('deloadTgl');tg.style.background=DB.deload?'#4f8cff':'var(--field-border)';tg.firstElementChild.style.left=DB.deload?'23px':'3px';
+  const ms=DB.measures||[];const chart=document.getElementById('measChart');
+  if(ms.length){const ws=ms.map(m=>m.w);const min=Math.min(...ws)-1,max=Math.max(...ws)+1;chart.innerHTML=ms.map(m=>{const h=8+((m.w-min)/(max-min||1))*60;return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px"><div style="font:600 10px/1 'Barlow Semi Condensed';color:#9cc0ff">${m.w}</div><div style="width:100%;height:${h}px;border-radius:6px 6px 0 0;background:linear-gradient(180deg,#4f8cff,#4f8cff44)"></div><div style="font:600 9px/1 'Barlow Semi Condensed';color:var(--muted2)">${m.m}</div></div>`;}).join('');}else{chart.innerHTML=`<div style="width:100%;text-align:center;font:500 12px/1.4 'Barlow Semi Condensed';color:var(--muted4)">Sin medidas todavía. Registra la primera abajo.</div>`;}
+}
+function adjLoad(i,dir){
+  const l=DB.loads[i]; if(!l) return;
+  // «nivel de goma»: subir/bajar en la escala
+  const GOMA = ['ligera','media','fuerte','muy fuerte'];
+  const gi = GOMA.indexOf(String(l.w||'').toLowerCase());
+  if (gi >= 0){
+    const ni = Math.max(0, Math.min(GOMA.length-1, gi + dir));
+    l.w = GOMA[ni];
+  } else {
+    const m=(''+l.w).match(/([\d.]+)\s*(.*)/);
+    if(m){let v=parseFloat(m[1])+dir*1;if(v<0)v=0;l.w=v+(m[2]?' '+m[2]:'');}
+  }
+  persist(); renderProgreso();
+}
+function toggleDeload(){DB.deload=!DB.deload;persist();renderProgreso();}
+function saveMeasure(){const w=parseFloat(document.getElementById('mW').value),c=parseFloat(document.getElementById('mC').value);if(!w&&!c){alert('Introduce al menos un dato.');return;}const meses=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];DB.measures.push({m:meses[new Date().getMonth()],w:w||0,c:c||0});persist();document.getElementById('mW').value='';document.getElementById('mC').value='';renderProgreso();}
+
+// ═══ CUENTA / SYNC ═══
+function openAccount(){document.getElementById('accountOverlay').style.display='flex';renderAccount();}
+function closeAccount(){document.getElementById('accountOverlay').style.display='none';}
+function toggleTheme(){const cur=document.documentElement.getAttribute('data-theme')==='light'?'light':'dark';const next=cur==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',next);try{localStorage.setItem('amrap_theme',next);}catch(e){}const b=document.getElementById('themeBtn');if(b)b.textContent=next==='light'?'☀️':'🌙';applyWallpaper();}
+function planWeeksBlock(){
+  const opts=[4,5,6,7,8,9,10,11,12,13,14,15,16];
+  const w=DB.weeks||8;
+  return `<div style="margin-top:16px;padding:14px 15px;border-radius:14px;background:var(--card-b);border:1px solid var(--border)">
+    <div style="font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:var(--muted2);margin-bottom:10px">DURACIÓN DEL PLAN</div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">${opts.map(n=>`<div onclick="setPlanWeeks(${n})" style="aspect-ratio:1;border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;font:600 12px/1 'Barlow Semi Condensed';border:1px solid ${w===n?'#4f8cff':'var(--border4)'};background:${w===n?'#4f8cff22':'var(--panel2)'};color:${w===n?'#9cc0ff':'var(--muted)'}">${n}</div>`).join('')}</div>
+    <div style="font:500 10.5px/1.4 'Barlow Semi Condensed';color:var(--muted4);margin-top:9px">Semanas totales. Al terminarlas, te proponemos reevaluar tu nivel.</div>
+  </div>`;
+}
+function setPlanWeeks(n){DB.weeks=n;persist();renderAccount();}
+window.setPlanWeeks=setPlanWeeks;
+
+// ═══ FONDO DE PANTALLA ═══
+// Curado a 6 piezas para no inflar la PWA offline. Un ejemplo por categoría.
+const WALLPAPERS=[
+  {cat:'Gimnasio',file:'gym-wide-black.jpg'},
+  {cat:'Fitness', file:'hero-woman-dumbbell.jpg'},
+  {cat:'Atletismo',file:'track-runner.jpg'},
+  {cat:'Naturaleza',file:'nature-mountain.jpg'},
+  {cat:'Ciudad',  file:'city-run.jpg'},
+  {cat:'Frases',  file:'quote-poster-1.jpg'}
+];
+function applyWallpaper(){
+  const stage=document.querySelector('.stage');if(!stage)return;
+  if(DB.wallpaper){
+    const light=document.documentElement.getAttribute('data-theme')==='light';
+    const ov=light?'rgba(242,241,247,.86),rgba(242,241,247,.92)':'rgba(5,5,9,.82),rgba(5,5,9,.9)';
+    stage.style.backgroundImage=`linear-gradient(180deg,${ov}),url('./assets/img/${DB.wallpaper}')`;
+    stage.style.backgroundSize='cover';stage.style.backgroundPosition='center';
+  }else{
+    stage.style.backgroundImage='';stage.style.backgroundSize='';stage.style.backgroundPosition='';
+  }
+}
+function setWallpaper(file){DB.wallpaper=file;persist();applyWallpaper();renderAccount();}
+function clearWallpaper(){DB.wallpaper=null;persist();applyWallpaper();renderAccount();}
+window.setWallpaper=setWallpaper;window.clearWallpaper=clearWallpaper;
+function wallpaperBlock(){
+  const cur=DB.wallpaper;
+  const cats=[...new Set(WALLPAPERS.map(w=>w.cat))];
+  return `<div style="margin-top:16px;padding:14px 15px;border-radius:14px;background:var(--card-b);border:1px solid var(--border)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div style="font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:var(--muted2)">FONDO DE PANTALLA</div>
+      <div onclick="clearWallpaper()" style="font:600 10px/1 'Barlow Semi Condensed';color:${cur?'#4f8cff':'var(--muted4)'};cursor:pointer">Ninguno</div>
+    </div>
+    ${cats.map(cat=>`<div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:var(--muted4);margin:10px 0 6px">${cat.toUpperCase()}</div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">${WALLPAPERS.filter(w=>w.cat===cat).map(w=>`<div onclick="setWallpaper('${w.file}')" style="aspect-ratio:1;border-radius:8px;overflow:hidden;cursor:pointer;background:url('./assets/img/${w.file}') center/cover;border:2px solid ${cur===w.file?'#4f8cff':'transparent'}"></div>`).join('')}</div>`).join('')}
+  </div>`;
+}
+
+// ═══ REINICIAR PROGRAMA ═══
+function resetProgram(){
+  if(!confirm('¿Reiniciar tu programa? Se borrará tu perfil, historial, racha y medidas. No se puede deshacer.'))return;
+  try{localStorage.removeItem('amrap_fn');}catch(e){}
+  location.href='onboarding.html';
+}
+window.resetProgram=resetProgram;
+function resetProgramBlock(){
+  return `<div onclick="resetProgram()" style="margin-top:16px;padding:14px 15px;border-radius:14px;background:var(--tint-amber-a);border:1px solid #ef444433;cursor:pointer;text-align:center;font:600 12.5px/1 'Barlow Semi Condensed';color:#f9a8a8">Reiniciar programa (empezar de cero)</div>`;
+}
+function editProfileBlock(){
+  return `<div onclick="location.href='onboarding.html?edit=1'" style="margin-top:16px;padding:14px 15px;border-radius:14px;background:var(--card-b);border:1.5px solid #4f8cff55;cursor:pointer;text-align:center;font:600 12.5px/1 'Barlow Semi Condensed';color:#9cc0ff">✏︎  Editar mi perfil (objetivo, material, lesiones…)</div>`;
+}
+function backupBlock(){
+  return `<div style="margin-top:16px;padding:14px 15px;border-radius:14px;background:var(--card-b);border:1px solid var(--border)">
+    <div style="font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:var(--muted2);margin-bottom:9px">TUS DATOS</div>
+    <div style="font:500 11.5px/1.4 'Barlow Semi Condensed';color:var(--muted);margin-bottom:11px">Descarga una copia de seguridad o restaura desde un archivo. Útil si cambias de móvil o quieres tener respaldo.</div>
+    <div style="display:flex;gap:8px">
+      <div onclick="exportData()" style="flex:1;padding:11px;border-radius:11px;text-align:center;font:600 11.5px/1 'Barlow Semi Condensed';background:var(--panel2);border:1px solid var(--border4);color:var(--muted3);cursor:pointer">⬇ Exportar</div>
+      <div onclick="document.getElementById('importFile').click()" style="flex:1;padding:11px;border-radius:11px;text-align:center;font:600 11.5px/1 'Barlow Semi Condensed';background:var(--panel2);border:1px solid var(--border4);color:var(--muted3);cursor:pointer">⬆ Importar</div>
+      <input id="importFile" type="file" accept="application/json,.json" onchange="importData(this)" style="display:none">
+    </div>
+  </div>`;
+}
+function exportData(){
+  try {
+    const data = JSON.stringify(DB, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'amrap-backup-' + new Date().toISOString().slice(0,10) + '.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 1000);
+  } catch (e) { alert('No se pudo exportar: '+(e.message||e)); }
+}
+function importData(input){
+  const f = input.files && input.files[0]; if (!f) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const parsed = JSON.parse(reader.result);
+      if (!parsed || typeof parsed !== 'object' || !parsed.name){
+        alert('Este archivo no parece una copia válida de AMRAP.'); return;
+      }
+      if (!confirm('Reemplazar tus datos actuales con los del archivo? Se perderá el estado local.')) return;
+      DB = parsed;
+      DB.history = DB.history||[]; DB.cardio = DB.cardio||[]; DB.measures = DB.measures||[]; DB.loads = DB.loads||[];
+      save(DB);
+      renderHoy(); renderCal(); renderCardio(); renderProgreso(); renderAccount();
+      alert('Datos importados correctamente.');
+    } catch (e) { alert('Archivo no válido: '+(e.message||e)); }
+  };
+  reader.readAsText(f);
+  input.value = '';
+}
+window.exportData = exportData; window.importData = importData;
+document.getElementById('accountOverlay').addEventListener('click',e=>{if(e.target.id==='accountOverlay')closeAccount();});
+function renderAccount(){
+  const S=window.AMRAPSync;const body=document.getElementById('accountBody');
+  const name=DB.name||'Atleta';
+  if(!S||!S.enabled||!S.enabled()){
+    body.innerHTML=`<div class="bebas" style="font-size:30px">CUENTA</div>
+      <div style="font:600 15px/1.2 'Barlow Semi Condensed';color:var(--text2);margin-top:14px">${name}</div>
+      <div style="font:500 12.5px/1.5 'Barlow Semi Condensed';color:var(--muted);margin-top:10px">La sincronización en la nube está desactivada. Tus datos se guardan solo en este dispositivo.</div>
+      <div style="margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--card-b);border:1px solid var(--border);font:500 11.5px/1.5 'Barlow Semi Condensed';color:var(--muted2)">Para activar cuentas y sincronizar entre dispositivos, configura Supabase en <b style="color:#9cc0ff">config.js</b> (URL + anon key).</div>
+      ${planWeeksBlock()}
+      ${wallpaperBlock()}
+      ${editProfileBlock()}
+      ${backupBlock()}
+      ${resetProgramBlock()}
+      <div onclick="closeAccount()" class="btnG" style="margin-top:16px">Cerrar</div>`;
+    return;
+  }
+  const user=S.user&&S.user();
+  if(!user){
+    body.innerHTML=`<div class="bebas" style="font-size:30px">INICIAR SESIÓN</div>
+      <div style="font:500 12.5px/1.5 'Barlow Semi Condensed';color:var(--muted);margin-top:10px">Entra con tu email para sincronizar tu progreso entre el móvil y el ordenador.</div>
+      <input id="accEmail" class="field" type="email" placeholder="tu@email.com" style="margin-top:14px">
+      <div onclick="doSignIn()" class="btnP" style="margin-top:12px;background:#4f8cff;color:#04132e">Enviar enlace de acceso</div>
+      <div id="accMsg" style="font:500 12px/1.4 'Barlow Semi Condensed';color:var(--muted);margin-top:12px;text-align:center"></div>
+      <div onclick="closeAccount()" class="btnG" style="margin-top:10px">Cerrar</div>`;
+    return;
+  }
+  body.innerHTML=`<div class="bebas" style="font-size:30px">CUENTA</div>
+    <div style="display:flex;align-items:center;gap:12px;margin-top:14px">
+      <div style="width:44px;height:44px;border-radius:50%;background:#22c55e22;border:1.5px solid #22c55e;display:flex;align-items:center;justify-content:center;color:#7fe0a0">${ic(ICONS.hoy,'#7fe0a0')}</div>
+      <div><div style="font:600 14px/1.1 'Barlow Semi Condensed';color:var(--text2)">${user.email||'Conectado'}</div><div style="font:500 11px/1 'Barlow Semi Condensed';color:#22c55e;margin-top:3px">Sincronizado en la nube</div></div>
+    </div>
+    <div onclick="doSyncNow()" class="btnP" style="margin-top:16px;background:#4f8cff;color:#04132e">Sincronizar ahora</div>
+    ${planWeeksBlock()}
+    ${wallpaperBlock()}
+    ${editProfileBlock()}
+    ${backupBlock()}
+    ${resetProgramBlock()}
+    <div onclick="doSignOut()" class="btnG" style="margin-top:10px">Cerrar sesión</div>
+    <div onclick="closeAccount()" style="text-align:center;margin-top:14px;font:600 11px/1 'Barlow Semi Condensed';color:var(--muted4);cursor:pointer">Cerrar</div>`;
+}
+async function doSignIn(){const email=document.getElementById('accEmail').value.trim();if(!email)return;const msg=document.getElementById('accMsg');msg.textContent='Enviando…';try{await window.AMRAPSync.signIn(email);msg.style.color='#7fe0a0';msg.textContent='Revisa tu email y abre el enlace para entrar.';}catch(e){msg.style.color='#f9a8a8';msg.textContent='No se pudo enviar: '+(e.message||e);}}
+async function doSignOut(){await window.AMRAPSync.signOut();renderAccount();}
+async function doSyncNow(){try{const remote=await window.AMRAPSync.pull();if(remote){DB=mergeDB(DB,remote);save(DB);}await window.AMRAPSync.push(DB);renderHoy();renderCal();renderCardio();renderProgreso();alert('Sincronizado.');}catch(e){alert('Error al sincronizar: '+(e.message||e));}}
+
+// merge sencillo: combina historial/cardio/medidas por fecha, resto gana el más reciente
+function mergeDB(a,b){
+  if(!b)return a;if(!a)return b;
+  const byDate=(arr)=>{const m={};(arr||[]).forEach(x=>{m[x.date]=x;});return m;};
+  const mergeArr=(x,y)=>{const m=Object.assign(byDate(x),byDate(y));return Object.values(m).sort((p,q)=>new Date(p.date)-new Date(q.date));};
+  const out=Object.assign({},a,b);
+  out.history=mergeArr(a.history,b.history);
+  out.cardio=mergeArr(a.cardio,b.cardio);
+  out.measures=(b.measures&&b.measures.length>=(a.measures||[]).length)?b.measures:(a.measures||[]);
+  out.loads=b.loads||a.loads;
+  out.streak=Math.max(a.streak||0,b.streak||0);
+  out.bestRounds=Math.max(a.bestRounds||0,b.bestRounds||0);
+  return out;
+}
+
+// ═══ INIT ═══
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
+renderNav();renderHoy();renderCal();renderCardio();renderProgreso();applyWallpaper();
+(function(){
+  // Tour de bienvenida (solo la primera vez tras crear el plan)
+  try {
+    if (localStorage.getItem('amrap_tour') !== 'pending') return;
+  } catch(e){ return; }
+  const STEPS = [
+    { title:'¡Bienvenido!', body:'Tu plan de <b>'+((DB.plan||[]).length||18)+' sesiones</b> ya está listo. Te enseño en 30 segundos cómo funciona.' },
+    { title:'Hoy', body:'Aquí ves tu sesión del día. Pulsa <b>Empezar sesión</b> y te guiaremos: calentamiento (5’), AMRAP (20’) y enfriamiento (5’). Total 30 min.' },
+    { title:'Calendario', body:'Tu programa completo. Si te saltas un día, no pasa nada: la sesión pendiente sigue esperándote. Puedes adelantar cualquier sesión futura con <b>HACER HOY</b>.' },
+    { title:'Progreso', body:'Sube o baja pesos y ve tu evolución por ejercicio. La app te sugiere el peso siguiente según cómo te haya ido (RPE).' },
+    { title:'Perfil', body:'En “Cuenta” puedes editar tu perfil, hacer copia de seguridad de tus datos o resetear el programa.' }
+  ];
+  let i = 0;
+  const ov = document.createElement('div');
+  ov.id='tourOverlay';
+  ov.setAttribute('style','position:fixed;inset:0;z-index:80;background:#04040be0;backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:24px');
+  document.body.appendChild(ov);
+  function paint(){
+    const s = STEPS[i];
+    ov.innerHTML = `<div style="width:100%;max-width:380px;padding:22px 20px 18px;border-radius:20px;background:linear-gradient(180deg,var(--card-a),var(--card-b));border:1px solid #4f8cff44;box-shadow:0 24px 60px -20px #4f8cff55">
+      <div style="font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.14em;color:#4f8cff;margin-bottom:6px">${i+1} / ${STEPS.length}</div>
+      <div class="bebas" style="font-size:32px;line-height:.95;color:var(--text)">${s.title.toUpperCase()}</div>
+      <div style="margin-top:12px;font:500 13.5px/1.5 'Barlow Semi Condensed';color:var(--text3)">${s.body}</div>
+      <div style="display:flex;gap:8px;margin-top:20px">
+        <div id="tourSkip" style="padding:12px 14px;border-radius:11px;border:1px solid var(--border4);font:600 12px/1 'Barlow Semi Condensed';color:var(--muted3);cursor:pointer">Saltar</div>
+        <div style="flex:1"></div>
+        <div id="tourNext" style="padding:12px 20px;border-radius:11px;background:#4f8cff;color:#04132e;font:600 12px/1 'Barlow Semi Condensed';letter-spacing:.04em;cursor:pointer">${i===STEPS.length-1?'Empezar':'Siguiente →'}</div>
+      </div>
+    </div>`;
+    document.getElementById('tourSkip').onclick = closeTour;
+    document.getElementById('tourNext').onclick = () => { if (i < STEPS.length-1){ i++; paint(); } else closeTour(); };
+  }
+  function closeTour(){
+    try { localStorage.setItem('amrap_tour','done'); } catch(e){}
+    ov.remove();
+  }
+  paint();
+})();
+(function(){const b=document.getElementById('themeBtn');if(b){const t=(function(){try{return localStorage.getItem('amrap_theme')||'dark';}catch(e){return 'dark';}})();b.textContent=t==='light'?'☀️':'🌙';}})();
+// deep-link por hash
+(function(){const h=(location.hash||'').replace('#','');if(['calend','cardio','progreso','hoy'].includes(h))go(h);})();
+window.addEventListener('hashchange',()=>{const h=(location.hash||'').replace('#','');if(['calend','cardio','progreso','hoy'].includes(h))go(h);});
+// sync inicial: si hay sesión, trae remoto y fusiona
+(async function(){try{const S=window.AMRAPSync;if(S&&S.enabled&&S.enabled()){await S.ready();if(S.user&&S.user()){const remote=await S.pull();if(remote){DB=mergeDB(DB,remote);save(DB);renderHoy();renderCal();renderCardio();renderProgreso();}}}}catch(e){}})();
+</script>
+</body>
+</html>

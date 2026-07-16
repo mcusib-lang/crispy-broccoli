@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+<script src="./image-slot.js"></script>
+<script src="./exercises-data.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-page:#050509; --bg-stage-a:#0d0d1f; --bg-phone-a:#0a0a16; --bg-phone-b:#08080f;
+    --card-a:#14142a; --card-b:#101022; --panel:#121226; --panel2:#12122a;
+    --text:#f3f1ec; --text2:#eeecf6; --text3:#e6e3f2;
+    --muted:#8b88a8; --muted2:#7a7796; --muted3:#a7a4c2; --muted4:#5d5a78; --muted5:#4a4863; --muted6:#c9c6de;
+    --border:#ffffff10; --border2:#ffffff0d; --border3:#ffffff12; --border4:#ffffff14; --border5:#ffffff0a; --border6:#ffffff08; --border7:#ffffff18; --border8:#ffffff22;
+    --field-border:#2a2a48; --field-border2:#3a3a5a; --field-border3:#20203a;
+    --tint-green:#12160f; --tint-amber-a:#1d1407; --tint-amber-b:#14110a; --tint-amber-c:#1a1410; --tint-amber-d:#1a1208; --tint-purple:#15102a;
+    --txt-green:#a7d8a0; --txt-amber:#caa86a; --txt-amber-sub:#a99873; --txt-amber-warn:#e3c07a;
+    --track:#1c1c34; --tint-slate:#1a1a30; --row-blue:#0f1420; --row-orange:#14100c; --row-locked:#0d0d18;
+  }
+  [data-theme="light"]{
+    --bg-page:#f2f1f7; --bg-stage-a:#e7e5f2; --bg-phone-a:#ffffff; --bg-phone-b:#f4f3f9;
+    --card-a:#ffffff; --card-b:#f3f2f9; --panel:#eeedf6; --panel2:#e9e7f4;
+    --text:#18172a; --text2:#18172a; --text3:#18172a;
+    --muted:#615e78; --muted2:#726f8c; --muted3:#4c495e; --muted4:#8a87a0; --muted5:#a3a0b8; --muted6:#403d54;
+    --border:#00000014; --border2:#0000000e; --border3:#00000016; --border4:#00000018; --border5:#0000000a; --border6:#00000008; --border7:#0000001c; --border8:#00000026;
+    --field-border:#d8d5e6; --field-border2:#c7c4da; --field-border3:#d8d5e6;
+    --tint-green:#eafbea; --tint-amber-a:#fff3d8; --tint-amber-b:#fff8e8; --tint-amber-c:#fff3d8; --tint-amber-d:#fff3d8; --tint-purple:#f3ecff;
+    --txt-green:#1f7a3d; --txt-amber:#8a5a12; --txt-amber-sub:#7a5a20; --txt-amber-warn:#8a5a12;
+    --track:#e5e3ef; --tint-slate:#ece9f6; --row-blue:#eef3ff; --row-orange:#fff3ea; --row-locked:#f1eff8;
+  }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body { margin:0; }
+  body { background:var(--bg-page); font-family:'Barlow Semi Condensed',system-ui,sans-serif; }
+  @keyframes breathe { 0%{transform:scale(.62);} 42%{transform:scale(1);} 58%{transform:scale(1);} 100%{transform:scale(.62);} }
+  @keyframes bglow { 0%,100%{opacity:.35;} 50%{opacity:.7;} }
+  @keyframes liveDot { 0%,100%{opacity:1;} 50%{opacity:.25;} }
+  @keyframes sheetUp { from{transform:translateY(14px); opacity:.4;} to{transform:translateY(0); opacity:1;} }
+  .ph { opacity:1; }
+</style>
+<script>(function(){try{var t=localStorage.getItem('amrap_theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</helmet>
+
+<div style="min-height:100dvh; display:flex; align-items:flex-start; justify-content:center; background:radial-gradient(120% 80% at 50% 0%, var(--bg-stage-a) 0%, var(--bg-page) 60%); padding:0;">
+  <div style="width:100%; max-width:440px; min-height:100dvh; background:linear-gradient(180deg,var(--bg-phone-a) 0%,var(--bg-phone-b) 100%); position:relative; display:flex; flex-direction:column; color:var(--text); border-left:1px solid var(--border); border-right:1px solid var(--border);">
+
+    <!-- ░░ BIENVENIDA · PERSONALIZACIÓN ░░ -->
+    <sc-if value="{{ isWelcome }}" hint-placeholder-val="{{ false }}">
+      <div class="ph" style="flex:1; display:flex; flex-direction:column; padding:0;">
+
+        <!-- PASO 0 · nombre + portada -->
+        <sc-if value="{{ isStep0 }}" hint-placeholder-val="{{ true }}">
+          <div style="flex:1; display:flex; flex-direction:column;">
+            <div style="position:relative; padding:54px 26px 30px; overflow:hidden;">
+              <div style="position:absolute; inset:0; background:radial-gradient(90% 70% at 50% 0%, #4f8cff22, transparent 65%);"></div>
+              <div style="position:relative; display:inline-flex; align-items:center; gap:9px; padding:6px 13px; border-radius:20px; border:1px solid #4f8cff44; background:#4f8cff14;">
+                <div style="width:7px; height:7px; border-radius:50%; background:#4f8cff;"></div>
+                <span style="font:700 11px/1 'Barlow Semi Condensed'; letter-spacing:.18em; color:#7e9fd8;">AMRAP · ENTRENO FUNCIONAL</span>
+              </div>
+              <div style="position:relative; font:400 56px/.86 'Bebas Neue'; margin-top:20px;">ENTRENA<br>FUERTE,<br><span style="color:#4f8cff;">SIN EXCUSAS.</span></div>
+              <div style="position:relative; font:500 14px/1.5 'Barlow Semi Condensed'; color:var(--muted3); margin-top:14px; max-width:300px;">Máximas rondas en el tiempo marcado. Calienta, da el máximo y enfría — todo guiado.</div>
+            </div>
+            <div style="flex:1; background:linear-gradient(180deg,var(--bg-stage-a),var(--bg-phone-b)); border-top:1px solid var(--border); padding:28px 26px 26px; display:flex; flex-direction:column;">
+              <div style="font:600 11px/1 'Barlow Semi Condensed'; letter-spacing:.16em; color:var(--muted2); text-transform:uppercase;">Paso 1 de 4</div>
+              <div style="font:400 30px/.95 'Bebas Neue'; margin-top:9px;">¿CÓMO TE LLAMAS?</div>
+              <div style="font:500 12px/1.45 'Barlow Semi Condensed'; color:var(--muted); margin-top:8px;">Para personalizar tu app y tu racha. Se guarda solo en este dispositivo.</div>
+              <input value="{{ nameInput }}" onInput="{{ onNameInput }}" placeholder="Tu nombre" maxlength="18" style="margin-top:18px; width:100%; padding:16px 18px; border-radius:14px; background:var(--panel); border:1.5px solid var(--field-border); color:var(--text); font:600 17px/1 'Barlow Semi Condensed'; outline:none;">
+              <div onClick="{{ onNextSetup }}" style="{{ setupNextStyle }}">CONTINUAR  →</div>
+              <div style="flex:1;"></div>
+              <div style="text-align:center; font:500 11px/1.4 'Barlow Semi Condensed'; color:var(--muted4);">Sin registro ni email · tus datos no salen del móvil</div>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- PASOS 1-3 · objetivo / nivel / frecuencia -->
+        <sc-if value="{{ isStep1 }}" hint-placeholder-val="{{ false }}">
+          <div style="flex:1; display:flex; flex-direction:column; padding:48px 26px 26px;">
+            <div onClick="{{ onPrevSetup }}" style="font:600 13px/1 'Barlow Semi Condensed'; color:var(--muted2); cursor:pointer; margin-bottom:18px;">←  Atrás</div>
+            <div style="font:600 11px/1 'Barlow Semi Condensed'; letter-spacing:.16em; color:var(--muted2); text-transform:uppercase;">Paso 2 de 4</div>
+            <div style="font:400 32px/.95 'Bebas Neue'; margin-top:9px;">¿QUÉ QUIERES<br>ENTRENAR?</div>
+            <div style="display:flex; flex-direction:column; gap:9px; margin-top:20px;">
+              <sc-for list="{{ goalOptions }}" as="o" hint-placeholder-count="5">
+                <div onClick="{{ o.onTap }}" style="{{ o.style }}">
+                  <div><div style="font:600 15px/1 'Barlow Semi Condensed'; color:var(--text);">{{ o.label }}</div><div style="font:500 11px/1 'Barlow Semi Condensed'; color:var(--muted); margin-top:4px;">{{ o.sub }}</div></div>
+                  <div style="width:18px; height:18px; border-radius:50%; border:1.5px solid #3a3a58; background:{{ o.check }}; flex-shrink:0;"></div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="flex:1;"></div>
+            <div onClick="{{ onNextSetup }}" style="{{ setupNextStyle }}">CONTINUAR  →</div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isStep2 }}" hint-placeholder-val="{{ false }}">
+          <div style="flex:1; display:flex; flex-direction:column; padding:48px 26px 26px;">
+            <div onClick="{{ onPrevSetup }}" style="font:600 13px/1 'Barlow Semi Condensed'; color:var(--muted2); cursor:pointer; margin-bottom:18px;">←  Atrás</div>
+            <div style="font:600 11px/1 'Barlow Semi Condensed'; letter-spacing:.16em; color:var(--muted2); text-transform:uppercase;">Paso 3 de 4</div>
+            <div style="font:400 32px/.95 'Bebas Neue'; margin-top:9px;">¿CUÁL ES<br>TU NIVEL?</div>
+            <div style="display:flex; flex-direction:column; gap:9px; margin-top:20px;">
+              <sc-for list="{{ levelOptions }}" as="o" hint-placeholder-count="3">
+                <div onClick="{{ o.onTap }}" style="{{ o.style }}">
+                  <div><div style="font:600 15px/1 'Barlow Semi Condensed'; color:var(--text);">{{ o.label }}</div><div style="font:500 11px/1 'Barlow Semi Condensed'; color:var(--muted); margin-top:4px;">{{ o.sub }}</div></div>
+                  <div style="width:18px; height:18px; border-radius:50%; border:1.5px solid #3a3a58; background:{{ o.check }}; flex-shrink:0;"></div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="margin-top:16px; font:500 11px/1.4 'Barlow Semi Condensed'; color:#6f6c8e;">Ajusta la duración del bloque AMRAP. Podrás cambiarlo cuando quieras.</div>
+            <div style="flex:1;"></div>
+            <div onClick="{{ onNextSetup }}" style="{{ setupNextStyle }}">CONTINUAR  →</div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isStep3 }}" hint-placeholder-val="{{ false }}">
+          <div style="flex:1; display:flex; flex-direction:column; padding:48px 26px 26px;">
+            <div onClick="{{ onPrevSetup }}" style="font:600 13px/1 'Barlow Semi Condensed'; color:var(--muted2); cursor:pointer; margin-bottom:18px;">←  Atrás</div>
+            <div style="font:600 11px/1 'Barlow Semi Condensed'; letter-spacing:.16em; color:var(--muted2); text-transform:uppercase;">Paso 4 de 4</div>
+            <div style="font:400 32px/.95 'Bebas Neue'; margin-top:9px;">TU COMPROMISO</div>
+            <div style="font:600 12px/1 'Barlow Semi Condensed'; letter-spacing:.06em; color:var(--muted); margin:22px 0 9px;">DÍAS POR SEMANA</div>
+            <div style="display:flex; gap:8px;">
+              <sc-for list="{{ dayOptions }}" as="d" hint-placeholder-count="4"><div onClick="{{ d.onTap }}" style="{{ d.style }}">{{ d.label }}</div></sc-for>
+            </div>
+            <div style="font:600 12px/1 'Barlow Semi Condensed'; letter-spacing:.06em; color:var(--muted); margin:22px 0 9px;">DURANTE CUÁNTAS SEMANAS</div>
+            <div style="display:flex; gap:8px;">
+              <sc-for list="{{ weekOptions }}" as="w" hint-placeholder-count="4"><div onClick="{{ w.onTap }}" style="{{ w.style }}">{{ w.label }}</div></sc-for>
+            </div>
+            <div style="margin-top:24px; padding:15px 17px; border-radius:14px; background:var(--card-b); border:1px solid var(--border);">
+              <div style="font:600 10px/1 'Barlow Semi Condensed'; letter-spacing:.12em; color:#4f8cff; margin-bottom:7px;">TU PLAN</div>
+              <div style="font:500 13px/1.4 'Barlow Semi Condensed'; color:#d8d3e8;">{{ planSummary }}</div>
+            </div>
+            <div style="flex:1;"></div>
+            <div onClick="{{ onSaveProfile }}" style="{{ createPlanStyle }}">CREAR MI PLAN  ✓</div>
+          </div>
+        </sc-if>
+
+        <div style="display:flex; gap:6px; justify-content:center; padding:0 26px 24px;">
+          <sc-for list="{{ setupDots }}" as="d" hint-placeholder-count="4"><div style="{{ d.style }}"></div></sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ░░ HOME · HOY ░░ -->
+    <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+      <div class="ph" style="flex:1; display:flex; flex-direction:column; padding:26px 22px 14px;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between;">
+          <div>
+            <div style="font:600 11px/1 'Barlow Semi Condensed'; letter-spacing:.18em; color:var(--muted2); text-transform:uppercase;">{{ dateLine }}</div>
+            <div style="font:400 42px/.84 'Bebas Neue'; letter-spacing:.01em; margin-top:8px;">{{ greeting }}<br><span style="color:#4f8cff;">{{ userName }}</span></div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+            <div onClick="{{ onToggleTheme }}" style="width:38px; height:38px; border-radius:50%; background:var(--panel); border:1.5px solid var(--border4); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px;">{{ themeIcon }}</div>
+            <div onClick="{{ onEditName }}" style="width:42px; height:42px; border-radius:50%; background:#4f8cff22; border:1.5px solid #4f8cff; display:flex; align-items:center; justify-content:center; font:600 16px/1 'Barlow Semi Condensed'; color:#9cc0ff; flex-shrink:0; cursor:pointer;">{{ userInitial }}</div>
+          </div>
+        </div>
+
+        <!-- racha -->
+        <div style="margin-top:20px; padding:18px 18px 16px; border-radius:18px; background:linear-gradient(180deg,var(--tint-amber-a),var(--tint-amber-b)); border:1px solid #f5a52433; position:relative; overflow:hidden;">
+          <div style="position:absolute; inset:0; background:radial-gradient(70% 90% at 85% 8%, #f5a52420, transparent 60%);"></div>
+          <div style="position:relative; display:flex; align-items:center; gap:14px;">
+            <div style="font-size:34px;">🔥</div>
+            <div style="flex:1;">
+              <div style="display:flex; align-items:baseline; gap:9px;">
+                <span style="font:400 48px/.78 'Bebas Neue'; color:#f5a524;">{{ streak }}</span>
+                <span style="font:600 12px/1.05 'Barlow Semi Condensed'; letter-spacing:.04em; color:var(--txt-amber);">DÍAS DE<br>RACHA</span>
+              </div>
+              <div style="font:500 12px/1.3 'Barlow Semi Condensed'; color:var(--txt-amber-sub); margin-top:6px;">{{ streakSub }}</div>
+            </div>
+          </div>
+          <div style="position:relative; margin-top:15px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:7px;">
+              <span style="font:600 10px/1 'Barlow Semi Condensed'; letter-spacing:.12em; color:#8a7d5e;">ESTA SEMANA</span>
+              <span style="font:600 10px/1 'Barlow Semi Condensed'; letter-spacing:.06em; color:#f5a524;">{{ weekDone }} / {{ weekTarget }}</span>
+            </div>
+            <div style="display:flex; gap:6px;">
+              <sc-for list="{{ weekBars }}" as="b" hint-placeholder-count="4"><div style="{{ b.style }}"></div></sc-for>
+            </div>
+          </div>
+        </div>
+
+        <!-- stats de constancia -->
+        <div style="display:flex; gap:9px; margin-top:11px;">
+          <div style="flex:1; padding:13px 0; border-radius:13px; background:var(--panel); border:1px solid var(--border2); text-align:center;"><div style="font:400 28px/1 'Bebas Neue'; color:var(--text);">{{ bestStreak }}</div><div style="font:600 9px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:var(--muted2); margin-top:4px;">MEJOR RACHA</div></div>
+          <div style="flex:1; padding:13px 0; border-radius:13px; background:var(--panel); border:1px solid var(--border2); text-align:center;"><div style="font:400 28px/1 'Bebas Neue'; color:var(--text);">{{ totalSessions }}</div><div style="font:600 9px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:var(--muted2); margin-top:4px;">SESIONES</div></div>
+          <div style="flex:1; padding:13px 0; border-radius:13px; background:var(--panel); border:1px solid var(--border2); text-align:center;"><div style="font:400 28px/1 'Bebas Neue'; color:#4f8cff;">{{ bestRounds }}</div><div style="font:600 9px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:var(--muted2); margin-top:4px;">RÉCORD RONDAS</div></div>
+        </div>
+
+        <!-- últimos 14 días -->
+        <div style="margin-top:15px;">
+          <div style="font:600 10px/1 'Barlow Semi Condensed'; letter-spacing:.12em; color:var(--muted2); margin-bottom:8px;">ÚLTIMOS 14 DÍAS</div>
+          <div style="display:flex; gap:4px;">
+            <sc-for list="{{ recentDays }}" as="d" hint-placeholder-count="14"><div style="{{ d.style }}"></div></sc-for>
+          </div>
+        </div>
+
+        <!-- sesión de hoy -->
+        <div style="font:600 10px/1 'Barlow Semi Condensed'; letter-spacing:.14em; color:var(--muted2); margin:20px 0 9px;">SESIÓN DE HOY</div>
+        <div style="border-radius:18px; background:linear-gradient(180deg,var(--card-a),var(--card-b)); border:1px solid var(--border); overflow:hidden;">
+          <div style="padding:16px 17px 15px; border-left:3px solid #4f8cff;">
+            <div style="display:flex; align-items:baseline; justify-content:space-between;">
+              <div style="font:400 30px/.9 'Bebas Neue';">{{ planDayLabel }} · <span style="color:#4f8cff;">{{ planFocus }}</span></div>
+              <div style="font:600 11px/1 'Barlow Semi Condensed'; color:var(--muted);">{{ planMeta }}</div>
+            </div>
+            <div style="font:500 12px/1 'Barlow Semi Condensed'; color:var(--muted); margin-top:6px;">{{ planMuscles }}</div>
+            <div style="display:flex; gap:7px; margin-top:13px;">
+              <div style="flex:1; text-align:center; padding:8px 0; border-radius:10px; background:var(--tint-amber-c); border:1px solid #f5a52426;"><div style="font:400 17px/1 'Bebas Neue'; color:#f5a524;">5'</div><div style="font:600 8px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:var(--muted2); margin-top:3px;">CALENTAR</div></div>
+              <div style="flex:1.7; text-align:center; padding:8px 0; border-radius:10px; background:#4f8cff14; border:1px solid #4f8cff33;"><div style="font:400 17px/1 'Bebas Neue'; color:#4f8cff;">{{ amrapMinLabel }}</div><div style="font:600 8px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:#7e9fd8; margin-top:3px;">AMRAP · {{ planExCount }}</div></div>
+              <div style="flex:1; text-align:center; padding:8px 0; border-radius:10px; background:var(--tint-purple); border:1px solid #a855f726;"><div style="font:400 17px/1 'Bebas Neue'; color:#a855f7;">5'</div><div style="font:600 8px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:var(--muted2); margin-top:3px;">ENFRIAR</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div onClick="{{ onOpenSession }}" style="margin-top:14px; padding:16px; border-radius:15px; background:#4f8cff; text-align:center; font:600 15px/1 'Barlow Semi Condensed'; letter-spacing:.06em; color:#04132e; cursor:pointer; box-shadow:0 10px 30px -8px #4f8cff66;">▶  EMPEZAR SESIÓN</div>
+        <sc-if value="{{ hasResume }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ onResume }}" style="margin-top:9px; padding:13px 15px; border-radius:13px; background:linear-gradient(180deg,#22c55e18,#22c55e08); border:1.5px solid #22c55e88; text-align:center; font:600 13px/1.15 'Barlow Semi Condensed'; color:#7fe0a0; cursor:pointer;">↺  Reanudar sesión · <span style="color:#c5e8d1;font-weight:500;">{{ resumePhaseLabel }}</span></div>
+        </sc-if>
+        <div onClick="{{ onExpressHome }}" style="margin-top:9px; padding:12px; border-radius:13px; border:1px solid var(--border4); text-align:center; font:600 12px/1 'Barlow Semi Condensed'; letter-spacing:.04em; color:var(--muted3); cursor:pointer;">⚡  Sesión exprés · 12 min</div>
+
+        <!-- accesos rápidos a Librería y Cardio -->
+        <div style="display:flex; gap:10px; margin-top:14px;">
+          <a href="biblioteca.html" style="flex:1; text-decoration:none; padding:13px 14px; border-radius:14px; background:var(--card-b); border:1px solid var(--border); display:flex; align-items:center; gap:10px;">
+            <div style="color:#f59e0b; display:flex;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h13a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2z"/><path d="M4 4v14"/></svg></div>
+            <span style="font:600 12px/1.05 'Barlow Semi Condensed'; color:var(--text2);">Librería</span>
+          </a>
+          <a href="hub.html#cardio" style="flex:1; text-decoration:none; padding:13px 14px; border-radius:14px; background:var(--card-b); border:1px solid var(--border); display:flex; align-items:center; gap:10px;">
+            <div style="color:#ea580c; display:flex;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 5.6a5.5 5.5 0 0 0-8.8 1.4A5.5 5.5 0 0 0 3.2 5.6C1 7.8 1 11.3 3.2 13.5L12 22l8.8-8.5c2.2-2.2 2.2-5.7 0-7.9z"/></svg></div>
+            <span style="font:600 12px/1.05 'Barlow Semi Condensed'; color:var(--text2);">Cardio</span>
+          </a>
+        </div>
+
+        <div style="display:flex; justify-content:space-around; align-items:flex-end; border-top:1px solid var(--border2); margin:16px -22px 0; padding:13px 0 2px;">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:5px;"><div style="width:17px; height:17px; border:1.7px solid #4f8cff; border-radius:5px;"></div><span style="font:700 8px/1 'Barlow Semi Condensed'; letter-spacing:.08em; color:#4f8cff;">HOY</span></div>
+          <a href="hub.html#progreso" style="text-decoration:none; display:flex; flex-direction:column; align-items:center; gap:5px;"><div style="width:17px; height:17px; border:1.7px solid var(--muted5); border-radius:5px;"></div><span style="font:700 8px/1 'Barlow Semi Condensed'; letter-spacing:.08em; color:var(--muted4);">PROGRESO</span></a>
+          <a href="hub.html#calend" style="text-decoration:none; display:flex; flex-direction:column; align-items:center; gap:5px;"><div style="width:17px; height:17px; border:1.7px solid var(--muted5); border-radius:5px;"></div><span style="font:700 8px/1 'Barlow Semi Condensed'; letter-spacing:.08em; color:var(--muted4);">CALEND.</span></a>
+          <div onClick="{{ onEditName }}" style="cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:5px;"><div style="width:17px; height:17px; border:1.7px solid var(--muted5); border-radius:50%;"></div><span style="font:700 8px/1 'Barlow Semi Condensed'; letter-spacing:.08em; color:var(--muted4);">PERFIL</span></div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ░░ HEADER (durante la sesión) ░░ -->
+    <sc-if value="{{ showHeader }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:18px 20px 12px; border-bottom:1px solid var(--border2);">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+          <div style="font:600 11px/1 'Barlow Semi Condensed'; letter-spacing:.18em; color:var(--muted2); text-transform:uppercase;">{{ planHeaderSmall }}</div>
+          <div onClick="{{ onQuit }}" style="font:600 11px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:var(--muted4); cursor:pointer;">SALIR ✕</div>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <div style="flex:1; text-align:center; padding:7px 0; border-radius:9px; background:{{ blk1Bg }}; border:1px solid {{ blk1Bd }};">
+            <div style="font:600 9px/1 'Barlow Semi Condensed'; letter-spacing:.12em; color:{{ blk1Fg }};">CALENTAR</div>
+          </div>
+          <div style="flex:1.6; text-align:center; padding:7px 0; border-radius:9px; background:{{ blk2Bg }}; border:1px solid {{ blk2Bd }};">
+            <div style="font:600 9px/1 'Barlow Semi Condensed'; letter-spacing:.12em; color:{{ blk2Fg }};">AMRAP</div>
+          </div>
+          <div style="flex:1; text-align:center; padding:7px 0; border-radius:9px; background:{{ blk3Bg }}; border:1px solid {{ blk3Bd }};">
+            <div style="font:600 9px/1 'Barlow Semi Condensed'; letter-spacing:.12em; color:{{ blk3Fg }};">ENFRIAR</div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ░░ INTRO ░░ -->
+    <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ false }}">
+      <div class="ph" style="flex:1; display:flex; flex-direction:column; padding:30px 24px 26px;">
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <div style="font:600 11px/1 'Barlow Semi Condensed'; letter-spacing:.2em; color:var(--muted2); text-transform:uppercase;">{{ planWeekLine }}</div>
+          <div style="display:flex; align-items:center; gap:7px; padding:5px 11px; border-radius:20px; background:#f5a52416; border:1px solid #f5a52440;">
+            <span style="font-size:13px;">🔥</span><span style="font:400 17px/1 'Bebas Neue'; color:#f5a524;">{{ streak }}</span>
+            <span style="font:600 9px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:var(--txt-amber);">RACHA</span>
+          </div>
+        </div>
+        <div style="font:400 56px/.86 'Bebas Neue'; letter-spacing:.01em; margin-top:18px;">{{ planDayLabel }}<br><span style="color:#4f8cff;">{{ planFocus }}</span></div>
+        <div style="font:500 14px/1.4 'Barlow Semi Condensed'; color:var(--muted); margin-top:10px;">{{ planMuscleMeta }}</div>
+
+        <div style="position:relative; margin:20px 0; border-radius:20px; background:linear-gradient(180deg,var(--card-a),var(--card-b)); border:1px solid var(--border); overflow:hidden;">
+          <image-slot id="intro-preview-photo" shape="rect" placeholder="Arrastra una foto del primer ejercicio" style="display:block; width:100%; height:190px;"></image-slot>
+          <div style="position:absolute; bottom:12px; left:0; right:0; text-align:center; font:600 10px/1 'Barlow Semi Condensed'; letter-spacing:.14em; color:#6f6c8e; pointer-events:none;">VISTA PREVIA · {{ planFirstExName }}</div>
+        </div>
+
+        <div style="display:flex; gap:8px;">
+          <div style="flex:1; text-align:center; padding:11px 0; border-radius:12px; background:var(--panel); border:1px solid var(--border2);"><div style="font:400 22px/1 'Bebas Neue'; color:#f5a524;">5'</div><div style="font:600 9px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:var(--muted2); margin-top:3px;">CALENTAR</div></div>
+          <div style="flex:1.6; text-align:center; padding:11px 0; border-radius:12px; background:#4f8cff14; border:1px solid #4f8cff33;"><div style="font:400 22px/1 'Bebas Neue'; color:#4f8cff;">{{ amrapMinLabel }}</div><div style="font:600 9px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:#7e9fd8; margin-top:3px;">AMRAP · {{ planExCount }}</div></div>
+          <div style="flex:1; text-align:center; padding:11px 0; border-radius:12px; background:var(--panel); border:1px solid var(--border2);"><div style="font:400 22px/1 'Bebas Neue'; color:#a855f7;">5'</div><div style="font:600 9px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:var(--muted2); margin-top:3px;">ENFRIAR</div></div>
+        </div>
+
+        <div style="flex:1;"></div>
+        <div onClick="{{ onStart }}" style="margin-top:22px; padding:17px; border-radius:15px; background:#4f8cff; text-align:center; font:600 15px/1 'Barlow Semi Condensed'; letter-spacing:.06em; color:#04132e; cursor:pointer; box-shadow:0 10px 30px -8px #4f8cff66;">▶  EMPEZAR SESIÓN</div>
+        <div onClick="{{ onExpress }}" style="margin-top:10px; padding:13px; border-radius:13px; border:1px solid var(--border4); text-align:center; font:600 12px/1 'Barlow Semi Condensed'; letter-spacing:.04em; color:var(--muted3); cursor:pointer;">⚡  Sesión exprés · 12 min</div>
+      </div>
+    </sc-if>
+
+    <!-- ░░ CHEQUEO ░░ -->
+    <sc-if value="{{ isCheck }}" hint-placeholder-val="{{ false }}">
+      <div class="ph" style="flex:1; display:flex; flex-direction:column; padding:34px 24px 26px;">
+        <div style="font:600 11px/1 'Barlow Semi Condensed'; letter-spacing:.2em; color:var(--muted2); text-transform:uppercase;">Antes de empezar · 5 seg</div>
+        <div style="font:400 46px/.9 'Bebas Neue'; margin-top:12px;">¿CÓMO TE<br>ENCUENTRAS<br>HOY?</div>
+        <div style="display:flex; flex-direction:column; gap:11px; margin-top:26px;">
+          <sc-for list="{{ moods }}" as="m" hint-placeholder-count="3">
+            <div onClick="{{ m.onSelect }}" style="{{ m.style }}">
+              <span style="font-size:30px;">{{ m.emoji }}</span>
+              <div><div style="font:600 15px/1 'Barlow Semi Condensed'; color:var(--text);">{{ m.label }}</div><div style="font:500 12px/1.2 'Barlow Semi Condensed'; color:var(--muted); margin-top:3px;">{{ m.sub }}</div></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top:18px; padding:13px 15px; border-radius:13px; background:var(--card-b); border:1px dashed var(--border4);">
+          <div style="font:600 10px/1 'Barlow Semi Condensed'; letter-spacing:.12em; color:var(--muted2); margin-bottom:9px;">SI HAY MOLESTIA, ¿DÓNDE?</div>
+          <div style="display:flex; flex-wrap:wrap; gap:7px;">
+            <sc-for list="{{ zoneChips }}" as="z" hint-placeholder-count="6">
+              <span onClick="{{ z.onTap }}" style="{{ z.style }}">{{ z.name }}</span>
+            </sc-for>
+          </div>
+          <div style="font:500 11px/1.4 'Barlow Semi Condensed'; color:#6f6c8e; margin-top:9px;">{{ zoneHint }}</div>
+        </div>
+        <div style="flex:1;"></div>
+        <sc-if value="{{ soreMode }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ onCheckContinue }}" style="{{ checkContinueStyle }}">CONTINUAR  →</div>
+        </sc-if>
+        <sc-if value="{{ showChooseHint }}" hint-placeholder-val="{{ true }}">
+          <div style="text-align:center; font:600 10px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:var(--muted4); margin-top:18px;">ELIGE UNA OPCIÓN PARA CONTINUAR</div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <!-- ░░ CALENTAMIENTO ░░ -->
+    <sc-if value="{{ isWarmup }}" hint-placeholder-val="{{ false }}">
+      <div class="ph" style="flex:1; display:flex; flex-direction:column; padding:22px 24px 24px;">
+        <div style="font:600 11px/1 'Barlow Semi Condensed'; letter-spacing:.18em; color:#f5a524; text-transform:uppercase;">Bloque 1 · movilidad dinámica</div>
+        <div style="text-align:center; margin:18px 0 4px;">
+          <div style="font:600 11px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:var(--muted);">{{ warmupName }}</div>
+          <div style="font:400 78px/.9 'Bebas Neue'; color:#f5a524; font-variant-numeric:tabular-nums;">{{ warmupClock }}</div>
+        </div>
+        <div style="height:6px; border-radius:4px; background:var(--track); overflow:hidden;"><div style="height:100%; background:#f5a524; border-radius:4px; width:{{ warmupPct }}%; transition:width .9s linear;"></div></div>
+
+        <div style="display:flex; flex-direction:column; gap:8px; margin-top:22px;">
+          <sc-for list="{{ warmupList }}" as="w" hint-placeholder-count="5">
+            <div onClick="{{ w.onTap }}" style="{{ w.style }}">
+              <span style="font:600 13px/1 'Barlow Semi Condensed'; color:{{ w.fg }};">{{ w.name }}</span>
+              <span style="font:600 11px/1 'Barlow Semi Condensed'; color:{{ w.tagFg }};">{{ w.tag }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="flex:1;"></div>
+        <sc-if value="{{ warmupDone }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ onWarmupNext }}" style="margin-top:20px; padding:16px; border-radius:14px; background:#4f8cff; text-align:center; font:600 14px/1 'Barlow Semi Condensed'; letter-spacing:.05em; color:#04132e; cursor:pointer;">VER EJERCICIOS  →</div>
+        </sc-if>
+        <sc-if value="{{ warmupRunning }}" hint-placeholder-val="{{ true }}">
+          <div onClick="{{ onSkipMove }}" style="margin-top:20px; padding:13px; border-radius:13px; border:1px solid var(--border4); text-align:center; font:600 12px/1 'Barlow Semi Condensed'; letter-spacing:.04em; color:var(--muted3); cursor:pointer;">Saltar este movimiento  ⏭</div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <!-- ░░ DEMO ░░ -->
+    <sc-if value="{{ isDemo }}" hint-placeholder-val="{{ false }}">
+      <div class="ph" style="flex:1; display:flex; flex-direction:column; padding:22px 24px 24px;">
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <div style="font:600 11px/1 'Barlow Semi Condensed'; letter-spacing:.16em; color:#4f8cff; text-transform:uppercase;">Ejercicio {{ demoNum }} de {{ demoTotal }}</div>
+          <div style="display:flex; gap:5px;">
+            <sc-for list="{{ demoDots }}" as="d" hint-placeholder-count="4"><div style="{{ d.style }}"></div></sc-for>
+          </div>
+        </div>
+        <div style="font:400 36px/.9 'Bebas Neue'; margin-top:12px;">{{ demoName }}</div>
+        <div style="display:flex; gap:7px; margin-top:8px; flex-wrap:wrap; align-items:center;">
+          <sc-if value="{{ hasDemoLoad }}" hint-placeholder-val="{{ false }}">
+            <span style="padding:8px 16px; border-radius:22px; background:linear-gradient(180deg,#4f8cff33,#4f8cff1a); border:1.5px solid #4f8cff; font:600 15px/1 'Barlow Semi Condensed'; color:#c5dcff; letter-spacing:.02em;">🏋  {{ demoLoad }}</span>
+          </sc-if>
+          <span style="padding:6px 13px; border-radius:20px; background:#4f8cff18; border:1px solid #4f8cff44; font:600 13px/1 'Barlow Semi Condensed'; color:#4f8cff;">{{ demoReps }}</span>
+          <span style="padding:5px 12px; border-radius:20px; border:1px solid var(--border4); font:500 11px/1 'Barlow Semi Condensed'; color:var(--muted);">{{ demoMuscle }}</span>
+          <span style="padding:5px 12px; border-radius:20px; border:1px solid var(--border4); font:500 11px/1 'Barlow Semi Condensed'; color:var(--muted);">{{ demoMaterial }}</span>
+        </div>
+
+        <div style="position:relative; margin:14px 0 12px; border-radius:16px; background:linear-gradient(180deg,var(--card-a),var(--card-b)); border:1px solid var(--border); overflow:hidden;">
+          <image-slot id="demo-photo-{{ demoEx }}" shape="rect" placeholder="Arrastra una foto o GIF de este ejercicio (opcional)" style="display:block; width:100%; height:140px;"></image-slot>
+        </div>
+
+        <div style="padding:14px 16px 16px; border-radius:14px; background:var(--card-b); border:1px solid var(--border); margin-bottom:10px;">
+          <div style="font:600 10px/1 'Barlow Semi Condensed'; letter-spacing:.14em; color:#4f8cff; margin-bottom:12px;">CÓMO HACERLO</div>
+          <div style="display:flex; flex-direction:column; gap:11px;">
+            <sc-for list="{{ demoPasos }}" as="p" hint-placeholder-count="3">
+              <div style="display:flex; gap:12px; align-items:flex-start;">
+                <div style="flex-shrink:0; width:24px; height:24px; border-radius:50%; background:#4f8cff22; border:1.5px solid #4f8cff; display:flex; align-items:center; justify-content:center; font:400 15px/1 'Bebas Neue'; color:#9cc0ff; margin-top:1px;">{{ p.n }}</div>
+                <div style="flex:1; font:500 13px/1.5 'Barlow Semi Condensed'; color:var(--text3);">{{ p.t }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="padding:13px 15px; border-radius:13px; background:var(--tint-amber-c); border:1px solid #f5a52433;">
+          <div style="font:600 10px/1 'Barlow Semi Condensed'; letter-spacing:.12em; color:#f5a524; margin-bottom:8px;">⚠ ERRORES COMUNES</div>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <sc-for list="{{ demoErrors }}" as="e" hint-placeholder-count="2">
+              <div style="font:500 12.5px/1.4 'Barlow Semi Condensed'; color:#d8d3e8;">· {{ e.t }}</div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="flex:1;"></div>
+        <div style="display:flex; gap:10px; margin-top:18px;">
+          <div onClick="{{ onDemoPrev }}" style="{{ demoPrevStyle }}">←</div>
+          <div onClick="{{ onDemoNext }}" style="flex:1; padding:16px; border-radius:14px; background:#4f8cff; text-align:center; font:600 14px/1 'Barlow Semi Condensed'; letter-spacing:.05em; color:#04132e; cursor:pointer;">{{ demoNextLabel }}</div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ░░ AMRAP ░░ -->
+    <sc-if value="{{ isAmrap }}" hint-placeholder-val="{{ false }}">
+      <div class="ph" style="flex:1; display:flex; flex-direction:column; padding:20px 24px 24px;">
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <div style="display:flex; align-items:center; gap:7px;">
+            <div style="width:8px; height:8px; border-radius:50%; background:{{ liveColor }}; animation:liveDot 1.1s ease-in-out infinite;"></div>
+            <span style="font:600 11px/1 'Barlow Semi Condensed'; letter-spacing:.16em; color:#4f8cff; text-transform:uppercase;">{{ amrapStatus }}</span>
+          </div>
+          <span style="font:600 11px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:var(--muted2);">MÁXIMAS RONDAS</span>
+        </div>
+
+        <div style="text-align:center; margin:8px 0 4px;">
+          <div style="font:400 96px/.86 'Bebas Neue'; color:var(--text); font-variant-numeric:tabular-nums;">{{ amrapClock }}</div>
+        </div>
+        <div style="height:6px; border-radius:4px; background:var(--track); overflow:hidden;"><div style="height:100%; background:#4f8cff; border-radius:4px; width:{{ amrapPct }}%; transition:width .9s linear;"></div></div>
+
+        <div style="display:flex; align-items:center; gap:14px; margin-top:20px; padding:16px 18px; border-radius:18px; background:linear-gradient(180deg,var(--card-a),var(--card-b)); border:1px solid var(--border);">
+          <div onClick="{{ onSubRound }}" style="width:58px; height:58px; border-radius:16px; border:1.5px solid #ffffff1f; display:flex; align-items:center; justify-content:center; font:300 32px/1 system-ui; color:var(--muted); cursor:pointer; flex-shrink:0;">−</div>
+          <div style="flex:1; text-align:center;">
+            <div style="font:400 64px/.85 'Bebas Neue'; color:#4f8cff;">{{ rounds }}</div>
+            <div style="font:600 10px/1 'Barlow Semi Condensed'; letter-spacing:.14em; color:var(--muted2); margin-top:2px;">RONDAS · MEJOR {{ bestRounds }}</div>
+          </div>
+          <div onClick="{{ onAddRound }}" style="width:58px; height:58px; border-radius:16px; background:#4f8cff; display:flex; align-items:center; justify-content:center; font:300 34px/1 system-ui; color:#04132e; cursor:pointer; flex-shrink:0; box-shadow:0 8px 22px -6px #4f8cff77;">+</div>
+        </div>
+
+        <div style="font:600 10px/1 'Barlow Semi Condensed'; letter-spacing:.14em; color:var(--muted2); margin:18px 0 8px;">CIRCUITO · 1 RONDA</div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <sc-for list="{{ circuit }}" as="c" hint-placeholder-count="4">
+            <div onClick="{{ c.onTap }}" style="display:flex; align-items:center; justify-content:space-between; padding:9px 13px; border-radius:11px; background:var(--panel); border-left:3px solid #4f8cff; cursor:pointer;">
+              <span style="font:600 13px/1 'Barlow Semi Condensed'; color:var(--text3);">{{ c.name }}</span>
+              <span style="display:flex; align-items:center; gap:8px; font:600 12px/1 'Barlow Semi Condensed'; color:#4f8cff;">
+                <sc-if value="{{ c.hasLoad }}" hint-placeholder-val="{{ false }}">
+                  <span style="padding:2px 8px; border-radius:9px; background:#4f8cff22; color:#9cc0ff; font-weight:600; font-size:11px;">{{ c.load }}</span>
+                </sc-if>
+                {{ c.reps }}<span style="color:var(--muted5); font-size:13px;">›</span>
+              </span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="flex:1;"></div>
+        <div style="display:flex; gap:10px; margin-top:18px;">
+          <div onClick="{{ onToggleAmrap }}" style="flex:1; padding:15px; border-radius:14px; border:1px solid #ffffff1f; text-align:center; font:600 13px/1 'Barlow Semi Condensed'; letter-spacing:.04em; color:var(--text3); cursor:pointer;">{{ amrapToggleLabel }}</div>
+          <div onClick="{{ onFinishAmrap }}" style="flex:1; padding:15px; border-radius:14px; background:#a855f7; text-align:center; font:600 13px/1 'Barlow Semi Condensed'; letter-spacing:.04em; color:#1a0a2e; cursor:pointer;">TERMINAR  →</div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ░░ ENFRIAMIENTO ░░ -->
+    <sc-if value="{{ isCooldown }}" hint-placeholder-val="{{ false }}">
+      <div class="ph" style="flex:1; display:flex; flex-direction:column; padding:22px 24px 24px;">
+        <div style="font:600 11px/1 'Barlow Semi Condensed'; letter-spacing:.18em; color:#a855f7; text-transform:uppercase;">Bloque 3 · estira y respira</div>
+        <div style="text-align:center; margin:16px 0 4px;">
+          <div style="font:600 11px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:var(--muted);">{{ cdName }}</div>
+          <div style="font:400 64px/.9 'Bebas Neue'; color:#a855f7; font-variant-numeric:tabular-nums;">{{ cdClock }}</div>
+        </div>
+        <div style="height:6px; border-radius:4px; background:var(--track); overflow:hidden;"><div style="height:100%; background:#a855f7; border-radius:4px; width:{{ cdPct }}%; transition:width .9s linear;"></div></div>
+
+        <div style="display:flex; flex-direction:column; gap:7px; margin-top:18px;">
+          <sc-for list="{{ cdList }}" as="s" hint-placeholder-count="4">
+            <div onClick="{{ s.onTap }}" style="{{ s.style }}">
+              <span style="font:600 12px/1 'Barlow Semi Condensed'; color:{{ s.fg }};">{{ s.name }}</span>
+              <span style="font:600 11px/1 'Barlow Semi Condensed'; color:{{ s.tagFg }};">{{ s.tag }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="margin-top:18px; padding:18px; border-radius:16px; background:var(--tint-purple); border:1px solid #a855f733; display:flex; flex-direction:column; align-items:center;">
+          <div style="font:600 10px/1 'Barlow Semi Condensed'; letter-spacing:.12em; color:#a855f7;">RESPIRACIÓN GUIADA</div>
+          <div style="position:relative; width:120px; height:120px; margin:14px 0 10px; display:flex; align-items:center; justify-content:center;">
+            <div style="position:absolute; width:120px; height:120px; border-radius:50%; background:radial-gradient(circle, #a855f733, transparent 70%); animation:breathe 10s ease-in-out infinite;"></div>
+            <div style="width:84px; height:84px; border-radius:50%; border:2px solid #a855f7; background:#a855f714; animation:breathe 10s ease-in-out infinite; display:flex; align-items:center; justify-content:center;">
+              <span style="font:600 12px/1.3 'Barlow Semi Condensed'; color:#c9a6f7; text-align:center;">Sigue<br>el círculo</span>
+            </div>
+          </div>
+          <div style="font:500 11px/1 'Barlow Semi Condensed'; color:var(--muted);">Inhala 4s · exhala 6s · baja pulsaciones</div>
+        </div>
+
+        <div style="flex:1;"></div>
+        <div onClick="{{ onFinishCooldown }}" style="margin-top:18px; padding:16px; border-radius:14px; background:#a855f7; text-align:center; font:600 14px/1 'Barlow Semi Condensed'; letter-spacing:.05em; color:#1a0a2e; cursor:pointer;">TERMINAR SESIÓN  →</div>
+      </div>
+    </sc-if>
+
+    <!-- ░░ RPE ░░ -->
+    <sc-if value="{{ isRpe }}" hint-placeholder-val="{{ false }}">
+      <div class="ph" style="flex:1; display:flex; flex-direction:column; padding:34px 24px 26px;">
+        <div style="font:600 11px/1 'Barlow Semi Condensed'; letter-spacing:.2em; color:#22c55e; text-transform:uppercase;">Sesión completada 🎉</div>
+        <div style="font:400 46px/.9 'Bebas Neue'; margin-top:12px;">¿CÓMO HA<br>IDO?</div>
+        <div style="font:600 10px/1 'Barlow Semi Condensed'; letter-spacing:.12em; color:var(--muted2); margin:24px 0 12px;">ESFUERZO PERCIBIDO (RPE)</div>
+        <div style="display:flex; flex-direction:column; gap:11px;">
+          <sc-for list="{{ rpes }}" as="r" hint-placeholder-count="3">
+            <div onClick="{{ r.onSelect }}" style="{{ r.style }}">
+              <span style="font-size:26px;">{{ r.emoji }}</span>
+              <div><div style="font:600 14px/1 'Barlow Semi Condensed'; color:var(--text);">{{ r.label }}</div><div style="font:500 12px/1 'Barlow Semi Condensed'; color:var(--muted); margin-top:3px;">{{ r.sub }}</div></div>
+            </div>
+          </sc-for>
+        </div>
+        <sc-if value="{{ hasRpe }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:16px; padding:13px 15px; border-radius:13px; background:#0e1a14; border:1px solid #22c55e33;">
+            <div style="font:600 10px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:#22c55e; margin-bottom:5px;">SUGERENCIA · NUNCA OBLIGA</div>
+            <div style="font:500 12px/1.45 'Barlow Semi Condensed'; color:#d8d3e8;">{{ rpeSuggestion }}</div>
+          </div>
+        </sc-if>
+        <div style="flex:1;"></div>
+        <div onClick="{{ onSave }}" style="{{ saveStyle }}">GUARDAR Y CERRAR</div>
+      </div>
+    </sc-if>
+
+    <!-- ░░ DONE ░░ -->
+    <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+      <div class="ph" style="flex:1; display:flex; flex-direction:column; padding:34px 24px 26px; align-items:center; text-align:center;">
+        <div style="width:74px; height:74px; border-radius:50%; background:#22c55e1a; border:1.5px solid #22c55e; display:flex; align-items:center; justify-content:center; font-size:34px; margin-top:14px;">✓</div>
+        <div style="font:400 50px/.9 'Bebas Neue'; margin-top:20px;">¡SESIÓN<br>GUARDADA!</div>
+        <div style="display:flex; align-items:center; gap:9px; margin-top:18px; padding:10px 18px; border-radius:22px; background:#f5a52416; border:1px solid #f5a52440;">
+          <span style="font-size:20px;">🔥</span><span style="font:400 30px/1 'Bebas Neue'; color:#f5a524;">{{ streak }}</span>
+          <span style="font:600 11px/1.1 'Barlow Semi Condensed'; letter-spacing:.06em; color:var(--txt-amber); text-align:left;">DÍAS<br>DE RACHA</span>
+        </div>
+
+        <div style="display:flex; gap:10px; margin-top:24px; width:100%;">
+          <div style="flex:1; padding:16px 0; border-radius:14px; background:var(--panel); border:1px solid var(--border2);"><div style="font:400 34px/1 'Bebas Neue'; color:#4f8cff;">{{ rounds }}</div><div style="font:600 9px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:var(--muted2); margin-top:4px;">RONDAS</div></div>
+          <div style="flex:1; padding:16px 0; border-radius:14px; background:var(--panel); border:1px solid var(--border2);"><div style="font:400 34px/1 'Bebas Neue'; color:#a855f7;">28'</div><div style="font:600 9px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:var(--muted2); margin-top:4px;">DURACIÓN</div></div>
+          <div style="flex:1; padding:16px 0; border-radius:14px; background:var(--panel); border:1px solid var(--border2);"><div style="font:400 34px/1 'Bebas Neue'; color:#22c55e;">{{ doneRpe }}</div><div style="font:600 9px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:var(--muted2); margin-top:4px;">ESFUERZO</div></div>
+        </div>
+
+        <div style="margin-top:18px; padding:15px 16px; border-radius:13px; background:var(--card-b); border:1px solid var(--border2); width:100%;">
+          <div style="font:600 9px/1 'Barlow Semi Condensed'; letter-spacing:.12em; color:#4f8cff; margin-bottom:6px;">💬 PARA HOY</div>
+          <div style="font:500 13px/1.45 'Barlow Semi Condensed'; color:var(--muted3);">{{ doneQuote }}</div>
+        </div>
+
+        <sc-if value="{{ hasAdjustments }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:12px; padding:15px 16px; border-radius:14px; background:linear-gradient(180deg,#0f1420,#0d111c); border:1px solid #4f8cff44; width:100%; text-align:left;">
+            <div style="font:600 9px/1 'Barlow Semi Condensed'; letter-spacing:.14em; color:#9cc0ff; margin-bottom:9px;">📈 SUGERENCIA DE CARGA PARA LA PRÓXIMA</div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <sc-for list="{{ adjustmentsList }}" as="a" hint-placeholder-count="2">
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; font:500 12.5px/1.35 'Barlow Semi Condensed'; color:var(--text3);">
+                  <span>{{ a.ex }}</span>
+                  <span style="font:600 12px/1 'Barlow Semi Condensed'; color:{{ a.color }};">{{ a.arrow }} {{ a.to }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <div style="flex:1;"></div>
+        <a href="hub.html#progreso" style="margin-top:20px; padding:15px; border-radius:14px; background:#4f8cff; text-align:center; font:600 13px/1 'Barlow Semi Condensed'; letter-spacing:.05em; color:#04132e; cursor:pointer; width:100%; text-decoration:none; box-sizing:border-box;">📏&nbsp;&nbsp;REGISTRAR PESO / MEDIDA</a>
+        <a href="hub.html" style="margin-top:10px; padding:16px; border-radius:14px; border:1px solid #ffffff1f; text-align:center; font:600 13px/1 'Barlow Semi Condensed'; letter-spacing:.05em; color:var(--text3); cursor:pointer; width:100%; text-decoration:none; box-sizing:border-box;">VOLVER AL INICIO</a>
+      </div>
+    </sc-if>
+
+    <!-- ░░ FICHA DE EJERCICIO (overlay) ░░ -->
+    <sc-if value="{{ hasFicha }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ onCloseFicha }}" style="position:absolute; inset:0; z-index:40; background:#04040baa; backdrop-filter:blur(3px); display:flex; flex-direction:column; justify-content:flex-end;">
+        <div onClick="{{ stop }}" style="background:linear-gradient(180deg,var(--card-b),var(--card-b)); border-top-left-radius:26px; border-top-right-radius:26px; border:1px solid var(--border3); border-bottom:none; padding:10px 22px 24px; max-height:92%; overflow-y:auto; animation:sheetUp .26s cubic-bezier(.2,.8,.2,1);">
+          <div style="width:38px; height:4px; border-radius:3px; background:var(--border8); margin:0 auto 16px;"></div>
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+            <div>
+              <div style="font:600 10px/1 'Barlow Semi Condensed'; letter-spacing:.16em; color:{{ fichaAccent }}; text-transform:uppercase;">{{ fichaBlockLabel }}</div>
+              <div style="font:400 34px/.92 'Bebas Neue'; margin-top:7px;">{{ fichaName }}</div>
+            </div>
+            <div onClick="{{ onCloseFicha }}" style="width:34px; height:34px; flex-shrink:0; border-radius:50%; border:1px solid var(--border7); display:flex; align-items:center; justify-content:center; font:300 22px/1 system-ui; color:var(--muted); cursor:pointer;">×</div>
+          </div>
+
+          <div style="display:flex; gap:7px; margin-top:11px; flex-wrap:wrap;">
+            <span style="padding:5px 12px; border-radius:18px; background:{{ fichaAccentBg }}; border:1px solid {{ fichaAccentBd }}; font:600 12px/1 'Barlow Semi Condensed'; color:{{ fichaAccent }};">{{ fichaDose }}</span>
+            <span style="padding:5px 12px; border-radius:18px; border:1px solid var(--border4); font:600 12px/1 'Barlow Semi Condensed'; color:var(--muted);">{{ fichaMuscle }}</span>
+            <span style="padding:5px 12px; border-radius:18px; border:1px solid var(--border4); font:600 12px/1 'Barlow Semi Condensed'; color:var(--muted);">{{ fichaMaterial }}</span>
+          </div>
+
+          <div style="position:relative; margin:15px 0; border-radius:18px; background:linear-gradient(180deg,var(--card-a),var(--card-b)); border:1px solid var(--border); overflow:hidden;">
+            <image-slot id="ficha-photo-{{ fichaPose }}" shape="rect" placeholder="Arrastra foto o GIF de este ejercicio" style="display:block; width:100%; height:220px;"></image-slot>
+          </div>
+
+          <sc-if value="{{ hasFichaPasos }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:14px 16px 15px; border-radius:14px; background:var(--card-b); border:1px solid var(--border); margin-bottom:12px;">
+              <div style="font:600 10px/1 'Barlow Semi Condensed'; letter-spacing:.14em; color:{{ fichaAccent }}; margin-bottom:10px;">CÓMO HACERLO</div>
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <sc-for list="{{ fichaPasos }}" as="p" hint-placeholder-count="3">
+                  <div style="display:flex; gap:12px; align-items:flex-start;">
+                    <div style="flex-shrink:0; width:22px; height:22px; border-radius:50%; background:{{ fichaAccentBg }}; border:1.5px solid {{ fichaAccent }}; display:flex; align-items:center; justify-content:center; font:400 14px/1 'Bebas Neue'; color:{{ fichaAccent }};">{{ p.n }}</div>
+                    <div style="flex:1; font:500 12.5px/1.5 'Barlow Semi Condensed'; color:var(--text3);">{{ p.t }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <div style="padding:14px 16px; border-radius:14px; background:var(--tint-amber-c); border:1px solid #f5a52433;">
+            <div style="font:600 10px/1 'Barlow Semi Condensed'; letter-spacing:.12em; color:#f5a524; margin-bottom:9px;">⚠ CLAVES DE TÉCNICA</div>
+            <div style="display:flex; flex-direction:column; gap:7px;">
+              <sc-for list="{{ fichaErrors }}" as="e" hint-placeholder-count="2">
+                <div style="font:500 12px/1.4 'Barlow Semi Condensed'; color:#d8d3e8;">· {{ e.t }}</div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div onClick="{{ onCloseFicha }}" style="margin-top:16px; padding:15px; border-radius:14px; background:{{ fichaAccent }}; text-align:center; font:600 13px/1 'Barlow Semi Condensed'; letter-spacing:.05em; color:#04132e; cursor:pointer;">ENTENDIDO</div>
+        </div>
+      </div>
+    </sc-if>
+
+  </div>
+</div>
+
+<template id="__bundler_thumbnail" data-bg-color="var(--bg-phone-b)">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="var(--bg-phone-b)"/>
+    <g transform="translate(600 400)" stroke="#4f8cff" stroke-width="34" stroke-linecap="round" fill="none">
+      <line x1="-210" y1="0" x2="210" y2="0"/>
+      <line x1="-210" y1="-78" x2="-210" y2="78"/>
+      <line x1="210" y1="-78" x2="210" y2="78"/>
+      <line x1="-270" y1="-44" x2="-270" y2="44"/>
+      <line x1="270" y1="-44" x2="270" y2="44"/>
+    </g>
+    <text x="600" y="620" font-family="Arial, sans-serif" font-size="72" font-weight="700" fill="var(--text)" text-anchor="middle" letter-spacing="8">AMRAP</text>
+  </svg>
+</template>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:440,&quot;height&quot;:880}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    let saved = {};
+    try { saved = JSON.parse(localStorage.getItem('amrap_fn') || '{}'); } catch (e) {}
+    this.saved = saved;
+    // Sin perfil → redirige al onboarding real (ya no hay onboarding duplicado aquí)
+    if (typeof window !== 'undefined' && !saved.name) {
+      setTimeout(() => { try { location.href = 'onboarding.html'; } catch(e){} }, 0);
+    }
+    // ░░ LIBRERÍA COMPLETA DE EJERCICIOS ░░
+    // Cada ejercicio: figura animada (pose), bloque, grupo muscular, material y errores.
+    this.LIB = [
+      // — Calentamiento (movilidad dinámica) —
+      { id:'w-legswing',  name:'Balanceo de pierna',     pose:'legswing',     block:'warmup',   sec:30, muscle:'Cadera · Isquios',     material:'Peso corporal', errors:['Controla el balanceo, no rebotes','Mantén el tronco estable'] },
+      { id:'w-squat',     name:'Sentadillas sin peso',   pose:'squat',        block:'warmup',   sec:40, muscle:'Cuádriceps · Glúteo',  material:'Peso corporal', errors:['Talones pegados al suelo','Rodillas alineadas con los pies'] },
+      { id:'w-lunge',     name:'Zancadas caminando',     pose:'lunge',        block:'warmup',   sec:30, muscle:'Glúteo · Cuádriceps',  material:'Peso corporal', errors:['Paso amplio y estable','La rodilla no pasa la punta'] },
+      { id:'w-highknees', name:'Rodillas altas',         pose:'highknees',    block:'warmup',   sec:30, muscle:'Cardio · Core',        material:'Peso corporal', errors:['Lleva las rodillas a la cadera','Los brazos acompañan'] },
+      { id:'w-calf',      name:'Elevaciones de talón',   pose:'calfraise',    block:'warmup',   sec:30, muscle:'Gemelos',              material:'Peso corporal', errors:['Sube despacio','Pausa arriba 1 s'] },
+      // — AMRAP (banco principal) —
+      { id:'squat',         name:'Sentadilla sumo',     pose:'squat',        block:'amrap', reps:'12 reps',     muscle:'Cuádriceps · Glúteo', material:'Mancuerna',     errors:['Las rodillas no entran hacia dentro','El pecho no cae hacia delante'] },
+      { id:'lunge',         name:'Zancada trasera',     pose:'lunge',        block:'amrap', reps:'10 / pierna', muscle:'Glúteo · Cuádriceps', material:'Mancuerna',     errors:['La rodilla no pasa la punta del pie','Mantén el tronco erguido'] },
+      { id:'glutebridge',   name:'Puente de glúteo',    pose:'glutebridge',  block:'amrap', reps:'15 reps',     muscle:'Glúteo · Isquios',    material:'Peso corporal', errors:['Aprieta el glúteo arriba','No arquees la lumbar'] },
+      { id:'jack',          name:'Saltos de tijera',    pose:'jack',         block:'amrap', reps:'30 reps',     muscle:'Cardio · Full body',  material:'Peso corporal', errors:['Aterriza suave, rodillas blandas','Brazos completos por encima'] },
+      { id:'pushup',        name:'Flexiones',           pose:'pushup',       block:'amrap', reps:'8 reps',      muscle:'Pecho · Tríceps',     material:'Peso corporal', errors:['Cuerpo en línea recta','Codos a ~45°, no abiertos'] },
+      { id:'shoulderpress', name:'Press de hombros',    pose:'shoulderpress',block:'amrap', reps:'10 reps',     muscle:'Hombro · Tríceps',    material:'Mancuerna',     errors:['No arquees la lumbar','Recorrido completo arriba'] },
+      { id:'bicepcurl',     name:'Curl de bíceps',      pose:'bicepcurl',    block:'amrap', reps:'12 reps',     muscle:'Bíceps',              material:'Mancuerna',     errors:['Codos pegados al cuerpo','No balancees el torso'] },
+      { id:'row',           name:'Remo con mancuerna',  pose:'row',          block:'amrap', reps:'12 reps',     muscle:'Espalda · Bíceps',    material:'Mancuerna',     errors:['Lleva el codo hacia atrás','Espalda recta, no encorvada'] },
+      { id:'rdl',           name:'Peso muerto rumano',  pose:'rdl',          block:'amrap', reps:'12 reps',     muscle:'Isquios · Glúteo',    material:'Mancuerna',     errors:['Bisagra de cadera, no sentadilla','Espalda neutra'] },
+      { id:'lateralraise',  name:'Elevación lateral',   pose:'lateralraise', block:'amrap', reps:'12 reps',     muscle:'Hombro',              material:'Mancuerna',     errors:['Sube hasta la altura del hombro','No uses impulso'] },
+      { id:'crunch',        name:'Crunch abdominal',    pose:'crunch',       block:'amrap', reps:'15 reps',     muscle:'Core · Abdomen',      material:'Esterilla',     errors:['No tires del cuello','Sube con el abdomen'] },
+      { id:'legraise',      name:'Elevación de piernas',pose:'legraise',     block:'amrap', reps:'12 reps',     muscle:'Core inferior',       material:'Esterilla',     errors:['Lumbar pegada al suelo','Baja controlando'] },
+      { id:'plank',         name:'Plancha',             pose:'plank',        block:'amrap', reps:'40 seg',      muscle:'Core · Hombro',       material:'Peso corporal', errors:['Cadera ni alta ni baja','Aprieta abdomen y glúteo'] },
+      { id:'climber',       name:'Escaladores',         pose:'climber',      block:'amrap', reps:'30 reps',     muscle:'Core · Cardio',       material:'Peso corporal', errors:['Cadera baja y estable','Ritmo constante'] },
+      // — Enfriamiento (estiramiento y movilidad) —
+      { id:'c-catcow', name:'Gato–Vaca',                  pose:'catcow',     block:'cooldown', sec:30, muscle:'Movilidad de columna', material:'Esterilla',     errors:['Mueve vértebra a vértebra','Acompaña con la respiración'] },
+      { id:'c-cobra',  name:'Cobra a Niño',               pose:'cobra',      block:'cooldown', sec:30, muscle:'Abdomen · Espalda',    material:'Esterilla',     errors:['Abre el pecho sin forzar','Hombros lejos de las orejas'] },
+      { id:'c-quad',   name:'Estiramiento de cuádriceps', pose:'quadstretch',block:'cooldown', sec:30, muscle:'Cuádriceps',           material:'Peso corporal', errors:['Mantén las rodillas juntas','No arquees la lumbar'] },
+      { id:'c-child',  name:'Postura del niño',           pose:'childpose',  block:'cooldown', sec:30, muscle:'Espalda · Cadera',     material:'Esterilla',     errors:['Relaja los hombros','Respira profundo'] }
+    ];
+    const byBlock = (b) => this.LIB.filter(e => e.block === b);
+    this.WARMUP = byBlock('warmup');
+    this.COOL = byBlock('cooldown');
+
+    // ░░ CATÁLOGO DE PLANES ░░ — cada perfil elige objetivo, nivel, frecuencia y duración
+    this.GOALS = {
+      full:    { label:'Cuerpo completo', muscles:'Equilibrio total · fuerza y cardio', ids:['squat','pushup','row','plank'] },
+      legs:    { label:'Piernas y glúteo', muscles:'Cuádriceps · Glúteo · Isquios',      ids:['squat','lunge','glutebridge','rdl'] },
+      upper:   { label:'Tren superior',    muscles:'Pecho · Espalda · Hombro · Brazo',   ids:['pushup','shoulderpress','row','bicepcurl'] },
+      core:    { label:'Core y abdomen',   muscles:'Abdomen · Lumbar · Estabilidad',     ids:['crunch','legraise','plank','climber'] },
+      fatloss: { label:'Quemar grasa',     muscles:'Cardio · Full body · Quema',         ids:['jack','climber','squat','plank'] }
+    };
+    const _LV = {
+      beginner:     { label:'Principiante', sub:'Empiezo o estoy volviendo',  min:18 },
+      intermediate: { label:'Intermedio',   sub:'Entreno con regularidad',    min:20 },
+      advanced:     { label:'Avanzado',     sub:'Quiero darlo todo',          min:22 }
+    };
+    // alias en español (viene así del onboarding real)
+    _LV.principiante = _LV.beginner;
+    _LV.intermedio   = _LV.intermediate;
+    _LV.avanzado     = _LV.advanced;
+    this.LEVELS = _LV;
+    this.applyPlan({ goal: saved.goal, level: saved.level });
+
+    this.state = {
+      phase: 'home',
+      name: saved.name || '',
+      nameInput: '',
+      setupStep: 0,
+      goal: saved.goal || 'full',
+      level: saved.level || saved.nivel || 'beginner',
+      days: saved.days || saved.diasPorSemana || 3,
+      weeks: saved.weeks || 6,
+      startDate: saved.startDate || null,
+      streak: saved.streak || 0,
+      bestRounds: saved.bestRounds || 0,
+      mood:null,
+      todayInjuries: [],
+      warmupIdx:0, warmupLeft:this.WARMUP[0].sec, warmupRunning:false, warmupDone:false,
+      demoIdx:0,
+      amrapTotal:this.amrapSecs, amrapLeft:this.amrapSecs, amrapRunning:false, rounds:0,
+      cdIdx:0, cdLeft:this.COOL[0].sec, cdRunning:false, cdDone:false,
+      rpe:null,
+      express:false,
+      ficha:null
+    };
+
+    this._resumeSnap = null;
+    try {
+      const raw = localStorage.getItem('amrap_current');
+      if (raw) {
+        const snap = JSON.parse(raw);
+        if (snap && snap.ts && (Date.now() - snap.ts) < 4 * 3600 * 1000
+            && ['warmup','demo','amrap','cooldown'].includes(snap.phase)) {
+          this._resumeSnap = snap;
+        } else {
+          localStorage.removeItem('amrap_current');
+        }
+      }
+    } catch (e) {}
+  }
+
+  _saveSnap = () => {
+    const s = this.state;
+    if (!['warmup','demo','amrap','cooldown'].includes(s.phase)) return;
+    const snap = {
+      ts: Date.now(),
+      phase: s.phase, mood: s.mood, todayInjuries: s.todayInjuries || [],
+      warmupIdx: s.warmupIdx, warmupLeft: s.warmupLeft,
+      demoIdx: s.demoIdx,
+      amrapTotal: s.amrapTotal, amrapLeft: s.amrapLeft, rounds: s.rounds,
+      cdIdx: s.cdIdx, cdLeft: s.cdLeft,
+      express: s.express
+    };
+    try { localStorage.setItem('amrap_current', JSON.stringify(snap)); } catch (e) {}
+  };
+  _clearSnap = () => { try { localStorage.removeItem('amrap_current'); } catch (e) {} this._resumeSnap = null; };
+  onResume = () => {
+    const snap = this._resumeSnap;
+    if (!snap) return;
+    this._todayZones = snap.todayInjuries || [];
+    this.applyPlan({ goal: this.state.goal, level: this.state.level });
+    this.setState({
+      phase: snap.phase,
+      mood: snap.mood, todayInjuries: snap.todayInjuries || [],
+      warmupIdx: snap.warmupIdx || 0, warmupLeft: snap.warmupLeft || this.WARMUP[0].sec,
+      warmupRunning: snap.phase === 'warmup', warmupDone: snap.phase !== 'warmup' && (snap.warmupIdx || 0) >= this.WARMUP.length,
+      demoIdx: snap.demoIdx || 0,
+      amrapTotal: snap.amrapTotal || this.amrapSecs, amrapLeft: snap.amrapLeft || this.amrapSecs,
+      amrapRunning: snap.phase === 'amrap', rounds: snap.rounds || 0,
+      cdIdx: snap.cdIdx || 0, cdLeft: snap.cdLeft || this.COOL[0].sec,
+      cdRunning: snap.phase === 'cooldown',
+      express: !!snap.express
+    });
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    const s = this.state;
+    const active = ['warmup','demo','amrap','cooldown'];
+    if (active.includes(s.phase)) {
+      const changed = ['phase','warmupIdx','warmupLeft','demoIdx','amrapLeft','rounds','cdIdx','cdLeft'].some(k => prevState[k] !== s[k]);
+      if (changed) this._saveSnap();
+    } else if (active.includes(prevState.phase) && !active.includes(s.phase) && s.phase !== 'done' && s.phase !== 'rpe') {
+      this._clearSnap();
+    }
+  }
+
+  // Construye el circuito de HOY a partir de:
+  //   · objetivo (goal) → mezcla de categorías
+  //   · nivel (level) → duración base del AMRAP
+  //   · equipamiento del perfil (SÍ filtra ahora)
+  //   · lesiones permanentes + molestias marcadas hoy en el check
+  //   · historial reciente → rota para no repetir los mismos 4 cada día
+  applyPlan(p) {
+    p = p || {};
+
+    // ── mapa objetivo → 4 categorías del pool ──
+    const GOAL_CATS = {
+      full:    ['Piernas','Empuje','Tracción','Core'],
+      legs:    ['Piernas','Piernas','Glúteo','Glúteo'],
+      upper:   ['Empuje','Empuje','Tracción','Tracción'],
+      core:    ['Core','Core','Core','Core'],
+      fatloss: ['Cardio','Cardio','Piernas','Empuje']
+    };
+    const goalKey = p.goal || (this.saved && (this.saved.goalToday || (function(){
+      // toma el focus de la sesión actual del plan si existe
+      const plan = Array.isArray(this.saved && this.saved.plan) ? this.saved.plan : null;
+      if (!plan) return null;
+      const cur = plan.find(x => !x.done);
+      return cur ? cur.focus : null;
+    }).call({saved:this.saved}))) || (this.saved && this.saved.goal) || 'full';
+    const g = this.GOALS[goalKey] || this.GOALS.full;
+    const lvl = this.LEVELS[p.level] || this.LEVELS[(this.saved && (this.saved.level || this.saved.nivel))] || this.LEVELS.beginner;
+
+    // ── material del perfil (siempre incluye 'Ninguno' = peso corporal) ──
+    const equip = new Set(((this.saved && this.saved.equipamiento) || ['Ninguno']));
+    equip.add('Ninguno');
+
+    // ── lesiones permanentes + molestias marcadas HOY en el check ──
+    const permInjuries = ((this.saved && this.saved.lesiones) || []).filter(z => z && z !== 'ninguna');
+    const todayZones = (this._todayZones && this._todayZones.length)
+      ? this._todayZones
+      : ((this.state && this.state.todayInjuries) || []);
+    const activeInjuries = Array.from(new Set([...permInjuries, ...todayZones]));
+
+    // ── pool: los 108 ejercicios de exercises-data.js (fallback al mini-LIB) ──
+    const ALL = (typeof window !== 'undefined' && Array.isArray(window.EXERCISES) && window.EXERCISES.length)
+      ? window.EXERCISES
+      : this.LIB.filter(e => e.block === 'amrap').map(e => ({
+          key: e.id, name: e.name, cat: 'Piernas',
+          equip: e.material === 'Peso corporal' ? 'Ninguno' : e.material,
+          reps: e.reps, musculos: e.muscle, errores: e.errors, riesgo: '', pattern: ''
+        }));
+
+    const zonesOf = (ex) => (ex.riesgo || '').split('·').map(s => s.trim()).filter(Boolean);
+    const canEquip = (ex) => equip.has(ex.equip || 'Ninguno');
+    const isRisky = (ex) => zonesOf(ex).some(z => activeInjuries.includes(z));
+    const isWarmupOrCool = (ex) => ex.cat === 'Movilidad'; // no elegimos movilidad para el AMRAP
+
+    const eligible = ALL.filter(ex => canEquip(ex) && !isRisky(ex) && !isWarmupOrCool(ex));
+
+    // ── rotación entre sesiones: evita repetir los últimos ejercicios ──
+    const hist = (this.saved && this.saved.history) || [];
+    const recent = new Set(hist.slice(-2).flatMap(h => h.exercises || []));
+    const seed = hist.length;
+
+    const wantedCats = GOAL_CATS[goalKey] || GOAL_CATS.full;
+    const used = new Set();
+    const buildEx = (pick) => ({
+      id: pick.key, ex: pick.key, pose: pick.key,
+      name: pick.name,
+      reps: pick.reps || '10–12 reps',
+      muscle: pick.musculos || pick.muscle || '',
+      material: pick.equip || pick.material || 'Peso corporal',
+      errors: (pick.errores || pick.errors || []).slice(0, 3),
+      pasos: pick.pasos || [],
+      cat: pick.cat || 'Full',
+      block: 'amrap'
+    });
+
+    const EXS = [];
+    for (let i = 0; i < wantedCats.length; i++) {
+      const cat = wantedCats[i];
+      const catPool = eligible.filter(e => e.cat === cat && !used.has(e.key));
+      const preferred = catPool.filter(e => !recent.has(e.key));
+      let pool = preferred.length ? preferred : catPool;
+      if (!pool.length) pool = eligible.filter(e => !used.has(e.key)); // sin cat: coge cualquier eligible
+      if (!pool.length) continue;
+      const pick = pool[(seed + i) % pool.length];
+      used.add(pick.key);
+      EXS.push(buildEx(pick));
+    }
+
+    // Fallback total (raro): sólo si literalmente nada superó los filtros
+    if (!EXS.length) {
+      const bw = ALL.filter(ex => (ex.equip || 'Ninguno') === 'Ninguno' && !isRisky(ex) && !isWarmupOrCool(ex)).slice(0, 4);
+      const src = bw.length ? bw : this.LIB.filter(e => e.block === 'amrap').slice(0, 4).map(e => ({
+        key: e.id, name: e.name, cat: 'Full', equip: 'Ninguno', reps: e.reps,
+        musculos: e.muscle, errores: e.errors
+      }));
+      src.forEach(p => EXS.push(buildEx(p)));
+    }
+
+    this.EXS = EXS;
+    this.planGoal = g;
+    this.planLevel = lvl;
+    this.injuryActive = activeInjuries;
+
+    // ── progresión del AMRAP: semana + RPE reciente + deload ──
+    const weeksN = (this.saved && this.saved.weeks) || 8;
+    let weekNum = 1;
+    if (this.saved && this.saved.startDate) weekNum = Math.min(weeksN, Math.floor((Date.now() - new Date(this.saved.startDate)) / 6048e5) + 1);
+    const isDeload = (weekNum % 4 === 0);
+    let progressMin = Math.min(6, Math.floor((weekNum - 1) / 2));
+    const lastRpe = hist.slice(-3).map(h => h.rpe).filter(Boolean);
+    const rpeScore = { facil:-1, easy:-1, justo:0, just:0, alto:1, hard:1 };
+    let rpeAdj = 0;
+    if (lastRpe.length) {
+      const avg = lastRpe.reduce((s,r) => s + (rpeScore[r] || 0), 0) / lastRpe.length;
+      if (avg >= 0.6) rpeAdj = -2;
+      else if (avg <= -0.6) rpeAdj = 1;
+    }
+    let totalMin = lvl.min + Math.min(2, progressMin) + rpeAdj;
+    // Techo firme: la sesión es de 30' totales (5 cal + 20 AMRAP + 5 enfriar).
+    // Permitimos hasta 22' AMRAP para avanzados; el resto queda dentro de 30'.
+    totalMin = Math.max(lvl.min - 2, Math.min(22, totalMin));
+    if (isDeload) totalMin = Math.max(12, Math.round(totalMin * 0.7));
+    this.weekNum = weekNum;
+    this.weeksN = weeksN;
+    this.isDeload = isDeload;
+    this.amrapSecs = totalMin * 60;
+  }
+
+  componentDidMount() {
+    this.tickInt = setInterval(() => this.tick(), 1000);
+  }
+  componentDidUpdate() {
+    if (this._drawAll) this._drawAll(performance.now());
+  }
+  componentWillUnmount() {
+    if (this.tickInt) clearInterval(this.tickInt);
+    if (this.canvasInt) clearInterval(this.canvasInt);
+    if (this._rz) window.removeEventListener('resize', this._rz);
+  }
+
+  fmt(s){ s=Math.max(0,s); const m=Math.floor(s/60), ss=s%60; return m+':'+String(ss).padStart(2,'0'); }
+
+  tick() {
+    const s = this.state;
+    if (s.phase === 'warmup' && s.warmupRunning) {
+      if (s.warmupLeft > 1) { this.setState({ warmupLeft: s.warmupLeft - 1 }); }
+      else {
+        const ni = s.warmupIdx + 1;
+        if (ni < this.WARMUP.length) this.setState({ warmupIdx:ni, warmupLeft:this.WARMUP[ni].sec });
+        else this.setState({ warmupRunning:false, warmupDone:true, warmupLeft:0 });
+      }
+    } else if (s.phase === 'amrap' && s.amrapRunning) {
+      if (s.amrapLeft > 1) this.setState({ amrapLeft: s.amrapLeft - 1 });
+      else this.setState({ amrapLeft:0, amrapRunning:false });
+    } else if (s.phase === 'cooldown' && s.cdRunning) {
+      if (s.cdLeft > 1) { this.setState({ cdLeft: s.cdLeft - 1 }); }
+      else {
+        const ni = s.cdIdx + 1;
+        if (ni < this.COOL.length) this.setState({ cdIdx:ni, cdLeft:this.COOL[ni].sec });
+        else this.setState({ cdRunning:false, cdDone:true, cdLeft:0 });
+      }
+    }
+  }
+
+  // ── navigation ──
+  openFicha = (item) => { if (item) this.setState({ ficha:item }); };
+  onNameInput = (e) => this.setState({ nameInput: e.target.value });
+  setGoal = (k) => this.setState({ goal: k });
+  setLevel = (k) => this.setState({ level: k });
+  setDays = (n) => this.setState({ days: n });
+  setWeeks = (n) => this.setState({ weeks: n });
+  prevSetup = () => this.setState({ setupStep: Math.max(0, this.state.setupStep - 1) });
+  onNextSetup = () => {
+    const st = this.state, step = st.setupStep;
+    if (step === 0 && !(st.nameInput || '').trim()) return;
+    if (step === 1 && !st.goal) return;
+    if (step === 2 && !st.level) return;
+    this.setState({ setupStep: step + 1 });
+  };
+  saveProfile = () => {
+    const st = this.state;
+    const name = (st.nameInput || st.name || '').trim().slice(0, 18) || 'Atleta';
+    const profile = {
+      name, goal: st.goal || 'full', level: st.level || 'beginner',
+      days: st.days || 3, weeks: st.weeks || 6,
+      startDate: this.saved.startDate || new Date().toISOString()
+    };
+    this.saved = Object.assign({}, this.saved, profile);
+    try { localStorage.setItem('amrap_fn', JSON.stringify(this.saved)); } catch (e) {}
+    this.applyPlan(profile);
+    this.setState({
+      name, goal: profile.goal, level: profile.level, days: profile.days,
+      weeks: profile.weeks, startDate: profile.startDate,
+      phase: 'home', amrapTotal: this.amrapSecs, amrapLeft: this.amrapSecs
+    });
+  };
+  editName = () => this.setState({ nameInput: this.state.name, setupStep: 0, phase: 'welcome' });
+  onToggleTheme = () => {
+    const cur = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    const next = cur === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('amrap_theme', next); } catch (e) {}
+    this.forceUpdate();
+  };
+  onCloseFicha = () => this.setState({ ficha:null });
+  onOpenSession = () => this.setState({ phase:'intro', express:false, amrapTotal:this.amrapSecs, amrapLeft:this.amrapSecs });
+  onExpressHome = () => this.setState({ phase:'check', express:true, amrapTotal:720, amrapLeft:720 });
+  onStart = () => this.setState({ phase:'check', express:false });
+  onExpress = () => this.setState({ phase:'check', express:true, amrapTotal:720, amrapLeft:720 });
+  onQuit = () => { this._clearSnap(); this.setState({ phase:'home' }); };
+  chooseMood = (k) => {
+    // 'great' / 'ok' → arranca directo. 'sore' → se queda para marcar zonas y pulsar Continuar.
+    if (k === 'sore') { this.setState({ mood: k }); return; }
+    this._todayZones = [];
+    this.applyPlan({ goal: this.state.goal, level: this.state.level });
+    const total = this.state.express ? this.state.amrapTotal : this.amrapSecs;
+    this.setState({ mood: k, todayInjuries: [], phase:'warmup', warmupIdx:0, warmupLeft:this.WARMUP[0].sec, warmupRunning:true, warmupDone:false, amrapTotal:total, amrapLeft:total });
+  };
+  toggleTodayZone = (z) => {
+    const cur = this.state.todayInjuries || [];
+    const i = cur.indexOf(z);
+    const next = i >= 0 ? cur.filter(x => x !== z) : [...cur, z];
+    this.setState({ todayInjuries: next });
+  };
+  onCheckContinue = () => {
+    const s = this.state;
+    if (!s.mood) return;
+    this._todayZones = (s.mood === 'sore') ? (s.todayInjuries || []) : [];
+    this.applyPlan({ goal: s.goal, level: s.level });
+    const total = s.express ? s.amrapTotal : this.amrapSecs;
+    this.setState({ phase:'warmup', warmupIdx:0, warmupLeft:this.WARMUP[0].sec, warmupRunning:true, warmupDone:false, amrapTotal:total, amrapLeft:total });
+  };
+  onSkipMove = () => {
+    const s = this.state, ni = s.warmupIdx + 1;
+    if (ni < this.WARMUP.length) this.setState({ warmupIdx:ni, warmupLeft:this.WARMUP[ni].sec });
+    else this.setState({ warmupRunning:false, warmupDone:true, warmupLeft:0 });
+  };
+  onWarmupNext = () => this.setState({ phase:'demo', demoIdx:0 });
+  onDemoPrev = () => { if (this.state.demoIdx > 0) this.setState({ demoIdx: this.state.demoIdx - 1 }); };
+  onDemoNext = () => {
+    const s = this.state;
+    if (s.demoIdx < this.EXS.length - 1) this.setState({ demoIdx: s.demoIdx + 1 });
+    else this.setState({ phase:'amrap', amrapLeft:s.amrapTotal, amrapRunning:true, rounds:0 });
+  };
+  onAddRound = () => this.setState({ rounds: this.state.rounds + 1 });
+  onSubRound = () => this.setState({ rounds: Math.max(0, this.state.rounds - 1) });
+  onToggleAmrap = () => this.setState({ amrapRunning: !this.state.amrapRunning });
+  onFinishAmrap = () => this.setState({ phase:'cooldown', amrapRunning:false, cdIdx:0, cdLeft:this.COOL[0].sec, cdRunning:true, cdDone:false });
+  onFinishCooldown = () => this.setState({ phase:'rpe', cdRunning:false });
+  chooseRpe = (k) => this.setState({ rpe:k });
+  onSave = () => {
+    const s = this.state;
+    if (!s.rpe) return;
+
+    // Normaliza el RPE al esquema que usa el resto de la app (facil/justo/alto)
+    const rpeMap = { easy:'facil', just:'justo', hard:'alto' };
+    const storedRpe = rpeMap[s.rpe] || s.rpe;
+
+    // ── progresión de carga por ejercicio: bump/hold/reduce según RPE ──
+    const KG = { Mancuerna:[5,8,12], Kettlebell:[8,12,16], Barra:[20,25,30] };
+    const GOMA = ['ligera','media','fuerte','muy fuerte'];
+    const BW_REPS = [8, 10, 12]; // reps base por nivel para peso corporal
+    const lvlIdx = ({beginner:0,principiante:0,intermediate:1,intermedio:1,advanced:2,avanzado:2})[this.saved.level || this.saved.nivel || 'beginner'] || 0;
+    const bump = storedRpe==='facil' ? 1 : (storedRpe==='alto' ? -1 : 0);
+    const loads = Array.isArray(this.saved.loads) ? this.saved.loads.slice() : [];
+    const adjustments = [];
+    (this.EXS||[]).forEach(e => {
+      if (KG[e.material]) {
+        let l = loads.find(x => x.ex === e.name);
+        if (!l) { l = { ex: e.name, w: KG[e.material][lvlIdx] + ' kg', rpe: null, type:'weight' }; loads.push(l); }
+        else { l.type = 'weight'; }
+        const m = String(l.w).match(/([\d.]+)/);
+        if (m) {
+          let v = parseFloat(m[1]) + bump;
+          if (v < 0) v = 0;
+          const newW = v + ' kg';
+          if (newW !== l.w && bump !== 0) adjustments.push({ ex: e.name, from: l.w, to: newW, dir: bump });
+          l.w = newW;
+        }
+        l.rpe = storedRpe;
+      } else if (e.material === 'Goma') {
+        let l = loads.find(x => x.ex === e.name);
+        if (!l) { l = { ex: e.name, w: GOMA[lvlIdx], rpe: null, type:'level' }; loads.push(l); }
+        else { l.type = 'level'; }
+        const idx = Math.max(0, GOMA.indexOf(l.w));
+        const next = Math.max(0, Math.min(GOMA.length-1, idx + bump));
+        const newW = GOMA[next];
+        if (newW !== l.w && bump !== 0) adjustments.push({ ex: e.name, from: l.w, to: newW, dir: bump });
+        l.w = newW;
+        l.rpe = storedRpe;
+      } else {
+        // Peso corporal / sin material: seguimos reps ejecutables como métrica de progreso
+        let l = loads.find(x => x.ex === e.name);
+        if (!l) { l = { ex: e.name, w: BW_REPS[lvlIdx] + ' reps', rpe: null, type:'reps' }; loads.push(l); }
+        else { l.type = 'reps'; }
+        const m = String(l.w).match(/(\d+)/);
+        if (m) {
+          let v = parseInt(m[1], 10) + bump;
+          if (v < 3) v = 3;
+          if (v > 50) v = 50;
+          const newW = v + ' reps';
+          if (newW !== l.w && bump !== 0) adjustments.push({ ex: e.name, from: l.w, to: newW, dir: bump });
+          l.w = newW;
+        }
+        l.rpe = storedRpe;
+      }
+    });
+
+    const newStreak = (this.saved.streak || 0) + 1;
+    const best = Math.max(this.saved.bestRounds || 0, s.rounds);
+
+    // ── avanzar el plan: marcar como hecha la primera sesión pendiente ──
+    let plan = Array.isArray(this.saved.plan) ? this.saved.plan.slice() : null;
+    if (plan){
+      const idx = plan.findIndex(x => !x.done);
+      if (idx >= 0){ plan[idx] = { ...plan[idx], done:true, doneDate: new Date().toISOString() }; }
+    }
+
+    const entry = {
+      date: new Date().toISOString(),
+      rounds: s.rounds, rpe: storedRpe, express: s.express, mood: s.mood || null,
+      exercises: (this.EXS||[]).map(e => e.id || e.ex),
+      focus: (this.planGoal && this.planGoal.label) || null,
+      planSessionN: plan ? plan.filter(x=>x.done).length : null,
+      todayInjuries: (s.todayInjuries || [])
+    };
+    const hist = Array.isArray(this.saved.history) ? this.saved.history : [];
+    hist.push(entry);
+    const data = Object.assign({}, this.saved, { streak: newStreak, bestRounds: best, history: hist, last: entry, loads });
+    if (plan) data.plan = plan;
+    // limpiar el override temporal del focus (era sólo para hoy)
+    delete data.goalToday;
+    try { localStorage.setItem('amrap_fn', JSON.stringify(data)); } catch (e) {}
+    this.saved = data;
+    this._lastAdjustments = adjustments;
+    this._clearSnap();
+    this.setState({ phase:'done', streak: newStreak, bestRounds: best });
+  };
+  onRestart = () => { this._clearSnap(); this.setState({
+    phase:'home', mood:null, rpe:null, express:false,
+    warmupIdx:0, warmupLeft:this.WARMUP[0].sec, warmupRunning:false, warmupDone:false,
+    demoIdx:0, amrapTotal:this.amrapSecs, amrapLeft:this.amrapSecs, amrapRunning:false, rounds:0,
+    cdIdx:0, cdLeft:this.COOL[0].sec, cdRunning:false, cdDone:false
+  }); };
+
+  // ── canvas silhouette engine ──
+  startCanvas() {
+    const BODY='#e6eaf6', BACK='#7c89b6';
+    const accFor=(ex)=>(ex==='rdl'||ex==='calfraise')?'#22c55e':((ex==='jack'||ex==='climber'||ex==='highknees')?'#ea580c':((ex==='lunge')?'#a855f7':'#4f8cff'));
+    const PER={ squat:2000, pushup:1500, jack:1050, lunge:2200, glutebridge:2200, shoulderpress:1800, bicepcurl:1700, row:1900, rdl:2400, lateralraise:1900, calfraise:1400, crunch:1800, legraise:2000, plank:3600, climber:900, highknees:760, legswing:1500, catcow:3000, cobra:2600, childpose:4000, quadstretch:3200 };
+    const ease=(t)=>(1-Math.cos(2*Math.PI*t))/2, ph=(n,p)=>(n%p)/p;
+    const mid=(a,b)=>[(a[0]+b[0])/2,(a[1]+b[1])/2];
+    const POSE={
+      squat(s){const hX=112,hY=80+32*s,hip=[hX,hY],sh=[hX+5+6*s,hY-46];return{dumbbell:true,hip,sh,neck:[sh[0]+4,sh[1]-7],head:[sh[0]+7,sh[1]-22],knee:[132+12*s,118+4*s],foot:[123,158],knee2:[122+12*s,120+4*s],foot2:[104,158],elbow:[sh[0]+14,(sh[1]+hY)/2+8],hand:[sh[0]+18,hY+4],elbow2:[sh[0]+4,(sh[1]+hY)/2+8],hand2:[sh[0]+8,hY+6]};},
+      lunge(l){const hX=120,hY=76+20*l,hip=[hX,hY],sh=[hX,hY-44];return{dumbbell:true,hip,sh,neck:[hX,sh[1]-6],head:[hX,sh[1]-21],knee:[150,116+18*l],foot:[152,158],knee2:[100,124+8*l],foot2:[86,158],elbow:[hX+11,(sh[1]+hY)/2+6],hand:[hX+14,hY+2],elbow2:[hX-11,(sh[1]+hY)/2+6],hand2:[hX-14,hY+2]};},
+      jack(o){const cx=120,b=-6*Math.sin(Math.PI*o),sh=[cx,58+b],hip=[cx,100+b];return{front:true,dumbbell:false,hip,sh,neck:[cx,51+b],head:[cx,41+b],knee:[cx-8-12*o,130],foot:[cx-10-26*o,158],knee2:[cx+8+12*o,130],foot2:[cx+10+26*o,158],elbow:[cx-18-14*o,sh[1]+22-46*o],hand:[cx-26-22*o,sh[1]+42-86*o],elbow2:[cx+18+14*o,sh[1]+22-46*o],hand2:[cx+26+22*o,sh[1]+42-86*o]};},
+      pushup(d){const sh=[136,106+16*d];return{dumbbell:false,hip:[96,116],sh,neck:[sh[0]+8,sh[1]-1],head:[sh[0]+18,sh[1]-3],knee:[68,134],foot:[40,150],knee2:[68,137],foot2:[40,153],elbow:[146,128+8*d],hand:[150,150],elbow2:[148,131+8*d],hand2:[150,150]};},
+      glutebridge(s){const hipY=150-30*s,hip=[120,hipY],sh=[82,150];return{dumbbell:false,hip,sh,neck:[73,150],head:[60,150],knee:[152,126],foot:[170,156],knee2:[150,130],foot2:[168,158],elbow:[68,153],hand:[54,156],elbow2:[68,155],hand2:[54,158]};},
+      shoulderpress(s){const cx=120,hip=[cx,108],sh=[cx,62];return{front:true,dumbbell:true,hip,sh,neck:[cx,53],head:[cx,42],knee:[cx-12,132],foot:[cx-13,158],knee2:[cx+12,132],foot2:[cx+13,158],elbow:[cx-18,72-12*s],hand:[cx-21,58-24*s],elbow2:[cx+18,72-12*s],hand2:[cx+21,58-24*s]};},
+      bicepcurl(s){const hip=[112,108],sh=[117,62];return{face:1,dumbbell:true,hip,sh,neck:[120,55],head:[124,41],knee:[118,130],foot:[118,158],knee2:[104,130],foot2:[104,158],elbow:[126,88],hand:[127-9*s,106-40*s],elbow2:[122,88],hand2:[123-12*s,108-40*s]};},
+      row(s){const hip=[110,112],sh=[148,88];return{dumbbell:true,hip,sh,neck:[158,84],head:[170,80],knee:[120,132],foot:[120,158],knee2:[104,134],foot2:[104,158],elbow:[154-8*s,108-6*s],hand:[156-16*s,122-22*s],elbow2:[152-8*s,110-6*s],hand2:[154-16*s,124-22*s]};},
+      rdl(s){const sh=[116+34*s,62+30*s],hip=[114,108],hand=[134+16*s,116+6*s];return{dumbbell:true,hip,sh,neck:[sh[0]+5,sh[1]-7],head:[sh[0]+9,sh[1]-20],knee:[120,132],foot:[120,158],knee2:[106,132],foot2:[106,158],elbow:[hand[0]-2,(sh[1]+hand[1])/2],hand,elbow2:[hand[0]-6,(sh[1]+hand[1])/2],hand2:[hand[0]-4,hand[1]+2]};},
+      lateralraise(s){const cx=120,hip=[cx,108],sh=[cx,62];return{front:true,dumbbell:true,hip,sh,neck:[cx,53],head:[cx,42],knee:[cx-11,132],foot:[cx-12,158],knee2:[cx+11,132],foot2:[cx+12,158],elbow:[cx-14-22*s,86-22*s],hand:[cx-14-44*s,108-46*s],elbow2:[cx+14+22*s,86-22*s],hand2:[cx+14+44*s,108-46*s]};},
+      calfraise(s){const L=10*s,hip=[112,108-L],sh=[116,62-L];return{front:true,dumbbell:false,hip,sh,neck:[120,55-L],head:[123,41-L],knee:[118,130-L],foot:[120,156],knee2:[104,130-L],foot2:[104,156],elbow:[120,86-L],hand:[122,108-L],elbow2:[108,86-L],hand2:[106,108-L]};},
+      crunch(s){const hip=[108,150],sh=[84+12*s,150-18*s];return{face:1,dumbbell:false,hip,sh,neck:[sh[0]-6,sh[1]-4],head:[sh[0]-14,sh[1]-6],knee:[140,126],foot:[152,156],knee2:[138,129],foot2:[150,158],elbow:[sh[0]+4,sh[1]+6],hand:[sh[0]+18,sh[1]+2],elbow2:[sh[0]+2,sh[1]+8],hand2:[sh[0]+16,sh[1]+4]};},
+      legraise(s){const sh=[80,150],hip=[112,150],foot=[162-12*s,150-44*s],knee=mid(hip,foot);return{dumbbell:false,hip,sh,neck:[71,150],head:[58,150],knee,foot,knee2:[knee[0],knee[1]+3],foot2:[foot[0],foot[1]+3],elbow:[66,153],hand:[52,156],elbow2:[66,155],hand2:[52,158]};},
+      plank(t){const b=2.5*Math.sin(Math.PI*t),sh=[148,116+b],hip=[112,124+b];return{dumbbell:false,hip,sh,neck:[158,112+b],head:[170,108+b],knee:[86,132+b],foot:[60,140+b],knee2:[86,135+b],foot2:[60,143+b],elbow:[148,150],hand:[170,150],elbow2:[148,150],hand2:[168,150]};},
+      climber(s){const a=s,b=1-s,sh=[148,108],hip=[112,118];return{dumbbell:false,hip,sh,neck:[158,105],head:[170,102],knee:[88+34*a,136-16*a],foot:[62+50*a,150-18*a],knee2:[88+34*b,136-16*b],foot2:[62+50*b,150-18*b],elbow:[148,130],hand:[150,150],elbow2:[146,132],hand2:[148,150]};},
+      highknees(s){const cx=120,a=s,b=1-s,sh=[cx,60],hip=[cx,104];return{front:true,dumbbell:false,hip,sh,neck:[cx,52],head:[cx,42],knee:[cx-13,128-38*a],foot:[cx-12,150-30*a],knee2:[cx+13,128-38*b],foot2:[cx+12,150-30*b],elbow:[cx-16,86-18*b],hand:[cx-20,108-44*b],elbow2:[cx+16,86-18*a],hand2:[cx+20,108-44*a]};},
+      legswing(s){const cx=118,sw=(s-0.5)*2,hip=[cx,106],sh=[cx,60];return{front:true,dumbbell:false,hip,sh,neck:[cx,52],head:[cx,42],knee:[cx+6+20*sw,128],foot:[cx+8+38*sw,148],knee2:[cx-4,130],foot2:[cx-6,158],elbow:[cx+14,84],hand:[cx+18,104],elbow2:[cx-14,84],hand2:[cx-18,104]};},
+      catcow(s){const ar=(s-0.5);return{face:1,dumbbell:false,hip:[94,118-9*ar],sh:[150,118-9*ar],neck:[160,118+10*ar],head:[171,121+14*ar],knee:[94,150],foot:[80,153],knee2:[96,150],foot2:[82,153],elbow:[150,134],hand:[150,150],elbow2:[150,136],hand2:[150,150]};},
+      cobra(s){const lift=12*s;return{face:1,dumbbell:false,hip:[98,150],sh:[140,140-lift],neck:[151,136-lift],head:[162,131-lift],knee:[78,152],foot:[58,154],knee2:[78,154],foot2:[58,156],elbow:[146,150],hand:[150,156],elbow2:[146,150],hand2:[148,156]};},
+      childpose(t){const b=1.5*Math.sin(Math.PI*t);return{face:1,dumbbell:false,hip:[88,138+b],sh:[120,141+b],neck:[134,143+b],head:[150,147],knee:[86,152],foot:[72,154],knee2:[88,152],foot2:[74,154],elbow:[148,150],hand:[172,150],elbow2:[148,150],hand2:[170,150]};},
+      quadstretch(s){const cx=116,sw=2*Math.sin(Math.PI*s),hip=[cx,106+sw],sh=[cx+2,60+sw];return{front:true,dumbbell:false,hip,sh,neck:[cx+3,52+sw],head:[cx+6,41+sw],knee:[cx+14,128],foot:[cx+18,102],knee2:[cx-2,130],foot2:[cx-4,158],elbow:[cx+12,82],hand:[cx+20,102],elbow2:[cx-12,84],hand2:[cx-18,104]};}
+    };
+    function seg(ctx,a,b,r1,r2,col){
+      const dx=b[0]-a[0],dy=b[1]-a[1],L=Math.hypot(dx,dy)||1,nx=-dy/L,ny=dx/L;
+      ctx.fillStyle=col;
+      ctx.beginPath();ctx.arc(a[0],a[1],r1,0,7);ctx.fill();
+      ctx.beginPath();ctx.arc(b[0],b[1],r2,0,7);ctx.fill();
+      ctx.beginPath();
+      ctx.moveTo(a[0]+nx*r1,a[1]+ny*r1);ctx.lineTo(b[0]+nx*r2,b[1]+ny*r2);
+      ctx.lineTo(b[0]-nx*r2,b[1]-ny*r2);ctx.lineTo(a[0]-nx*r1,a[1]-ny*r1);
+      ctx.closePath();ctx.fill();
+    }
+    function footDraw(ctx,knee,ankle,dir,col){
+      const dx=ankle[0]-knee[0],dy=ankle[1]-knee[1],L=Math.hypot(dx,dy)||1;
+      let px=-dy/L,py=dx/L; if(px*dir<0){px=-px;py=-py;}
+      const toe=[ankle[0]+px*9,ankle[1]+py*9];
+      seg(ctx,ankle,toe,3.6,2.4,col);
+    }
+    function dumbbell(c,p,acc){c.strokeStyle=acc;c.lineWidth=4.5;c.lineCap='round';c.beginPath();c.moveTo(p[0]-7,p[1]);c.lineTo(p[0]+7,p[1]);c.stroke();c.fillStyle=acc;c.beginPath();c.arc(p[0]-7,p[1],5.5,0,7);c.fill();c.beginPath();c.arc(p[0]+7,p[1],5.5,0,7);c.fill();}
+    function draw(c,P,acc){
+      const dL=P.front?-1:1, dR=1;
+      c.fillStyle='rgba(0,0,0,.22)';c.beginPath();c.ellipse(120,162,44,5.5,0,0,7);c.fill();
+      seg(c,P.sh,P.elbow2,5,4,BACK);seg(c,P.elbow2,P.hand2,4,3,BACK);
+      seg(c,P.hip,P.knee2,8,6,BACK);seg(c,P.knee2,P.foot2,6,4,BACK);
+      footDraw(c,P.knee2,P.foot2,dR,BACK);
+      seg(c,P.hip,P.sh,10,13,BODY);
+      seg(c,P.hip,P.knee,9.5,6.5,BODY);seg(c,P.knee,P.foot,6.5,4,BODY);
+      footDraw(c,P.knee,P.foot,dL,BODY);
+      seg(c,P.sh,P.elbow,6,4.5,BODY);seg(c,P.elbow,P.hand,4.5,3.2,BODY);
+      seg(c,P.sh,P.neck,5.5,4.5,BODY);
+      const hx=P.head[0],hy=P.head[1];
+      const ang=Math.atan2(P.head[1]-P.neck[1],P.head[0]-P.neck[0]);
+      c.save();c.translate(hx,hy);c.rotate(ang+Math.PI/2);
+      c.fillStyle=BODY;c.beginPath();c.ellipse(0,0,9.5,11.5,0,0,7);c.fill();c.restore();
+      c.strokeStyle='rgba(255,255,255,.30)';c.lineWidth=2;c.lineCap='round';
+      c.beginPath();c.moveTo(P.hip[0]-3,P.hip[1]);c.lineTo(P.sh[0]-4,P.sh[1]+2);c.stroke();
+      c.fillStyle='rgba(255,255,255,.35)';c.beginPath();c.arc(hx-3,hy-4,3.2,0,7);c.fill();
+      if(P.dumbbell){dumbbell(c,P.hand2,acc);dumbbell(c,P.hand,acc);}
+    }
+    const ACC=new Proxy({},{get:(t,k)=>accFor(k)});
+    const dpr=()=>window.devicePixelRatio||1;
+    const setup=(cv)=>{const r=dpr();const w=cv.clientWidth||220,h=cv.clientHeight||190;cv.width=Math.round(w*r);cv.height=Math.round(h*r);return{cv,ctx:cv.getContext('2d'),w,h};};
+    let items=[];
+    const sameSet=(live)=>{ if(live.length!==items.length) return false; for(let i=0;i<live.length;i++){ if(items[i].cv!==live[i]) return false; } return true; };
+    const frame=(now)=>{
+      const live=Array.from(document.querySelectorAll('canvas[data-ex]'));
+      if(!sameSet(live)){ items=live.map(setup); }
+      const r=dpr();
+      items.forEach((it)=>{
+        if(!document.body.contains(it.cv)) return;
+        const ex=it.cv.getAttribute('data-ex'); if(!POSE[ex]) return;
+        const s=ease(ph(now,PER[ex]||1600));
+        it.ctx.setTransform(r,0,0,r,0,0);
+        it.ctx.clearRect(0,0,it.w,it.h);
+        const sc=Math.min(it.w/240,it.h/172);
+        it.ctx.translate((it.w-240*sc)/2,(it.h-172*sc)/2);
+        it.ctx.scale(sc,sc);
+        draw(it.ctx,POSE[ex](s),ACC[ex]||'#4f8cff');
+      });
+    };
+    // rAF (and even setInterval) get throttled in some preview & capture
+    // contexts, so: (a) drive animation from a timer, and (b) also redraw
+    // synchronously on every React update via componentDidUpdate. That
+    // guarantees a freshly-mounted canvas paints its pose immediately.
+    this._drawAll = frame;
+    frame(performance.now());
+    this.canvasInt=setInterval(()=>frame(performance.now()), 33);
+    this._rz=()=>{ items=[]; };
+    window.addEventListener('resize', this._rz);
+  }
+
+  renderVals() {
+    const s = this.state;
+    const phase = s.phase;
+    const ACC='#4f8cff';
+    const cardBase='display:flex; align-items:center; gap:14px; padding:15px 16px; border-radius:14px; cursor:pointer; transition:all .15s; ';
+    const sel='background:#15203c; border:1.5px solid '+ACC+';';
+    const unsel='background:var(--panel); border:1px solid var(--border3);';
+
+    // header block coloring
+    const blkOn = (c) => ({ bg:c+'1c', bd:c+'55', fg:c });
+    const blkOff = { bg:'var(--card-b)', bd:'var(--border2)', fg:'var(--muted4)' };
+    const b1 = phase==='warmup' ? blkOn('#f5a524') : blkOff;
+    const b2 = (phase==='demo'||phase==='amrap') ? blkOn('#4f8cff') : blkOff;
+    const b3 = phase==='cooldown' ? blkOn('#a855f7') : blkOff;
+
+    // warmup list
+    const warmupList = this.WARMUP.map((w,i) => {
+      const done = i < s.warmupIdx || s.warmupDone;
+      const cur = i === s.warmupIdx && s.warmupRunning;
+      return {
+        name: w.name,
+        onTap: () => this.openFicha(w),
+        tag: done ? '✓ hecho' : (cur ? this.fmt(s.warmupLeft) : w.sec+'s'),
+        fg: cur ? '#f5a524' : (done ? '#6f6c8e' : '#c5c1da'),
+        tagFg: cur ? '#f5a524' : (done ? '#4a8a5a' : 'var(--muted2)'),
+        style: 'display:flex; align-items:center; justify-content:space-between; padding:11px 14px; border-radius:11px; cursor:pointer; '+(cur?'background:var(--tint-amber-c); border:1px solid #f5a52455;':'background:var(--card-b); border:1px solid var(--border2);')
+      };
+    });
+    const curW = this.WARMUP[Math.min(s.warmupIdx,this.WARMUP.length-1)];
+
+    // cooldown list
+    const cdList = this.COOL.map((w,i) => {
+      const done = i < s.cdIdx || s.cdDone;
+      const cur = i === s.cdIdx && s.cdRunning;
+      return {
+        name: w.name,
+        onTap: () => this.openFicha(w),
+        tag: done ? '✓ hecho' : (cur ? this.fmt(s.cdLeft) : w.sec+'s'),
+        fg: cur ? '#a855f7' : (done ? '#6f6c8e' : '#c5c1da'),
+        tagFg: cur ? '#a855f7' : (done ? '#4a8a5a' : 'var(--muted2)'),
+        style: 'display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-radius:11px; cursor:pointer; '+(cur?'background:var(--tint-purple); border:1px solid #a855f755;':'background:var(--card-b); border:1px solid var(--border2);')
+      };
+    });
+    const curC = this.COOL[Math.min(s.cdIdx,this.COOL.length-1)];
+
+    // moods
+    const moodDefs = [
+      { key:'great', emoji:'😃', label:'Genial', sub:'A tope de energía' },
+      { key:'ok',    emoji:'🙂', label:'Normal', sub:'Listo para entrenar' },
+      { key:'sore',  emoji:'😣', label:'Con molestias', sub:'Adaptamos la sesión' }
+    ];
+    const moods = moodDefs.map(m => ({
+      ...m,
+      onSelect: () => this.chooseMood(m.key),
+      style: cardBase + (s.mood===m.key ? sel : unsel)
+    }));
+
+    // ── zona de dolor (check pre-sesión) ──
+    const ZONES = ['Rodilla','Lumbar','Hombro','Muñeca','Tobillo','Cadera'];
+    const soreMode = (s.mood === 'sore');
+    const selectedZones = s.todayInjuries || [];
+    const chipBase = "padding:6px 13px; border-radius:18px; font:600 11px/1 'Barlow Semi Condensed'; transition:all .15s;";
+    const zoneChips = ZONES.map(z => {
+      const on = selectedZones.includes(z);
+      let style;
+      if (!soreMode) style = chipBase + ' border:1px solid #ffffff14; color:var(--muted4); opacity:.55; cursor:default;';
+      else if (on)   style = chipBase + ' border:1.5px solid #ef4444; background:#ef444422; color:#f9a8a8; cursor:pointer;';
+      else           style = chipBase + ' border:1.5px solid var(--border4); background:var(--panel); color:var(--muted3); cursor:pointer;';
+      return { name: z, style, onTap: soreMode ? (() => this.toggleTodayZone(z)) : null };
+    });
+    const zoneHint = !soreMode
+      ? 'Adaptaremos los ejercicios que carguen esa zona (marca “con molestias” arriba).'
+      : (selectedZones.length
+          ? 'Sustituiremos los ejercicios que carguen: ' + selectedZones.join(', ') + '.'
+          : 'Marca las zonas que te molestan hoy.');
+    const showChooseHint = !s.mood;
+    const checkContinueStyle = "margin-top:18px; padding:16px; border-radius:14px; text-align:center; font:600 14px/1 'Barlow Semi Condensed'; letter-spacing:.05em; background:#4f8cff; color:#04132e; cursor:pointer; box-shadow:0 10px 30px -8px #4f8cff66;";
+
+    // demo
+    const ex = this.EXS[s.demoIdx];
+    const demoDots = this.EXS.map((_,i) => ({
+      style: 'width:7px; height:7px; border-radius:4px; transition:all .2s; '+(i===s.demoIdx?'width:20px; background:#4f8cff;':'background:#2a2a44;')
+    }));
+    const demoErrors = ex.errors.map(t => ({ t }));
+    const demoPasos = (ex.pasos || []).map((t, i) => ({ n: i + 1, t }));
+    const isLastDemo = s.demoIdx === this.EXS.length - 1;
+    // peso guardado para este ejercicio (si lo hay)
+    const demoLoadRow = (this.saved.loads || []).find(l => l.ex === ex.name);
+    const demoLoad = demoLoadRow ? demoLoadRow.w : '';
+    const hasDemoLoad = !!demoLoad;
+
+    // rpe
+    const rpeDefs = [
+      { key:'easy', emoji:'😌', label:'Fácil', sub:'Podría hacer más rondas' },
+      { key:'just', emoji:'😤', label:'Justo', sub:'Llegué a mi límite' },
+      { key:'hard', emoji:'🥵', label:'Muy duro', sub:'No pude completar bien' }
+    ];
+    const rpes = rpeDefs.map(r => ({
+      ...r,
+      onSelect: () => this.chooseRpe(r.key),
+      style: cardBase + (s.rpe===r.key ? sel : unsel)
+    }));
+    const rpeSug = { easy:'Lo has notado fácil. La próxima sesión subiremos automáticamente el peso de los ejercicios con carga.', just:'Punto perfecto. Mantendremos las cargas actuales para la próxima sesión.', hard:'Hoy fue exigente. Bajaremos un poco el peso la próxima vez, sin prisa.' }[s.rpe] || '';
+    const rpeFaces = { easy:'😌', just:'😤', hard:'🥵' };
+
+    // ── sugerencia de progresión para la próxima sesión (calculada en onSave) ──
+    const adjustmentsList = ((phase==='done' ? this._lastAdjustments : null) || []).map(a => ({
+      ex: a.ex,
+      to: a.to,
+      arrow: a.dir > 0 ? '↑' : (a.dir < 0 ? '↓' : '='),
+      color: a.dir > 0 ? '#22c55e' : (a.dir < 0 ? '#f5a524' : 'var(--muted)')
+    }));
+    const hasAdjustments = adjustmentsList.length > 0;
+
+    // ── HOME · HOY — lee constancia del dispositivo ──
+    const histH = Array.isArray(this.saved.history) ? this.saved.history : [];
+    const dayKey = (d) => { const x = new Date(d); return x.getFullYear()+'-'+(x.getMonth()+1)+'-'+x.getDate(); };
+    const todayH = new Date();
+    const trained = new Set(histH.map(h => dayKey(h.date)));
+    const weekTarget = s.days || 3;
+    const wkStart = new Date(todayH); const dow = (todayH.getDay()+6)%7;
+    wkStart.setDate(todayH.getDate()-dow); wkStart.setHours(0,0,0,0);
+    const wkDays = new Set();
+    histH.forEach(h => { const d = new Date(h.date); if (d >= wkStart) wkDays.add(dayKey(d)); });
+    const weekDone = Math.min(wkDays.size, weekTarget);
+    const weekBars = Array.from({length:weekTarget}).map((_,i) => ({
+      style: 'flex:1; height:7px; border-radius:4px; background:'+(i<weekDone?'#22c55e':'#2a241a')+'; '+(i<weekDone?'box-shadow:0 0 10px -2px #22c55e88;':'border:1px solid var(--border5);')
+    }));
+    const recentDays = [];
+    for (let i=13;i>=0;i--){ const d=new Date(todayH); d.setDate(todayH.getDate()-i); const done=trained.has(dayKey(d));
+      recentDays.push({ style:'flex:1; height:26px; border-radius:5px; '+(done?'background:#22c55e; box-shadow:0 0 10px -3px #22c55e;':'background:#15172b; border:1px solid var(--border5);') }); }
+    const dsArr = Array.from(trained).map(k=>{ const p=k.split('-').map(Number); return new Date(p[0],p[1]-1,p[2]).getTime(); }).sort((a,b)=>a-b);
+    let bestRun=0, run=0, prev=null;
+    dsArr.forEach(t=>{ run = (prev!=null && (t-prev)===86400000) ? run+1 : 1; if(run>bestRun)bestRun=run; prev=t; });
+    const bestStreak = Math.max(bestRun, s.streak);
+    const hrs = todayH.getHours();
+    const greeting = hrs<12 ? 'BUENOS DÍAS' : (hrs<20 ? 'BUENAS TARDES' : 'BUENAS NOCHES');
+    const wdName = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'][todayH.getDay()];
+    const streakSub = s.streak>0
+      ? (weekDone>=weekTarget ? '¡Semana completa! No la rompas 🔒' : 'Sigue así, no rompas la cadena')
+      : 'Empieza hoy tu primera racha';
+
+    // ── frases motivacionales (breves + cercanas, rotan por día/sesión) ──
+    const QUOTES = [
+      'Nadie dijo que fuera fácil. Solo dijeron que valdría la pena.',
+      'Hoy no tienes que ser perfecto. Solo tienes que presentarte.',
+      'Cada ronda cuenta, aunque no la ganes toda.',
+      'Tu yo de mañana te va a agradecer el de hoy.',
+      'La constancia gana a la intensidad. Sigue viniendo.',
+      'No se trata de motivación, se trata de no rendirte.',
+      'Un día más entrenando es un día menos dudando de ti.',
+      'Lo difícil de hoy es el progreso de mañana.',
+      'No compares tu día 3 con el día 100 de otro.',
+      'Descansa si lo necesitas. Pero no abandones.',
+      'El cuerpo que quieres se construye con los días que no tienes ganas.',
+      'Pequeños pasos, todos los días, ganan.'
+    ];
+    const qIdx = Math.abs(histH.length + (s.streak||0) + todayH.getDate()) % QUOTES.length;
+    const dailyQuote = QUOTES[qIdx];
+
+    // ── PLAN del perfil (objetivo · nivel · frecuencia · semanas) ──
+    const g = this.GOALS[s.goal] || this.planGoal || this.GOALS.full;
+    const lvl = this.LEVELS[s.level] || this.planLevel || this.LEVELS.beginner;
+    const amrapMin = Math.round((this.amrapSecs || lvl.min*60) / 60);
+    const totalMin = amrapMin + 10; // 5' calentar + 5' enfriar
+    const dayNum = histH.length + 1;
+    const weeksN = this.weeksN || s.weeks || 8;
+    const weekNum = this.weekNum || 1;
+    const deloadTag = this.isDeload ? ' · semana de recuperación' : '';
+    const plan = {
+      dayLabel: 'SESIÓN ' + dayNum,
+      focus: g.label.toUpperCase(),
+      muscles: (this.injuryActive && this.injuryActive.length) ? (g.muscles + ' · adaptado a tu lesión') : g.muscles,
+      meta: '~' + totalMin + ' min',
+      amrapLabel: amrapMin + "'",
+      exCount: this.EXS.length + ' EJ.',
+      headerSmall: 'Día ' + dayNum + ' · ' + g.label,
+      introDate: wdName + ' · Semana ' + weekNum + deloadTag,
+      muscleMeta: g.muscles + ' · ~' + totalMin + ' min',
+      weekLine: 'Sesión ' + dayNum + ((Array.isArray(this.saved.plan) && this.saved.plan.length) ? (' / ' + this.saved.plan.length) : '') + ' · Semana ' + weekNum + deloadTag
+    };
+
+    // ── opciones del asistente de configuración ──
+    const optRow = (selA) => 'display:flex; align-items:center; justify-content:space-between; padding:15px 17px; border-radius:14px; cursor:pointer; transition:all .15s; '+(selA ? 'background:#4f8cff14; border:1.5px solid #4f8cff;' : 'background:var(--panel); border:1.5px solid var(--field-border3);');
+    const goalOptions = ['full','legs','upper','core','fatloss'].map(k => { const gg=this.GOALS[k]; return { key:k, label:gg.label, sub:gg.muscles, onTap:()=>this.setGoal(k), style: optRow(s.goal===k), check: s.goal===k ? '#4f8cff' : 'transparent' }; });
+    const levelOptions = ['beginner','intermediate','advanced'].map(k => { const ll=this.LEVELS[k]; return { key:k, label:ll.label, sub:ll.sub, onTap:()=>this.setLevel(k), style: optRow(s.level===k), check: s.level===k ? '#4f8cff' : 'transparent' }; });
+    const chip = (selA) => 'flex:1; text-align:center; padding:15px 0; border-radius:13px; cursor:pointer; font:400 26px/1 \'Bebas Neue\'; transition:all .15s; '+(selA ? 'background:#4f8cff; color:#04132e;' : 'background:var(--panel); border:1.5px solid var(--field-border3); color:#c5c1da;');
+    const dayOptions = [2,3,4,5].map(n => ({ n, label:n, onTap:()=>this.setDays(n), style: chip(s.days===n) }));
+    const weekOptions = [4,6,8,12].map(n => ({ n, label:n, onTap:()=>this.setWeeks(n), style: chip(s.weeks===n) }));
+    const setupDots = [0,1,2,3].map(i => ({ style:'height:4px; border-radius:3px; transition:all .2s; '+(i===s.setupStep?'width:26px; background:#4f8cff;':(i<s.setupStep?'width:10px; background:#4f8cff88;':'width:10px; background:#26263f;')) }));
+    const nextOK = (s.setupStep===0 ? (s.nameInput||'').trim().length>0 : (s.setupStep===1 ? !!s.goal : (s.setupStep===2 ? !!s.level : true)));
+    const nextBtnStyle = (ok) => 'margin-top:20px; padding:16px; border-radius:14px; text-align:center; font:600 14px/1 \'Barlow Semi Condensed\'; letter-spacing:.05em; transition:all .2s; '+(ok ? 'background:#4f8cff; color:#04132e; cursor:pointer; box-shadow:0 10px 30px -8px #4f8cff66;' : 'background:#1a1a2e; color:var(--muted5); cursor:default;');
+
+    // ── ficha de ejercicio activa ──
+    const blockLabels = { warmup:'Calentamiento · movilidad', amrap:'Bloque AMRAP', cooldown:'Enfriamiento · estiramiento' };
+    const fi = s.ficha || {};
+    const f = {
+      name: fi.name || '', pose: fi.pose || 'squat', muscle: fi.muscle || '', material: fi.material || '',
+      dose: fi.reps || (fi.sec ? fi.sec+' seg' : ''),
+      errs: (fi.errors || []).map(t => ({ t })),
+      pasos: (fi.pasos || []).map((t, i) => ({ n: i + 1, t })),
+      blockLabel: blockLabels[fi.block] || '',
+      accent: fi.block==='cooldown' ? '#a855f7' : (fi.block==='warmup' ? '#f5a524' : '#4f8cff')
+    };
+
+    return {
+      // phase flags
+      isIntro: phase==='intro', isCheck: phase==='check', isWarmup: phase==='warmup',
+      isDemo: phase==='demo', isAmrap: phase==='amrap', isCooldown: phase==='cooldown',
+      isRpe: phase==='rpe', isDone: phase==='done', isHome: phase==='home',
+      showHeader: ['warmup','demo','amrap','cooldown'].includes(phase),
+
+      // ficha de ejercicio (overlay)
+      hasFicha: !!s.ficha, stop: (ev) => ev && ev.stopPropagation(),
+      onCloseFicha: this.onCloseFicha,
+      fichaName: f.name, fichaPose: f.pose, fichaMuscle: f.muscle, fichaMaterial: f.material,
+      fichaDose: f.dose, fichaErrors: f.errs, fichaPasos: f.pasos, hasFichaPasos: f.pasos.length > 0, fichaBlockLabel: f.blockLabel,
+      fichaAccent: f.accent, fichaAccentBg: f.accent+'18', fichaAccentBd: f.accent+'44',
+
+      // home · hoy
+      greeting, userName: (s.name || 'Atleta').toUpperCase(), userInitial: (s.name || 'A').charAt(0).toUpperCase(),
+      onToggleTheme: this.onToggleTheme,
+      themeIcon: (typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme') === 'light') ? '☀️' : '🌙',
+      dateLine: plan.introDate,
+      onEditName: this.editName,
+      // plan del perfil
+      planDayLabel: plan.dayLabel, planFocus: plan.focus, planMuscles: plan.muscles,
+      planMeta: plan.meta, amrapMinLabel: plan.amrapLabel, planExCount: plan.exCount,
+      planHeaderSmall: plan.headerSmall, planMuscleMeta: plan.muscleMeta, planWeekLine: plan.weekLine, planFirstExName: (this.EXS[0]||{}).name || '',
+      // asistente de configuración (bienvenida)
+      isWelcome: phase==='welcome',
+      isStep0: s.setupStep===0, isStep1: s.setupStep===1, isStep2: s.setupStep===2, isStep3: s.setupStep===3,
+      nameInput: s.nameInput,
+      onNameInput: this.onNameInput,
+      onNextSetup: this.onNextSetup, onPrevSetup: this.prevSetup, onSaveProfile: this.saveProfile,
+      goalOptions, levelOptions, dayOptions, weekOptions, setupDots,
+      setupNextStyle: nextBtnStyle(nextOK), createPlanStyle: nextBtnStyle(true),
+      planSummary: g.label + ' · ' + lvl.label + ' · ' + (s.days||3) + '×/sem · ' + (s.weeks||6) + ' sem',
+      streakSub, weekDone, weekTarget, weekBars, recentDays, doneQuote: dailyQuote,
+      bestStreak, totalSessions: histH.length,
+      onOpenSession: this.onOpenSession, onExpressHome: this.onExpressHome,
+      hasResume: !!this._resumeSnap,
+      resumePhaseLabel: this._resumeSnap ? ({warmup:'Calentamiento',demo:'Antes del AMRAP',amrap:'Bloque AMRAP',cooldown:'Enfriamiento'}[this._resumeSnap.phase] || 'en curso') : '',
+      onResume: this.onResume,
+
+      // header blocks
+      blk1Bg:b1.bg, blk1Bd:b1.bd, blk1Fg:b1.fg,
+      blk2Bg:b2.bg, blk2Bd:b2.bd, blk2Fg:b2.fg,
+      blk3Bg:b3.bg, blk3Bd:b3.bd, blk3Fg:b3.fg,
+
+      // intro / done
+      streak: s.streak,
+      onStart: this.onStart, onExpress: this.onExpress, onQuit: this.onQuit,
+      onRestart: this.onRestart,
+      rounds: s.rounds,
+      doneRpe: rpeFaces[s.rpe] || '—',
+
+      // check
+      moods,
+      zoneChips, zoneHint, soreMode, showChooseHint, checkContinueStyle,
+      onCheckContinue: this.onCheckContinue,
+
+      // warmup
+      warmupName: (s.warmupDone ? 'Calentamiento completo ✓' : curW.name),
+      warmupClock: s.warmupDone ? '0:00' : this.fmt(s.warmupLeft),
+      warmupPct: Math.round((s.warmupLeft / curW.sec) * 100),
+      warmupList, warmupDone: s.warmupDone, warmupRunning: s.warmupRunning,
+      onSkipMove: this.onSkipMove, onWarmupNext: this.onWarmupNext,
+
+      // demo
+      demoNum: s.demoIdx + 1, demoTotal: this.EXS.length,
+      demoName: ex.name, demoReps: ex.reps, demoMuscle: ex.muscle, demoMaterial: ex.material, demoEx: ex.ex,
+      demoErrors, demoDots, demoPasos,
+      demoLoad, hasDemoLoad,
+      demoNextLabel: isLastDemo ? 'EMPEZAR AMRAP  ▶' : 'SIGUIENTE  →',
+      demoPrevStyle: 'width:54px; padding:16px 0; border-radius:14px; border:1px solid #ffffff1f; text-align:center; font:600 16px/1 system-ui; color:'+(s.demoIdx>0?'var(--text3)':'#3a3a52')+'; cursor:'+(s.demoIdx>0?'pointer':'default')+';',
+      onDemoPrev: this.onDemoPrev, onDemoNext: this.onDemoNext,
+
+      // amrap
+      amrapClock: this.fmt(s.amrapLeft),
+      amrapPct: Math.round((1 - s.amrapLeft / s.amrapTotal) * 100),
+      amrapStatus: s.amrapLeft===0 ? 'TIEMPO COMPLETADO' : (s.amrapRunning ? 'EN MARCHA' : 'EN PAUSA'),
+      liveColor: s.amrapRunning ? '#4f8cff' : 'var(--muted2)',
+      amrapToggleLabel: s.amrapRunning ? '⏸  Pausar' : '▶  Reanudar',
+      bestRounds: Math.max(s.bestRounds, s.rounds),
+      circuit: this.EXS.map(e => {
+        const load = (this.saved.loads || []).find(l => l.ex === e.name);
+        return { name: e.name, reps: e.reps, load: load ? load.w : '', hasLoad: !!(load && load.w), onTap: () => this.openFicha(e) };
+      }),
+      onAddRound: this.onAddRound, onSubRound: this.onSubRound,
+      onToggleAmrap: this.onToggleAmrap, onFinishAmrap: this.onFinishAmrap,
+
+      // cooldown
+      cdName: s.cdDone ? 'Estiramientos completos ✓' : curC.name,
+      cdClock: s.cdDone ? '0:00' : this.fmt(s.cdLeft),
+      cdPct: Math.round((s.cdLeft / curC.sec) * 100),
+      cdList, onFinishCooldown: this.onFinishCooldown,
+
+      // rpe
+      rpes, hasRpe: !!s.rpe, rpeSuggestion: rpeSug,
+      adjustmentsList, hasAdjustments,
+      onSave: this.onSave,
+      saveStyle: 'margin-top:18px; padding:17px; border-radius:15px; text-align:center; font:600 14px/1 \'Barlow Semi Condensed\'; letter-spacing:.05em; cursor:pointer; '+(s.rpe ? 'background:#22c55e; color:#04210f; box-shadow:0 10px 30px -8px #22c55e55;' : 'background:#15152a; color:var(--muted4); border:1px solid var(--border3);')
+    };
+  }
+}
+</script>
+</body>
+</html>

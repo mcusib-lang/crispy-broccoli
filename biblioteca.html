@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<script>(function(){try{var t=localStorage.getItem('amrap_theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Librería de Ejercicios · AMRAP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<script src="./exercises-data.js"></script>
+<style>
+  :root{
+    --bg-page:#050509; --bg-stage-a:#0d0d1f; --bg-phone-a:#0a0a16; --bg-phone-b:#08080f;
+    --card-a:#14142a; --card-b:#101022; --panel:#121226; --panel2:#12122a;
+    --text:#f3f1ec; --text2:#eeecf6; --text3:#e6e3f2;
+    --muted:#8b88a8; --muted2:#7a7796; --muted3:#a7a4c2; --muted4:#5d5a78; --muted5:#4a4863; --muted6:#c9c6de;
+    --border:#ffffff10; --border2:#ffffff0d; --border3:#ffffff12; --border4:#ffffff14; --border5:#ffffff0a; --border6:#ffffff08; --border7:#ffffff18; --border8:#ffffff22;
+    --field-border:#2a2a48; --field-border2:#3a3a5a; --field-border3:#20203a;
+    --navbar-bg:#08080fcc;
+  }
+  [data-theme="light"]{
+    --bg-page:#f2f1f7; --bg-stage-a:#e7e5f2; --bg-phone-a:#ffffff; --bg-phone-b:#f4f3f9;
+    --card-a:#ffffff; --card-b:#f3f2f9; --panel:#eeedf6; --panel2:#e9e7f4;
+    --text:#18172a; --text2:#18172a; --text3:#18172a;
+    --muted:#615e78; --muted2:#726f8c; --muted3:#4c495e; --muted4:#8a87a0; --muted5:#a3a0b8; --muted6:#403d54;
+    --border:#00000014; --border2:#0000000e; --border3:#00000016; --border4:#00000018; --border5:#0000000a; --border6:#00000008; --border7:#0000001c; --border8:#00000026;
+    --field-border:#d8d5e6; --field-border2:#c7c4da; --field-border3:#d8d5e6;
+    --navbar-bg:#ffffffcc;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+  html,body{background:var(--bg-page);font-family:'Barlow Semi Condensed',system-ui,sans-serif;min-height:100dvh}
+  .stage{min-height:100dvh;display:flex;align-items:flex-start;justify-content:center;background:radial-gradient(120% 80% at 50% 0%,var(--bg-stage-a) 0%,var(--bg-page) 60%)}
+  .phone{width:100%;max-width:440px;min-height:100dvh;background:linear-gradient(180deg,var(--bg-phone-a) 0%,var(--bg-phone-b) 100%);position:relative;display:flex;flex-direction:column;color:var(--text);border-left:1px solid var(--border);border-right:1px solid var(--border)}
+  .bebas{font-family:'Bebas Neue';font-weight:400}
+  ::-webkit-scrollbar{width:0;height:0}
+  image-slot{--is-bg:var(--card-b)}
+  .icon-btn{width:38px;height:38px;border-radius:12px;background:var(--panel2);border:1px solid var(--border3);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted6);font-size:20px;flex-shrink:0}
+  .icon-btn:active{background:#1a1a34}
+  .fade{animation:fade .28s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .chip{white-space:nowrap;padding:8px 14px;border-radius:20px;font:600 12px/1 'Barlow Semi Condensed';letter-spacing:.03em;cursor:pointer;border:1px solid var(--border4);background:var(--panel2);color:var(--muted);transition:all .15s;flex-shrink:0}
+  .card{cursor:pointer;border-radius:16px;background:var(--card-b);border:1px solid var(--border);overflow:hidden}
+  .card:active{transform:scale(.98)}
+  .nav{flex:1;padding:15px;border-radius:14px;font:600 14px/1 'Barlow Semi Condensed';letter-spacing:.04em;text-align:center;cursor:pointer;border:1px solid var(--field-border);background:var(--panel2);color:var(--muted6)}
+  .nav.primary{background:#4f8cff;border-color:#4f8cff;color:#061024}
+  .nav:active{filter:brightness(1.1)}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="phone">
+
+    <!-- ══════ LISTA ══════ -->
+    <div id="listView" style="flex:1;display:flex;flex-direction:column">
+      <div style="padding:22px 22px 8px">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div style="font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.16em;color:var(--muted2);text-transform:uppercase">AMRAP · Entreno funcional</div>
+          <div onclick="toggleTheme()" id="themeBtn" style="width:32px;height:32px;border-radius:9px;background:var(--panel2);border:1px solid var(--border3);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;flex-shrink:0">🌙</div>
+        </div>
+        <div class="bebas" style="font-size:38px;line-height:.92;margin-top:6px">LIBRERÍA<br>DE EJERCICIOS</div>
+        <input id="search" placeholder="Buscar ejercicio…" style="margin-top:14px;width:100%;padding:13px 16px;border-radius:13px;background:var(--panel);border:1.5px solid var(--field-border);color:var(--text);font:600 14px/1 'Barlow Semi Condensed';outline:none">
+      </div>
+      <div style="padding:2px 22px 2px;font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.14em;color:#4f4d69;text-transform:uppercase">Grupo muscular</div>
+      <div id="chips" style="display:flex;gap:8px;overflow-x:auto;padding:8px 22px 8px"></div>
+      <div style="padding:2px 22px 2px;font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.14em;color:#4f4d69;text-transform:uppercase">Material</div>
+      <div id="equipChips" style="display:flex;gap:8px;overflow-x:auto;padding:8px 22px 6px"></div>
+      <div style="padding:4px 22px 6px;font:500 12px/1 'Barlow Semi Condensed';color:var(--muted)" id="count">108 ejercicios</div>
+      <div id="grid" style="flex:1;padding:2px 22px 24px;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:174px;gap:12px;align-content:start"></div>
+    </div>
+
+    <!-- ══════ DETALLE ══════ -->
+    <div id="detailView" style="display:none;flex:1;flex-direction:column">
+      <div style="display:flex;align-items:center;gap:14px;padding:20px 22px 12px">
+        <div class="icon-btn" id="backBtn">‹</div>
+        <div style="flex:1">
+          <div style="font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.16em;color:var(--muted2);text-transform:uppercase">Ficha técnica</div>
+          <div class="bebas" style="font-size:20px;line-height:1;margin-top:3px" id="dTop">EJERCICIO</div>
+        </div>
+        <div style="font:600 12px/1 'Barlow Semi Condensed';letter-spacing:.08em;color:#6f6c8e" id="dCount"></div>
+      </div>
+      <div id="detail" style="flex:1;padding:0 22px 26px"></div>
+      <div style="display:flex;gap:10px;padding:12px 22px calc(12px + env(safe-area-inset-bottom));border-top:1px solid #ffffff0e;background:var(--bg-phone-b);position:sticky;bottom:0">
+        <div class="nav" id="prevBtn">← Anterior</div>
+        <div class="nav primary" id="nextBtn">Siguiente →</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const EX = window.EXERCISES;
+
+// ── Perfil del usuario para el histórico por ejercicio ──
+let DB = {};
+try { DB = JSON.parse(localStorage.getItem('amrap_fn') || '{}') || {}; } catch (e) {}
+
+function historyForExercise(ex){
+  const key = ex.key;
+  const name = ex.name;
+  const hist = Array.isArray(DB.history) ? DB.history : [];
+  const matches = hist.filter(h => Array.isArray(h.exercises) && h.exercises.includes(key));
+  const load = (DB.loads || []).find(l => l.ex === name);
+  return { count: matches.length, last: matches[matches.length-1] || null, load };
+}
+function historyBlock(ex){
+  const h = historyForExercise(ex);
+  const c = CAT[ex.cat] || '#4f8cff';
+  if (!h.count && !h.load){
+    return `<div style="margin-top:16px;padding:12px 14px;border-radius:12px;background:var(--card-b);border:1px dashed var(--border4);font:500 12px/1.4 'Barlow Semi Condensed';color:var(--muted4)">Aún no has hecho este ejercicio en una sesión. Cuando aparezca en tu circuito, verás aquí tu historial y carga.</div>`;
+  }
+  const RC = { facil:['#22c55e','Fácil'], justo:['#f5a524','Justo'], alto:['#ef4444','Alto'] };
+  const rpe = h.last && h.last.rpe ? (RC[h.last.rpe] || ['var(--muted)','']) : null;
+  const lastDate = h.last ? new Date(h.last.date) : null;
+  const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const dateTxt = lastDate ? `${lastDate.getDate()} ${meses[lastDate.getMonth()]}` : '—';
+  return `<div style="margin-top:16px;padding:14px 15px;border-radius:14px;background:linear-gradient(180deg,${c}12,${c}06);border:1px solid ${c}33">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div style="font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.14em;color:${c}">TU HISTÓRICO</div>
+      ${h.last?`<div style="font:500 11px/1 'Barlow Semi Condensed';color:var(--muted3)">Última: ${dateTxt}</div>`:''}
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <div style="padding:8px 12px;border-radius:11px;background:var(--panel);border:1px solid var(--border4);min-width:88px">
+        <div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.08em;color:var(--muted4)">SESIONES</div>
+        <div class="bebas" style="font-size:22px;color:var(--text);margin-top:3px">${h.count}</div>
+      </div>
+      ${h.load?`<div style="padding:8px 12px;border-radius:11px;background:var(--panel);border:1px solid var(--border4);min-width:88px">
+        <div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.08em;color:var(--muted4)">CARGA ACTUAL</div>
+        <div class="bebas" style="font-size:22px;color:${c};margin-top:3px">${h.load.w}</div>
+      </div>`:''}
+      ${rpe?`<div style="padding:8px 12px;border-radius:11px;background:var(--panel);border:1px solid var(--border4);min-width:88px">
+        <div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.08em;color:var(--muted4)">ÚLTIMO RPE</div>
+        <div style="font:600 14px/1 'Barlow Semi Condensed';color:${rpe[0]};margin-top:6px">${rpe[1]}</div>
+      </div>`:''}
+    </div>
+  </div>`;
+}
+const CAT = {
+  Piernas:'#4f8cff', Glúteo:'#ec4899', Empuje:'#22c55e',
+  Tracción:'#f59e0b', Core:'#a855f7', Cardio:'#ea580c', Movilidad:'#14b8a6'
+};
+const CATS = ['Todos', ...Object.keys(CAT)];
+const EQUIPS = ['Todos','Ninguno','Mancuerna','Kettlebell','Goma','Barra','Banco','Comba'];
+const EQUIP_LABEL = {Ninguno:'Sin material',Mancuerna:'Mancuerna',Kettlebell:'Kettlebell',Goma:'Goma elástica',Barra:'Barra / calistenia',Banco:'Banco o cajón',Comba:'Comba'};
+
+// ═══ ICONOS DE MATERIAL (SVG stroke = currentColor) ═══
+function equipIcon(eq,size){
+  const s=size||26, sw=2;
+  const svg=(inner)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
+  switch(eq){
+    case 'Mancuerna': return svg('<path d="M3 8v8M6 6v12M18 6v12M21 8v8M6 12h12"/>');
+    case 'Kettlebell': return svg('<path d="M9 6.5a3 3 0 1 1 6 0"/><path d="M8.5 6.5C6 8 5 11 5 14a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4c0-3-1-6-3.5-7.5"/>');
+    case 'Goma': return svg('<path d="M4 12c0-3 2-5 5-5s5 2 5 5-2 5-5 5"/><path d="M14 8l6-2M14 16l6 2M20 6v12"/>');
+    case 'Barra': return svg('<path d="M4 4v16M20 4v16M4 9h16M4 15h16"/>');
+    case 'Banco': return svg('<path d="M3 10h18v3H3z"/><path d="M5 13v6M19 13v6"/>');
+    case 'Comba': return svg('<path d="M5 4v3M19 4v3"/><path d="M5 7c0 8 3 13 7 13s7-5 7-13"/>');
+    default: return svg('<path d="M12.4 13a5 5 0 0 1 9.6 2c0 3.9-4 7-9 7-4 0-8.2-.8-10.4-2.5-.4-.3-.6-.8-.6-1.4C2.1 12.7 2.6 2 10 2a3 3 0 0 1 3 3 2 2 0 0 1-2 2c-1.1 0-1.6-.4-2-1"/><path d="M15 14a5 5 0 0 0-7.6 2"/>'); // bíceps flexionado (peso corporal)
+  }
+}
+function riskIcon(size){const s=size||14;return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17.5v.01"/></svg>`;}
+
+let activeCat = localStorage.getItem('amrap_lib_cat') || 'Todos';
+let activeEquip = localStorage.getItem('amrap_lib_equip') || 'Todos';
+let query = '';
+let filtered = [];
+let dIdx = 0;
+
+const listView=document.getElementById('listView'), detailView=document.getElementById('detailView');
+const grid=document.getElementById('grid'), chipsEl=document.getElementById('chips'), equipChipsEl=document.getElementById('equipChips');
+const countEl=document.getElementById('count'), searchEl=document.getElementById('search');
+
+function computeFiltered(){
+  filtered = EX.filter(e=>{
+    const okCat = activeCat==='Todos' || e.cat===activeCat;
+    const okEq = activeEquip==='Todos' || e.equip===activeEquip;
+    const okQ = !query || e.name.toLowerCase().includes(query) || e.cat.toLowerCase().includes(query) || (e.pattern||'').toLowerCase().includes(query);
+    return okCat && okEq && okQ;
+  });
+}
+
+function renderChips(){
+  chipsEl.innerHTML = CATS.map(c=>{
+    const on=c===activeCat, col=c==='Todos'?'var(--muted6)':CAT[c];
+    return `<div class="chip" data-cat="${c}" style="${on?`background:${col}22;border-color:${col}66;color:${col}`:''}">${c}</div>`;
+  }).join('');
+  chipsEl.querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>{
+    activeCat=ch.dataset.cat; localStorage.setItem('amrap_lib_cat',activeCat);
+    renderChips(); renderGrid();
+  });
+  equipChipsEl.innerHTML = EQUIPS.map(q=>{
+    const on=q===activeEquip;
+    const lbl = q==='Todos'?'Todos':(EQUIP_LABEL[q]||q);
+    return `<div class="chip" data-eq="${q}" style="${on?'background:#4f8cff22;border-color:#4f8cff66;color:#7fb0ff':''}">${lbl}</div>`;
+  }).join('');
+  equipChipsEl.querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>{
+    activeEquip=ch.dataset.eq; localStorage.setItem('amrap_lib_equip',activeEquip);
+    renderChips(); renderGrid();
+  });
+}
+
+function heroPanel(e,h){
+  const col=CAT[e.cat];
+  return `<div style="position:relative;height:${h}px;overflow:hidden;
+      background:
+        radial-gradient(80% 120% at 85% 15%, ${col}44 0%, transparent 55%),
+        linear-gradient(150deg, #16162e 0%, var(--card-b) 100%)">
+    <div style="position:absolute;right:-10px;bottom:-10px;color:${col};opacity:.12">${equipIcon(e.equip, h*0.8)}</div>
+    <div style="position:absolute;left:12px;top:12px;color:${col};opacity:.9">${equipIcon(e.equip, 22)}</div>
+  </div>`;
+}
+
+function renderGrid(){
+  computeFiltered();
+  countEl.textContent = `${filtered.length} ejercicio${filtered.length!==1?'s':''}`;
+  grid.innerHTML = filtered.map((e,i)=>{
+    const col=CAT[e.cat];
+    return `<div class="card fade" data-i="${i}">
+      ${heroPanel(e,96)}
+      <div style="padding:9px 11px 11px">
+        <div style="display:flex;align-items:center;gap:5px">
+          <div style="width:5px;height:5px;border-radius:50%;background:${col}"></div>
+          <span style="font:600 8.5px/1 'Barlow Semi Condensed';letter-spacing:.08em;color:${col};text-transform:uppercase">${e.cat}</span>
+        </div>
+        <div style="font:600 13.5px/1.15 'Barlow Semi Condensed';color:var(--text2);margin-top:5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${e.name}</div>
+      </div>
+    </div>`;
+  }).join('');
+  grid.querySelectorAll('.card').forEach(c=>c.onclick=()=>openDetail(parseInt(c.dataset.i,10)));
+}
+
+function pill(text,color,filled){
+  return `<span style="display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:20px;font:600 11px/1 'Barlow Semi Condensed';letter-spacing:.03em;
+    ${filled?`background:${color}1e;color:${color};border:1px solid ${color}44`:`background:var(--panel2);color:var(--muted6);border:1px solid var(--border4)`}">${text}</span>`;
+}
+
+function openDetail(i){dIdx=i;listView.style.display='none';detailView.style.display='flex';renderDetail();}
+function backToList(){detailView.style.display='none';listView.style.display='flex';}
+
+function renderDetail(){
+  const e=filtered[dIdx], c=CAT[e.cat];
+  document.getElementById('dTop').textContent=e.cat.toUpperCase();
+  document.getElementById('dCount').textContent=`${dIdx+1} / ${filtered.length}`;
+  const d=document.getElementById('detail');
+  d.innerHTML=`
+  <div class="fade">
+    <div style="margin:4px 0 2px">
+      <div style="display:flex;align-items:center;gap:7px">
+        <div style="width:6px;height:6px;border-radius:50%;background:${c}"></div>
+        <div style="font:600 11px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:${c};text-transform:uppercase">${e.cat}</div>
+      </div>
+      <div class="bebas" style="font-size:38px;line-height:.92;margin-top:8px">${e.name.toUpperCase()}</div>
+    </div>
+
+    <!-- Panel visual + drag-drop foto propia -->
+    <div style="position:relative;margin-top:16px;border-radius:18px;overflow:hidden">
+      ${heroPanel(e,200)}
+      <div style="position:absolute;left:16px;bottom:14px">
+        <div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:#ffffffaa;text-transform:uppercase">Patrón</div>
+        <div style="font:600 16px/1.1 'Barlow Semi Condensed';color:#fff;margin-top:4px">${e.pattern||'—'}</div>
+      </div>
+    </div>
+    <image-slot id="ex-${e.key}-photo" shape="rounded" radius="14"
+      placeholder="Opcional · arrastra tu foto o GIF del ejercicio"
+      style="display:block;width:100%;height:120px;margin-top:8px"></image-slot>
+
+    <!-- chips -->
+    <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:16px">
+      ${pill(e.reps,c,true)}
+      <span style="display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:20px;font:600 11px/1 'Barlow Semi Condensed';background:var(--panel2);color:var(--muted6);border:1px solid var(--border4)">
+        <span style="color:${c};display:inline-flex">${equipIcon(e.equip,15)}</span>${EQUIP_LABEL[e.equip]}
+      </span>
+    </div>
+
+    <div style="font:500 14px/1.5 'Barlow Semi Condensed';color:#b8b4d0;margin-top:16px">${e.desc}</div>
+
+    ${historyBlock(e)}
+
+    <div style="font:600 11px/1 'Barlow Semi Condensed';letter-spacing:.14em;color:var(--muted2);text-transform:uppercase;margin:24px 0 12px">Cómo hacerlo</div>
+    <div style="display:flex;flex-direction:column;gap:11px">
+      ${e.pasos.map((p,i)=>`
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          <div style="width:24px;height:24px;border-radius:8px;background:${c}1e;border:1px solid ${c}44;color:${c};font:700 12px/24px 'Barlow Semi Condensed';text-align:center;flex-shrink:0">${i+1}</div>
+          <div style="font:500 13.5px/1.45 'Barlow Semi Condensed';color:#d8d3e8;padding-top:2px">${p}</div>
+        </div>`).join('')}
+    </div>
+
+    <div style="font:600 11px/1 'Barlow Semi Condensed';letter-spacing:.14em;color:var(--muted2);text-transform:uppercase;margin:24px 0 12px">Errores comunes</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      ${e.errores.map(x=>`
+        <div style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:12px;background:#1a1020;border:1px solid #ea580c33">
+          <span style="color:#f97316;flex-shrink:0;display:inline-flex;margin-top:1px">${riskIcon(15)}</span>
+          <div style="font:500 13px/1.4 'Barlow Semi Condensed';color:#e8c4b0">${x}</div>
+        </div>`).join('')}
+    </div>
+
+    <div style="display:flex;gap:10px;margin-top:20px">
+      <div style="flex:1;padding:14px;border-radius:14px;background:var(--card-b);border:1px solid var(--border)">
+        <div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:var(--muted4);text-transform:uppercase">Músculos</div>
+        <div style="font:600 12.5px/1.35 'Barlow Semi Condensed';color:#d8d3e8;margin-top:6px">${e.musculos}</div>
+      </div>
+      <div style="width:132px;padding:14px;border-radius:14px;background:#1a1020;border:1px solid #ea580c33">
+        <div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:#f97316;text-transform:uppercase">Riesgo</div>
+        <div style="font:600 12.5px/1.35 'Barlow Semi Condensed';color:#e8c4b0;margin-top:6px">${e.riesgo}</div>
+      </div>
+    </div>
+  </div>`;
+  d.scrollTop=0;
+}
+
+document.getElementById('nextBtn').onclick=()=>{dIdx=(dIdx+1)%filtered.length;renderDetail();};
+document.getElementById('prevBtn').onclick=()=>{dIdx=(dIdx-1+filtered.length)%filtered.length;renderDetail();};
+document.getElementById('backBtn').onclick=backToList;
+searchEl.oninput=e=>{query=e.target.value.trim().toLowerCase();renderGrid();};
+
+function toggleTheme(){const cur=document.documentElement.getAttribute('data-theme')==='light'?'light':'dark';const next=cur==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',next);try{localStorage.setItem('amrap_theme',next);}catch(e){}const b=document.getElementById('themeBtn');if(b)b.textContent=next==='light'?'☀️':'🌙';}
+(function(){const b=document.getElementById('themeBtn');if(b){const t=(function(){try{return localStorage.getItem('amrap_theme')||'dark';}catch(e){return 'dark';}})();b.textContent=t==='light'?'☀️':'🌙';}})();
+renderChips();
+renderGrid();
+</script>
+</body>
+</html>
