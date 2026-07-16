@@ -1,5 +1,5 @@
 // AMRAP · Service Worker — app shell offline
-const CACHE = 'amrap-v4';
+const CACHE = 'amrap-v6';
 const CORE = [
   './',
   './index.html',

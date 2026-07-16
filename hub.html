@@ -67,8 +67,14 @@
   .field{width:100%;padding:12px 14px;border-radius:12px;background:var(--panel);border:1.5px solid var(--field-border);color:var(--text);font:600 14px/1 'Barlow Semi Condensed';outline:none}
   /* ==== ESCRITORIO ==== */
   @media(min-width:900px){
-    .stage{align-items:stretch;background-image:linear-gradient(180deg,rgba(5,5,9,.82),rgba(5,5,9,.9)),url('./assets/img/gym-wide-black.jpg');background-size:cover;background-position:center}
-    [data-theme="light"] .stage{background-image:linear-gradient(180deg,rgba(242,241,247,.88),rgba(242,241,247,.94)),url('./assets/img/gym-wide-black.jpg')}
+    .stage{align-items:stretch;background:
+      radial-gradient(60% 60% at 20% 15%, #4f8cff20 0%, transparent 60%),
+      radial-gradient(50% 50% at 85% 80%, #a855f71a 0%, transparent 60%),
+      linear-gradient(180deg, #05050c 0%, #0a0a15 100%)}
+    [data-theme="light"] .stage{background:
+      radial-gradient(60% 60% at 20% 15%, #4f8cff18 0%, transparent 60%),
+      radial-gradient(50% 50% at 85% 80%, #a855f712 0%, transparent 60%),
+      linear-gradient(180deg, #f2f1f7 0%, #e7e5f2 100%)}
     .phone{max-width:1000px;min-height:100dvh}
     .navbar{order:-1;border-top:none;border-bottom:1px solid var(--border);justify-content:center;gap:46px;padding:16px 0;position:sticky;top:0;bottom:auto}
     .navb{flex:0 0 auto;flex-direction:row;gap:10px}
