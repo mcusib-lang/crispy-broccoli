@@ -268,6 +268,32 @@
         </div>
       </div>
 
+      <!-- ══════════ NUTRICIÓN ══════════ -->
+      <div class="tab" id="tab-nutri" style="flex:1;flex-direction:column">
+        <div class="scroll" style="padding-top:24px">
+          <div class="sec" style="letter-spacing:.18em;color:#22c55e">Alimentación</div>
+          <div class="bebas" style="font-size:40px;line-height:.9;margin-top:6px">NUTRICIÓN</div>
+          <div style="font:500 12.5px/1.45 'Barlow Semi Condensed';color:var(--muted);margin-top:10px">Objetivos diarios calculados a partir de tus datos (Mifflin-St Jeor + factor de actividad). Son una <b>estimación para orientarte</b>; ajusta según cómo se sienta tu cuerpo semana a semana.</div>
+
+          <div id="nutriMissing" style="display:none;margin-top:14px;padding:14px 15px;border-radius:14px;background:var(--tint-amber-a);border:1px solid #f5a52433;font:500 12.5px/1.5 'Barlow Semi Condensed';color:#f5a524">Nos faltan datos. Edita tu perfil (peso, altura, edad, sexo) desde <b>Cuenta → Editar perfil</b> para calcular objetivos.</div>
+
+          <div id="nutriTargets" style="margin-top:16px;display:none;flex-direction:column;gap:10px"></div>
+
+          <div class="sec" id="nutriTrackTitle" style="display:none;margin:22px 0 9px">Hoy</div>
+          <div id="nutriTrackers" style="display:none;flex-direction:column;gap:12px"></div>
+
+          <div id="nutriTips" style="display:none;margin-top:24px;padding:16px 17px;border-radius:16px;background:var(--card-b);border:1px solid var(--border)"></div>
+
+          <div class="sec" id="nutriShopTitle" style="display:none;margin:26px 0 9px">Lista de la compra · base</div>
+          <div id="nutriShop" style="display:none;padding:16px 17px;border-radius:16px;background:var(--card-b);border:1px solid var(--border)"></div>
+
+          <div class="sec" id="nutriRecTitle" style="display:none;margin:26px 0 9px">Recetario rápido</div>
+          <div id="nutriRec" style="display:none;flex-direction:column;gap:10px"></div>
+
+          <div style="height:8px"></div>
+        </div>
+      </div>
+
     </div>
     <div class="navbar" id="navbar"></div>
   </div>
@@ -285,14 +311,14 @@
 <script src="supabase-sync.js"></script>
 <script>
 const ic=(p,c)=>`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="${c||'currentColor'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
-const ICONS={hoy:'<path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/>',calend:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/>',cardio:'<path d="M20.8 5.6a5.5 5.5 0 0 0-8.8 1.4A5.5 5.5 0 0 0 3.2 5.6C1 7.8 1 11.3 3.2 13.5L12 22l8.8-8.5c2.2-2.2 2.2-5.7 0-7.9z"/>',progreso:'<path d="M3 20h18"/><path d="M6 16l4-5 3 3 5-7"/>',libro:'<path d="M4 4h13a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2z"/><path d="M4 4v14"/>'};
+const ICONS={hoy:'<path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/>',calend:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/>',cardio:'<path d="M20.8 5.6a5.5 5.5 0 0 0-8.8 1.4A5.5 5.5 0 0 0 3.2 5.6C1 7.8 1 11.3 3.2 13.5L12 22l8.8-8.5c2.2-2.2 2.2-5.7 0-7.9z"/>',progreso:'<path d="M3 20h18"/><path d="M6 16l4-5 3 3 5-7"/>',libro:'<path d="M4 4h13a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2z"/><path d="M4 4v14"/>',nutri:'<path d="M12 3c3 3 5 6 5 9a5 5 0 0 1-10 0c0-3 2-6 5-9z"/><path d="M9 14c1 1 2 1 3 1"/>'};
 document.querySelector('#acCardio').innerHTML=ic(ICONS.cardio,'#ea580c');
 document.querySelector('#acLibro').innerHTML=ic(ICONS.libro,'#f59e0b');
 
-const TABS=[['hoy','Hoy',ICONS.hoy,'#4f8cff'],['calend','Calend.',ICONS.calend,'#4f8cff'],['cardio','Cardio',ICONS.cardio,'#ea580c'],['progreso','Progreso',ICONS.progreso,'#4f8cff']];
+const TABS=[['hoy','Hoy',ICONS.hoy,'#4f8cff'],['calend','Calend.',ICONS.calend,'#4f8cff'],['cardio','Cardio',ICONS.cardio,'#ea580c'],['progreso','Progreso',ICONS.progreso,'#4f8cff'],['nutri','Nutri',ICONS.nutri,'#22c55e']];
 let active='hoy';
 function renderNav(){document.getElementById('navbar').innerHTML=TABS.map(([id,lbl,path,col])=>{const on=id===active;const c=on?col:'var(--muted4)';return `<div class="navb" onclick="go('${id}')"><span style="color:${c}">${ic(path,c)}</span><span class="lbl" style="color:${c}">${lbl.toUpperCase()}</span></div>`;}).join('');}
-function go(id){active=id;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));const el=document.getElementById('tab-'+id);el.classList.add('on');el.querySelector('.scroll').classList.add('fade');renderNav();if(id==='calend')renderCal();else if(id==='cardio')renderCardio();else if(id==='progreso')renderProgreso();else renderHoy();}
+function go(id){active=id;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));const el=document.getElementById('tab-'+id);el.classList.add('on');el.querySelector('.scroll').classList.add('fade');renderNav();if(id==='calend')renderCal();else if(id==='cardio')renderCardio();else if(id==='progreso')renderProgreso();else if(id==='nutri')renderNutri();else renderHoy();}
 window.go=go;
 
 function load(){try{return JSON.parse(localStorage.getItem('amrap_fn')||'{}')}catch(e){return{}}}
@@ -633,6 +659,302 @@ function renderCardio(){
 function setCType(v){DB.cardioType=v;persist();renderCardio();renderHoy();}
 function saveCardio(){const dur=parseInt(document.getElementById('cDur').value,10);if(!dur||!cRpeSel){alert('Indica duración y esfuerzo.');return;}DB.cardio.push({date:new Date().toISOString(),dur,type:document.getElementById('cType').value,rpe:cRpeSel});persist();document.getElementById('cDur').value='';cRpeSel=null;renderCardio();renderHoy();renderCal();}
 
+function renderNutri(){
+  const missing = document.getElementById('nutriMissing');
+  const targets = document.getElementById('nutriTargets');
+  const trackTitle = document.getElementById('nutriTrackTitle');
+  const trackers = document.getElementById('nutriTrackers');
+  const tips = document.getElementById('nutriTips');
+
+  const peso = parseFloat(DB.peso), altura = parseFloat(DB.altura), edad = parseInt(DB.edad,10);
+  const sexo = (DB.sexo||'').toLowerCase();
+  if (!peso || !altura || !edad || peso<25 || altura<100){
+    missing.style.display = 'block';
+    targets.style.display='none'; trackTitle.style.display='none'; trackers.style.display='none'; tips.style.display='none';
+    return;
+  }
+  missing.style.display = 'none';
+
+  // ── BMR (Mifflin-St Jeor) ──
+  let bmr;
+  if (sexo === 'hombre') bmr = 10*peso + 6.25*altura - 5*edad + 5;
+  else if (sexo === 'mujer') bmr = 10*peso + 6.25*altura - 5*edad - 161;
+  else bmr = 10*peso + 6.25*altura - 5*edad - 78; // media
+
+  // ── factor de actividad según días/semana ──
+  const d = DB.diasPorSemana || DB.days || 3;
+  const factor = d <= 2 ? 1.375 : (d <= 3 ? 1.55 : (d <= 5 ? 1.65 : 1.725));
+  const tdee = Math.round(bmr * factor);
+
+  // ── ajuste por objetivo primario ──
+  const goalPrim = (DB.objetivos && DB.objetivos[0]) || 'salud';
+  const delta = ({ grasa:-400, musculo:250, fuerza:100, resistencia:100, salud:0 })[goalPrim] || 0;
+  const kcal = Math.max(1200, tdee + delta);
+
+  // ── macros ──
+  const proteinPerKg = ({ grasa:2.0, musculo:1.8 })[goalPrim] || 1.6;
+  const protein = Math.round(peso * proteinPerKg);
+  const fatG = Math.round(peso * 0.9);
+  const carbG = Math.max(80, Math.round((kcal - protein*4 - fatG*9) / 4));
+
+  // ── agua: 35 ml/kg + 500 ml por día entrenado + ajuste calor si quisiéramos ──
+  const waterMl = Math.round(peso * 35 + (d * 500 / 7));
+  const waterGlasses = Math.max(6, Math.round(waterMl / 250));
+
+  // ── tarjetas de objetivos ──
+  const goalLabel = ({ grasa:'Déficit · perder grasa', musculo:'Superávit · ganar músculo', fuerza:'Mantener · fuerza', resistencia:'Mantener · resistencia', salud:'Mantener · salud' })[goalPrim] || 'Mantener';
+  const deltaTxt = delta === 0 ? '' : (delta > 0 ? ` <span style="color:#22c55e;font-weight:600">(+${delta} kcal sobre mantenimiento)</span>` : ` <span style="color:#f5a524;font-weight:600">(${delta} kcal bajo mantenimiento)</span>`);
+  targets.innerHTML = `
+    <div style="padding:18px 18px 16px;border-radius:18px;background:linear-gradient(180deg,#22c55e14,#22c55e08);border:1px solid #22c55e44">
+      <div style="font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:#22c55e">CALORÍAS OBJETIVO</div>
+      <div class="bebas" style="font-size:56px;line-height:.9;margin-top:4px;color:var(--text)">${kcal}<span style="font-size:22px;color:var(--muted);margin-left:6px">kcal</span></div>
+      <div style="font:500 12px/1.4 'Barlow Semi Condensed';color:var(--muted3);margin-top:6px">${goalLabel}${deltaTxt}</div>
+      <div style="font:500 11px/1.4 'Barlow Semi Condensed';color:var(--muted4);margin-top:4px">Mantenimiento estimado: ${tdee} kcal · BMR ${Math.round(bmr)} kcal</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+      <div style="padding:14px 12px;border-radius:14px;background:var(--card-b);border:1px solid var(--border)">
+        <div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:#4f8cff">PROTEÍNA</div>
+        <div class="bebas" style="font-size:28px;line-height:.9;margin-top:5px;color:var(--text)">${protein}<span style="font-size:13px;color:var(--muted);margin-left:3px">g</span></div>
+        <div style="font:500 10px/1.3 'Barlow Semi Condensed';color:var(--muted4);margin-top:4px">${proteinPerKg} g/kg</div>
+      </div>
+      <div style="padding:14px 12px;border-radius:14px;background:var(--card-b);border:1px solid var(--border)">
+        <div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:#f5a524">GRASAS</div>
+        <div class="bebas" style="font-size:28px;line-height:.9;margin-top:5px;color:var(--text)">${fatG}<span style="font-size:13px;color:var(--muted);margin-left:3px">g</span></div>
+        <div style="font:500 10px/1.3 'Barlow Semi Condensed';color:var(--muted4);margin-top:4px">0.9 g/kg</div>
+      </div>
+      <div style="padding:14px 12px;border-radius:14px;background:var(--card-b);border:1px solid var(--border)">
+        <div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:#a855f7">CARBOS</div>
+        <div class="bebas" style="font-size:28px;line-height:.9;margin-top:5px;color:var(--text)">${carbG}<span style="font-size:13px;color:var(--muted);margin-left:3px">g</span></div>
+        <div style="font:500 10px/1.3 'Barlow Semi Condensed';color:var(--muted4);margin-top:4px">resto</div>
+      </div>
+    </div>
+  `;
+  targets.style.display = 'flex';
+
+  // ── trackers de hoy (agua y proteína) ──
+  DB.nutri = DB.nutri || { water:{}, protein:{} };
+  const today = new Date().toISOString().slice(0,10);
+  const waterDone = DB.nutri.water[today] || 0;
+  const proteinDone = DB.nutri.protein[today] || 0;
+  const wPct = Math.min(100, Math.round(waterDone / waterGlasses * 100));
+  const pPct = Math.min(100, Math.round(proteinDone / protein * 100));
+
+  // vasos como íconos clickables
+  let glassRow = '';
+  for (let i = 1; i <= waterGlasses; i++){
+    const filled = i <= waterDone;
+    glassRow += `<div onclick="toggleWater(${i})" style="width:26px;height:34px;border-radius:4px 4px 8px 8px;background:${filled?'#38bdf8':'var(--panel2)'};border:1.5px solid ${filled?'#38bdf8':'var(--border4)'};cursor:pointer;transition:.15s"></div>`;
+  }
+  trackers.innerHTML = `
+    <div style="padding:15px 16px;border-radius:15px;background:var(--card-b);border:1px solid var(--border)">
+      <div style="display:flex;align-items:baseline;justify-content:space-between">
+        <div style="font:600 11px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:#38bdf8">💧 AGUA</div>
+        <div style="font:600 12px/1 'Barlow Semi Condensed';color:var(--text3)">${waterDone} / ${waterGlasses} vasos <span style="color:var(--muted);font-weight:500">· ${(waterMl/1000).toFixed(1)}L objetivo</span></div>
+      </div>
+      <div style="height:5px;border-radius:3px;background:var(--track);overflow:hidden;margin-top:9px"><div style="height:100%;width:${wPct}%;background:#38bdf8;border-radius:3px;transition:width .3s"></div></div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px">${glassRow}</div>
+    </div>
+
+    <div style="padding:15px 16px;border-radius:15px;background:var(--card-b);border:1px solid var(--border)">
+      <div style="display:flex;align-items:baseline;justify-content:space-between">
+        <div style="font:600 11px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:#4f8cff">🥩 PROTEÍNA</div>
+        <div style="font:600 12px/1 'Barlow Semi Condensed';color:var(--text3)">${proteinDone} / ${protein} g</div>
+      </div>
+      <div style="height:5px;border-radius:3px;background:var(--track);overflow:hidden;margin-top:9px"><div style="height:100%;width:${pPct}%;background:#4f8cff;border-radius:3px;transition:width .3s"></div></div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <div onclick="addProtein(-10)" style="padding:9px 14px;border-radius:10px;background:var(--panel2);border:1px solid var(--border4);font:600 11px/1 'Barlow Semi Condensed';color:var(--muted3);cursor:pointer">− 10g</div>
+        <div onclick="addProtein(10)" style="padding:9px 14px;border-radius:10px;background:#4f8cff22;border:1px solid #4f8cff77;font:600 11px/1 'Barlow Semi Condensed';color:#9cc0ff;cursor:pointer">+ 10g</div>
+        <div onclick="addProtein(20)" style="padding:9px 14px;border-radius:10px;background:#4f8cff22;border:1px solid #4f8cff77;font:600 11px/1 'Barlow Semi Condensed';color:#9cc0ff;cursor:pointer">+ 20g</div>
+        <div onclick="addProtein(30)" style="padding:9px 14px;border-radius:10px;background:#4f8cff22;border:1px solid #4f8cff77;font:600 11px/1 'Barlow Semi Condensed';color:#9cc0ff;cursor:pointer">+ 30g</div>
+        <div onclick="resetProtein()" style="padding:9px 12px;border-radius:10px;border:1px solid var(--border4);font:600 11px/1 'Barlow Semi Condensed';color:var(--muted4);cursor:pointer;margin-left:auto">reset</div>
+      </div>
+      <div style="font:500 11px/1.4 'Barlow Semi Condensed';color:var(--muted4);margin-top:10px">Referencia rápida: 1 huevo ≈6g · 100g pollo/pescado ≈22g · 100g atún lata ≈25g · yogur griego 150g ≈15g · 200ml leche ≈6g · 100g garbanzos ≈19g · 30g suero ≈23g.</div>
+    </div>
+  `;
+  trackers.style.display = 'flex';
+  trackTitle.style.display = 'block';
+
+  // ── tips según objetivo ──
+  const tipsByGoal = {
+    grasa: `<b style="color:#22c55e">Perder grasa · recomendaciones</b><br>· Prioriza proteína en cada comida (protege músculo en déficit).<br>· Fibra alta: verdura en dos comidas al menos.<br>· Déficit sostenible: no bajes de <b>${Math.round(peso*22)} kcal</b>.<br>· Pesa cada 3-4 días (menstruación/agua distorsionan). Baja objetivo si en 3 semanas no cambias.`,
+    musculo: `<b style="color:#22c55e">Ganar músculo · recomendaciones</b><br>· Proteína reparte en 3-4 tomas de <b>${Math.round(protein/4)}–${Math.round(protein/3)}g</b>.<br>· Come una comida sólida en 1-2h post-entreno.<br>· Si en 3 semanas no ganas 0.3-0.5 kg, sube 150 kcal.<br>· Duerme 7-8h: sin sueño, la hipertrofia se apaga.`,
+    fuerza: `<b style="color:#22c55e">Fuerza · recomendaciones</b><br>· Come cerca del mantenimiento; sin déficit fuerte.<br>· Proteína alta (${protein}g) y carbos suficientes para las sesiones.<br>· Hidratado antes del entreno: 500ml en la hora previa.`,
+    resistencia: `<b style="color:#22c55e">Resistencia · recomendaciones</b><br>· Carbos son tu combustible: no los recortes agresivamente.<br>· Sales/electrolitos si sudas mucho (≥90 min).<br>· Recuperación: proteína+carbos en los 30–60 min post-sesión.`,
+    salud: `<b style="color:#22c55e">Salud · recomendaciones</b><br>· Come principalmente comida real: verdura, proteína magra, cereales integrales, fruta.<br>· Bebe agua antes de tener sed.<br>· No hace falta perfección: 80% del tiempo bien es enorme.`
+  };
+  tips.innerHTML = `<div class="sec" style="margin-bottom:6px">Para ti</div><div style="font:500 13px/1.55 'Barlow Semi Condensed';color:var(--muted3)">${tipsByGoal[goalPrim] || tipsByGoal.salud}</div><div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font:500 11px/1.4 'Barlow Semi Condensed';color:var(--muted4)">⚠️ Esto es una estimación orientativa, no una prescripción médica. Si tienes patología (diabetes, embarazo, trastornos alimentarios, etc.), consulta con un profesional de nutrición antes de aplicar cambios.</div>`;
+  tips.style.display = 'block';
+
+  renderShoppingList(goalPrim);
+  renderRecipes(goalPrim);
+
+  // guardar objetivos calculados por si supabase-sync los quiere
+  DB.nutri.targets = { kcal, protein, fatG, carbG, waterGlasses, waterMl, tdee, bmr:Math.round(bmr) };
+  persist();
+}
+function toggleWater(idx){
+  DB.nutri = DB.nutri || { water:{}, protein:{} };
+  const today = new Date().toISOString().slice(0,10);
+  const cur = DB.nutri.water[today] || 0;
+  // click en vaso i → si ya estaba lleno hasta i, quitamos (bajamos a i-1); si no, llenamos hasta i
+  DB.nutri.water[today] = (cur >= idx) ? (idx - 1) : idx;
+  persist();
+  renderNutri();
+}
+function addProtein(g){
+  DB.nutri = DB.nutri || { water:{}, protein:{} };
+  const today = new Date().toISOString().slice(0,10);
+  const cur = DB.nutri.protein[today] || 0;
+  DB.nutri.protein[today] = Math.max(0, cur + g);
+  persist();
+  renderNutri();
+}
+function resetProtein(){
+  DB.nutri = DB.nutri || { water:{}, protein:{} };
+  const today = new Date().toISOString().slice(0,10);
+  DB.nutri.protein[today] = 0;
+  persist();
+  renderNutri();
+}
+window.toggleWater = toggleWater; window.addProtein = addProtein; window.resetProtein = resetProtein;
+
+// ─── LISTA DE LA COMPRA POR OBJETIVO ───
+const SHOP_BASE = {
+  Proteínas: ['Huevos', 'Pechuga de pollo', 'Pavo', 'Atún lata al natural', 'Salmón / caballa', 'Yogur griego natural 0%', 'Queso fresco batido', 'Lentejas / garbanzos', 'Tofu firme'],
+  Verdura:   ['Espinacas', 'Brócoli', 'Calabacín', 'Pimientos', 'Tomate', 'Cebolla', 'Ajo', 'Zanahoria', 'Lechuga / rúcula'],
+  Frutas:    ['Plátano', 'Manzana', 'Fresas / frutos rojos', 'Naranja', 'Kiwi', 'Limón'],
+  Carbos:    ['Arroz integral', 'Avena', 'Patata / boniato', 'Pan integral 100%', 'Pasta integral', 'Quinoa'],
+  Grasas:    ['Aceite de oliva virgen extra', 'Aguacate', 'Frutos secos crudos', 'Semillas (chia, lino)', 'Aceitunas'],
+  Despensa:  ['Especias (pimentón, comino, orégano)', 'Vinagre', 'Sal, pimienta', 'Caldo bajo en sodio', 'Salsa de soja', 'Mostaza']
+};
+const SHOP_EXTRA = {
+  grasa:       { Proteínas:['Suero de leche (whey)'], Verdura:['Coliflor','Espárragos','Apío','Pepino'], Extras:['Konjac (fideos shirataki)','Gelatina 0%'] },
+  musculo:     { Proteínas:['Suero de leche (whey)','Huevos extra','Solomillo de ternera'], Carbos:['Miel','Frutos secos extra','Arroz blanco'], Extras:['Leche entera o semi'] },
+  fuerza:      { Proteínas:['Ternera magra','Cerdo magro'], Carbos:['Arroz blanco pre-entreno','Miel'], Extras:['Creatina monohidrato (opcional)'] },
+  resistencia: { Carbos:['Plátano extra','Dátiles','Barritas de avena','Pan blanco (pre-largo)'], Extras:['Sal marina para electrolitos','Bebida isotónica casera'] },
+  salud:       { Verdura:['Col rizada / kale','Remolacha','Alcachofa'], Extras:['Té verde','Cacao puro','Cúrcuma'] }
+};
+function renderShoppingList(goal){
+  const el = document.getElementById('nutriShop');
+  const t  = document.getElementById('nutriShopTitle');
+  if (!el) return;
+  const extra = SHOP_EXTRA[goal] || {};
+  const merged = {};
+  Object.keys(SHOP_BASE).forEach(k => merged[k] = SHOP_BASE[k].slice());
+  Object.keys(extra).forEach(k => {
+    if (!merged[k]) merged[k] = [];
+    extra[k].forEach(item => { if (!merged[k].includes(item)) merged[k].push(item + ' ✦'); });
+  });
+  const catCol = { Proteínas:'#4f8cff', Verdura:'#22c55e', Frutas:'#ec4899', Carbos:'#a855f7', Grasas:'#f5a524', Despensa:'#64748b', Extras:'#38bdf8' };
+  let html = `<div style="font:500 12px/1.45 'Barlow Semi Condensed';color:var(--muted3);margin-bottom:12px">Comida real, sin obsesión. Llénate el carro con estos básicos y ya vas ganando. Con <span style="color:#22c55e;font-weight:600">✦</span> los específicos para <b>${({grasa:'perder grasa',musculo:'ganar músculo',fuerza:'fuerza',resistencia:'resistencia',salud:'salud'})[goal]||'salud'}</b>.</div>`;
+  Object.keys(merged).forEach(cat => {
+    const c = catCol[cat] || '#4f8cff';
+    html += `<div style="margin-top:14px"><div style="font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.14em;color:${c};margin-bottom:8px">${cat.toUpperCase()}</div>`;
+    html += `<div style="display:flex;flex-wrap:wrap;gap:6px">`;
+    merged[cat].forEach(item => {
+      const isExtra = item.endsWith(' ✦');
+      const clean = isExtra ? item.replace(' ✦','') : item;
+      html += `<span style="padding:5px 10px;border-radius:16px;font:500 11.5px/1 'Barlow Semi Condensed';${isExtra?`background:${c}18;border:1px solid ${c}55;color:${c}`:`background:var(--panel2);border:1px solid var(--border4);color:var(--muted3)`}">${clean}${isExtra?' ✦':''}</span>`;
+    });
+    html += `</div></div>`;
+  });
+  el.innerHTML = html;
+  el.style.display = 'block';
+  t.style.display = 'block';
+}
+
+// ─── RECETARIO POR OBJETIVO ───
+const RECIPES_COMMON = [
+  { title:'Bowl de avena prote', tag:'Desayuno', kcal:420, p:32, tPrep:5, badges:['5 min','Sin cocinar'],
+    ing:['60 g avena', '200 ml leche o bebida vegetal', '25 g whey vainilla (o 200 g yogur griego)', '1 plátano', '15 g mantequilla de cacahuete', 'Canela'],
+    pasos:['Mezcla avena + leche + whey en un bol.','Añade plátano en rodajas y la mantequilla de cacahuete.','Espolvorea canela. Listo.'] },
+  { title:'Tortilla francesa cargada', tag:'Desayuno / cena', kcal:380, p:30, tPrep:8, badges:['1 sartén'],
+    ing:['3 huevos', 'Un puñado de espinacas', '30 g queso fresco batido o feta', 'Chorrito de AOVE', 'Sal, pimienta'],
+    pasos:['Bate los huevos con sal y pimienta.','En sartén caliente con AOVE, echa espinacas 30 s.','Añade el huevo, cuaja a fuego medio, corona con queso y pliega.'] },
+  { title:'Bol de pollo, arroz y verduras', tag:'Comida / cena', kcal:560, p:45, tPrep:15, badges:['Batch cooking'],
+    ing:['150 g pechuga de pollo', '80 g arroz integral (en crudo)', '200 g mix brócoli + pimiento + cebolla', '1 c.s. AOVE', 'Salsa de soja, ajo, jengibre'],
+    pasos:['Cuece el arroz según paquete.','Saltea las verduras con AOVE y ajo 5 min.','Añade el pollo troceado 5-6 min más. Salsa de soja al final.','Sirve todo junto en un bol.'] },
+  { title:'Ensalada de garbanzos y atún', tag:'Comida rápida', kcal:480, p:35, tPrep:6, badges:['Sin cocinar','Fiambrera'],
+    ing:['200 g garbanzos cocidos', '1 lata de atún al natural', '1 tomate', '1/2 pepino', '1/4 cebolla morada', 'AOVE, vinagre, orégano'],
+    pasos:['Enjuaga y escurre los garbanzos.','Corta las verduras en dados.','Mezcla todo con el atún escurrido.','Aliña con AOVE, vinagre y orégano.'] },
+  { title:'Salmón al horno con boniato', tag:'Cena', kcal:590, p:38, tPrep:25, badges:['Al horno','Oméga 3'],
+    ing:['150 g salmón', '1 boniato mediano', 'Brócoli o espárragos', 'Limón, ajo, eneldo, AOVE'],
+    pasos:['Horno a 200°C.','Boniato en cuñas, brócoli en ramilletes, salmón con limón y eneldo.','20-22 min todo junto en la bandeja con AOVE, sal y ajo.'] },
+  { title:'Yogur griego con fruta y nueces', tag:'Snack', kcal:280, p:20, tPrep:2, badges:['2 min','Post-entreno'],
+    ing:['200 g yogur griego natural 0%', '1 puñado frutos rojos', '15 g nueces', '1 c.p. miel (opcional)'],
+    pasos:['Yogur en un vaso.','Corona con la fruta y las nueces.','Miel al gusto.'] }
+];
+const RECIPES_BY_GOAL = {
+  grasa: [
+    { title:'Wrap de pavo y hummus', tag:'Comida rápida', kcal:410, p:38, tPrep:5, badges:['Alto en prote','Bajo en kcal'],
+      ing:['1 tortilla integral', '100 g pechuga de pavo', '2 c.s. hummus', 'Lechuga, tomate, pepino', 'Mostaza'],
+      pasos:['Extiende hummus sobre la tortilla.','Coloca el pavo y las verduras.','Enrolla apretando y corta por la mitad.'] },
+    { title:'Sopa de verduras con pollo', tag:'Cena ligera', kcal:340, p:32, tPrep:20, badges:['Saciante'],
+      ing:['120 g pollo desmenuzado', '400 ml caldo bajo en sodio', 'Puerro, zanahoria, calabacín, apío', 'Jengibre, cúrcuma'],
+      pasos:['En una olla, sofríe las verduras cortadas 5 min.','Añade caldo, especias y el pollo cocido.','Hierve 12-15 min. Rectifica de sal.'] }
+  ],
+  musculo: [
+    { title:'Batido post-entreno', tag:'Post-entreno', kcal:520, p:45, tPrep:3, badges:['3 min','Líquido'],
+      ing:['250 ml leche entera o semi', '30 g whey', '1 plátano', '30 g avena', '15 g mantequilla de cacahuete'],
+      pasos:['Todo a la batidora.','Bate 30 segundos hasta que quede cremoso.','Bebe en los 60 min post-entreno.'] },
+    { title:'Solomillo con arroz y aguacate', tag:'Cena hipercalórica', kcal:720, p:48, tPrep:20, badges:['Alta densidad'],
+      ing:['150 g solomillo de ternera', '100 g arroz basmati (crudo)', '1/2 aguacate', 'Brócoli al vapor', 'AOVE, sal, pimienta'],
+      pasos:['Cuece el arroz.','Marca el solomillo 2 min por cada lado en sartén caliente con AOVE. Reposa 3 min.','Sirve con brócoli, aguacate en láminas y buena pimienta.'] }
+  ],
+  fuerza: [
+    { title:'Pre-entreno: tostada + huevo + fruta', tag:'Pre-entreno', kcal:380, p:22, tPrep:5, badges:['Energía estable'],
+      ing:['2 rebanadas pan integral', '2 huevos', '1 plátano', 'AOVE, sal'],
+      pasos:['Tuesta el pan.','Fríe los huevos con AOVE (planchados).','Plátano al lado. Come 60-90 min antes de entrenar.'] }
+  ],
+  resistencia: [
+    { title:'Overnight oats de plátano', tag:'Pre-entreno largo', kcal:480, p:22, tPrep:5, badges:['Preparar noche antes'],
+      ing:['60 g avena', '200 ml leche', '1 plátano', '15 g miel', '10 g semillas de chia', 'Canela'],
+      pasos:['Mezcla todo en un bote de cristal.','Nevera toda la noche.','Come 60-90 min antes de la sesión larga.'] },
+    { title:'Bebida isotónica casera', tag:'Durante entreno', kcal:120, p:0, tPrep:3, badges:['Electrolitos'],
+      ing:['500 ml agua', 'Zumo de 1 limón', '20 g azúcar o miel', '1 pizca de sal marina'],
+      pasos:['Disuelve todo en el agua.','Agita bien.','Bebe a sorbos durante sesiones >60 min.'] }
+  ],
+  salud: [
+    { title:'Bowl mediterráneo', tag:'Comida completa', kcal:520, p:26, tPrep:15, badges:['Antiinflamatorio'],
+      ing:['80 g quinoa (crudo)', '100 g garbanzos', '1/2 aguacate', 'Tomate cherry, pepino, olivas', 'Feta 30 g', 'AOVE, limón, orégano'],
+      pasos:['Cuece la quinoa.','Corta las verduras y el aguacate.','Monta todo en un bol y aliña con AOVE, limón y orégano.'] }
+  ]
+};
+let _recipeOpen = null;
+function renderRecipes(goal){
+  const list = RECIPES_COMMON.concat(RECIPES_BY_GOAL[goal] || []);
+  const el = document.getElementById('nutriRec');
+  const t  = document.getElementById('nutriRecTitle');
+  if (!el) return;
+  el.innerHTML = list.map((r, i) => {
+    const open = (_recipeOpen === i);
+    const badges = (r.badges||[]).map(b => `<span style="padding:2px 8px;border-radius:10px;background:var(--panel2);border:1px solid var(--border4);font:600 9.5px/1.2 'Barlow Semi Condensed';color:var(--muted3)">${b}</span>`).join('');
+    return `<div style="padding:14px 15px;border-radius:14px;background:var(--card-b);border:1px solid ${open?'#22c55e77':'var(--border)'}">
+      <div onclick="toggleRecipe(${i})" style="display:flex;align-items:center;gap:12px;cursor:pointer">
+        <div style="flex:1">
+          <div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:#22c55e;margin-bottom:5px">${r.tag.toUpperCase()}</div>
+          <div class="bebas" style="font-size:22px;line-height:1;color:var(--text)">${r.title}</div>
+          <div style="display:flex;gap:12px;margin-top:6px;font:500 11px/1 'Barlow Semi Condensed';color:var(--muted3)">
+            <span>${r.kcal} kcal</span><span>·</span><span>${r.p} g prote</span><span>·</span><span>${r.tPrep} min</span>
+          </div>
+          <div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap">${badges}</div>
+        </div>
+        <div style="color:var(--muted4);font-size:20px;transition:.2s;transform:rotate(${open?'180':'0'}deg)">▾</div>
+      </div>
+      ${open ? `<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+        <div style="font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.14em;color:var(--muted2);margin-bottom:9px">INGREDIENTES</div>
+        <ul style="margin:0 0 14px;padding-left:18px;font:500 12.5px/1.55 'Barlow Semi Condensed';color:var(--text3)">${r.ing.map(x => `<li>${x}</li>`).join('')}</ul>
+        <div style="font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.14em;color:var(--muted2);margin-bottom:9px">PREPARACIÓN</div>
+        <ol style="margin:0;padding-left:20px;font:500 12.5px/1.55 'Barlow Semi Condensed';color:var(--text3)">${r.pasos.map(x => `<li style="margin-bottom:5px">${x}</li>`).join('')}</ol>
+      </div>` : ''}
+    </div>`;
+  }).join('');
+  el.style.display = 'flex';
+  t.style.display = 'block';
+}
+function toggleRecipe(i){ _recipeOpen = (_recipeOpen === i) ? null : i; renderNutri(); }
+window.toggleRecipe = toggleRecipe;
+
 function renderProgreso(){
   const highs=(DB.loads||[]).filter(l=>l.rpe==='alto').length;const b=document.getElementById('rpeBanner');
   if(highs){b.style.display='block';document.getElementById('rpeBannerTxt').textContent=`Tienes ${highs} ejercicio${highs>1?'s':''} marcados en RPE alto. Si se repite otra sesión, mantén el peso antes de subir.`;}else b.style.display='none';
@@ -858,7 +1180,7 @@ function mergeDB(a,b){
 
 // ═══ INIT ═══
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
-renderNav();renderHoy();renderCal();renderCardio();renderProgreso();applyWallpaper();
+renderNav();renderHoy();renderCal();renderCardio();renderProgreso();renderNutri();applyWallpaper();
 (function(){
   // Tour de bienvenida (solo la primera vez tras crear el plan)
   try {
