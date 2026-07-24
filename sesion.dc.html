@@ -267,27 +267,52 @@
     <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ false }}">
       <div class="ph" style="flex:1; display:flex; flex-direction:column; padding:30px 24px 26px;">
         <div style="display:flex; align-items:center; justify-content:space-between;">
-          <div style="font:600 11px/1 'Barlow Semi Condensed'; letter-spacing:.2em; color:var(--muted2); text-transform:uppercase;">{{ planWeekLine }}</div>
+          <div onClick="{{ onQuit }}" style="display:flex; align-items:center; gap:6px; padding:7px 13px 7px 10px; border-radius:20px; border:1px solid var(--border4); background:var(--panel); font:600 11px/1 'Barlow Semi Condensed'; letter-spacing:.06em; color:var(--muted3); cursor:pointer;">‹ Volver</div>
           <div style="display:flex; align-items:center; gap:7px; padding:5px 11px; border-radius:20px; background:#f5a52416; border:1px solid #f5a52440;">
             <span style="font-size:13px;">🔥</span><span style="font:400 17px/1 'Bebas Neue'; color:#f5a524;">{{ streak }}</span>
             <span style="font:600 9px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:var(--txt-amber);">RACHA</span>
           </div>
         </div>
+        <div style="font:600 11px/1 'Barlow Semi Condensed'; letter-spacing:.2em; color:var(--muted2); text-transform:uppercase; margin-top:16px;">{{ planWeekLine }}</div>
         <div style="font:400 56px/.86 'Bebas Neue'; letter-spacing:.01em; margin-top:18px;">{{ planDayLabel }}<br><span style="color:#4f8cff;">{{ planFocus }}</span></div>
         <div style="font:500 14px/1.4 'Barlow Semi Condensed'; color:var(--muted); margin-top:10px;">{{ planMuscleMeta }}</div>
 
-        <div style="position:relative; margin:20px 0; border-radius:20px; background:linear-gradient(180deg,var(--card-a),var(--card-b)); border:1px solid var(--border); overflow:hidden;">
-          <image-slot id="intro-preview-photo" shape="rect" placeholder="Arrastra una foto del primer ejercicio" style="display:block; width:100%; height:190px;"></image-slot>
-          <div style="position:absolute; bottom:12px; left:0; right:0; text-align:center; font:600 10px/1 'Barlow Semi Condensed'; letter-spacing:.14em; color:#6f6c8e; pointer-events:none;">VISTA PREVIA · {{ planFirstExName }}</div>
-        </div>
-
-        <div style="display:flex; gap:8px;">
+        <div style="display:flex; gap:8px; margin-top:18px;">
           <div style="flex:1; text-align:center; padding:11px 0; border-radius:12px; background:var(--panel); border:1px solid var(--border2);"><div style="font:400 22px/1 'Bebas Neue'; color:#f5a524;">5'</div><div style="font:600 9px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:var(--muted2); margin-top:3px;">CALENTAR</div></div>
           <div style="flex:1.6; text-align:center; padding:11px 0; border-radius:12px; background:#4f8cff14; border:1px solid #4f8cff33;"><div style="font:400 22px/1 'Bebas Neue'; color:#4f8cff;">{{ amrapMinLabel }}</div><div style="font:600 9px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:#7e9fd8; margin-top:3px;">AMRAP · {{ planExCount }}</div></div>
           <div style="flex:1; text-align:center; padding:11px 0; border-radius:12px; background:var(--panel); border:1px solid var(--border2);"><div style="font:400 22px/1 'Bebas Neue'; color:#a855f7;">5'</div><div style="font:600 9px/1 'Barlow Semi Condensed'; letter-spacing:.1em; color:var(--muted2); margin-top:3px;">ENFRIAR</div></div>
         </div>
 
-        <div style="flex:1;"></div>
+        <div style="display:flex; align-items:center; justify-content:space-between; margin:20px 0 10px;">
+          <div style="font:600 10px/1 'Barlow Semi Condensed'; letter-spacing:.14em; color:var(--muted2);">LOS EJERCICIOS DE HOY</div>
+          <div onClick="{{ onShuffle }}" style="display:flex; align-items:center; gap:6px; padding:7px 13px; border-radius:20px; border:1px solid var(--border7); background:var(--panel); font:600 11px/1 'Barlow Semi Condensed'; color:var(--muted3); cursor:pointer;">🔀 Otro entreno</div>
+        </div>
+
+        <div style="padding:11px 14px; border-radius:12px; background:var(--tint-amber-c); border:1px solid #f5a52426; margin-bottom:8px;">
+          <div style="font:600 9px/1 'Barlow Semi Condensed'; letter-spacing:.12em; color:#f5a524; margin-bottom:5px;">CALENTAMIENTO · 5 min</div>
+          <div style="font:500 11.5px/1.4 'Barlow Semi Condensed'; color:var(--muted3);">{{ warmupPreview }}</div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <sc-for list="{{ previewList }}" as="e" hint-placeholder-count="4">
+            <div onClick="{{ e.onTap }}" style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding:11px 14px; border-radius:12px; background:var(--panel); border-left:3px solid #4f8cff; cursor:pointer;">
+              <div style="min-width:0;">
+                <div style="font:600 13.5px/1.1 'Barlow Semi Condensed'; color:var(--text3);">{{ e.name }}</div>
+                <div style="font:500 10.5px/1 'Barlow Semi Condensed'; color:var(--muted); margin-top:4px;">{{ e.muscle }}</div>
+              </div>
+              <span style="flex-shrink:0; font:600 12px/1 'Barlow Semi Condensed'; color:#4f8cff;">{{ e.reps }} <span style="color:var(--muted5);">›</span></span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="padding:11px 14px; border-radius:12px; background:var(--tint-purple); border:1px solid #a855f726; margin-top:8px;">
+          <div style="font:600 9px/1 'Barlow Semi Condensed'; letter-spacing:.12em; color:#a855f7; margin-bottom:5px;">ENFRIAMIENTO · 5 min</div>
+          <div style="font:500 11.5px/1.4 'Barlow Semi Condensed'; color:var(--muted3);">{{ cooldownPreview }}</div>
+        </div>
+
+        <div style="font:500 11px/1.4 'Barlow Semi Condensed'; color:var(--muted4); text-align:center; margin-top:12px;">¿No te convence hoy? Toca «Otro entreno» o vuelve y elige otro día.</div>
+
+        <div style="flex:1; min-height:14px;"></div>
         <div onClick="{{ onStart }}" style="margin-top:22px; padding:17px; border-radius:15px; background:#4f8cff; text-align:center; font:600 15px/1 'Barlow Semi Condensed'; letter-spacing:.06em; color:#04132e; cursor:pointer; box-shadow:0 10px 30px -8px #4f8cff66;">▶  EMPEZAR SESIÓN</div>
         <div onClick="{{ onExpress }}" style="margin-top:10px; padding:13px; border-radius:13px; border:1px solid var(--border4); text-align:center; font:600 12px/1 'Barlow Semi Condensed'; letter-spacing:.04em; color:var(--muted3); cursor:pointer;">⚡  Sesión exprés · 12 min</div>
       </div>
@@ -670,11 +695,31 @@ class Component extends DCLogic {
 
     // ░░ CATÁLOGO DE PLANES ░░ — cada perfil elige objetivo, nivel, frecuencia y duración
     this.GOALS = {
-      full:    { label:'Cuerpo completo', muscles:'Equilibrio total · fuerza y cardio', ids:['squat','pushup','row','plank'] },
-      legs:    { label:'Piernas y glúteo', muscles:'Cuádriceps · Glúteo · Isquios',      ids:['squat','lunge','glutebridge','rdl'] },
-      upper:   { label:'Tren superior',    muscles:'Pecho · Espalda · Hombro · Brazo',   ids:['pushup','shoulderpress','row','bicepcurl'] },
-      core:    { label:'Core y abdomen',   muscles:'Abdomen · Lumbar · Estabilidad',     ids:['crunch','legraise','plank','climber'] },
-      fatloss: { label:'Quemar grasa',     muscles:'Cardio · Full body · Quema',         ids:['jack','climber','squat','plank'] }
+      full:    { label:'Cuerpo completo', muscles:'Piernas · Empuje · Tracción · Core' },
+      torso:   { label:'Torso',           muscles:'Pecho · Espalda · Hombro' },
+      brazos:  { label:'Brazos',          muscles:'Bíceps · Tríceps · Hombro' },
+      core:    { label:'Core y abdomen',  muscles:'Abdomen · Lumbar · Estabilidad' },
+      legs:    { label:'Piernas',         muscles:'Cuádriceps · Isquios · Gemelo' },
+      gluteos: { label:'Glúteos',         muscles:'Glúteo · Cadera · Isquios' },
+      // — objetivos heredados (compatibilidad con perfiles antiguos) —
+      upper:   { label:'Tren superior',   muscles:'Pecho · Espalda · Hombro · Brazo' },
+      fatloss: { label:'Quemar grasa',    muscles:'Cardio · Full body · Quema' }
+    };
+    // categorías del pool + pista de músculo por foco (para afinar la selección)
+    this.GOAL_CATS = {
+      full:    ['Piernas','Empuje','Tracción','Core'],
+      torso:   ['Empuje','Tracción','Empuje','Tracción'],
+      brazos:  ['Empuje','Tracción','Empuje','Tracción'],
+      core:    ['Core','Core','Core','Core'],
+      legs:    ['Piernas','Piernas','Glúteo','Core'],
+      gluteos: ['Glúteo','Glúteo','Piernas','Core'],
+      upper:   ['Empuje','Empuje','Tracción','Tracción'],
+      fatloss: ['Cardio','Cardio','Piernas','Empuje']
+    };
+    this.GOAL_HINTS = {
+      torso:   ['pectoral','dorsal','deltoides','romboides','trapecio'],
+      brazos:  ['bíceps','tríceps','biceps','triceps','braquial','antebrazo'],
+      gluteos: ['glúteo','gluteo']
     };
     const _LV = {
       beginner:     { label:'Principiante', sub:'Empiezo o estoy volviendo',  min:18 },
@@ -771,6 +816,77 @@ class Component extends DCLogic {
     }
   }
 
+  // Calentamiento y enfriamiento a medida: se arman a partir de los grupos
+  // musculares que trabaja el AMRAP de hoy. El calentamiento activa esos
+  // músculos; el enfriamiento los estira. Se saltan los que carguen una lesión.
+  buildWarmupCool(EXS, ALL, activeInjuries) {
+    const EXMAP = {};
+    (ALL || []).forEach(e => { if (e && e.key) EXMAP[e.key] = e; });
+    const inj = activeInjuries || [];
+    const zonesOf = (src) => ((EXMAP[src] && EXMAP[src].riesgo) || '').split('·').map(s => s.trim()).filter(Boolean);
+    const risky = (src) => zonesOf(src).some(z => inj.includes(z));
+
+    const CAT_TAG = { Piernas:'legs', 'Glúteo':'glutes', Empuje:'push', 'Tracción':'pull', Core:'core', Cardio:'cardio' };
+    const tags = new Set();
+    (EXS || []).forEach(e => { const t = CAT_TAG[e.cat]; if (t) tags.add(t); });
+    if (!tags.size) { tags.add('legs'); tags.add('push'); tags.add('core'); }
+    const activeTags = Array.from(tags);
+
+    const WARM = [
+      { id:'w-highknees', src:'rodillas-altas',    name:'Rodillas altas',           sec:30, muscle:'Cardio · flexores',   tags:['cardio','legs'] },
+      { id:'w-legswing',  src:'balanceo-pierna',   name:'Balanceo de pierna',       sec:30, muscle:'Cadera · isquios',    tags:['legs','glutes'] },
+      { id:'w-squat',     src:'sentadilla',        name:'Sentadillas sin peso',     sec:40, muscle:'Cuádriceps · glúteo', tags:['legs'] },
+      { id:'w-lunge',     src:'zancada-caminando', name:'Zancadas caminando',       sec:30, muscle:'Glúteo · cuádriceps', tags:['legs','glutes'] },
+      { id:'w-bridge',    src:'puente-gluteo',     name:'Puente de glúteo',         sec:30, muscle:'Glúteo · isquios',    tags:['glutes'] },
+      { id:'w-wgs',       src:'world-greatest',    name:'World\u2019s greatest stretch', sec:30, muscle:'Cadera · dorsal', tags:['legs','glutes','pull','core'] },
+      { id:'w-shoulder',  src:'circulos-hombro',   name:'Círculos de hombro',       sec:30, muscle:'Hombro · manguito',   tags:['push','pull'] },
+      { id:'w-wallangel', src:'wall-angels',       name:'Wall angels',              sec:30, muscle:'Hombro · postura',    tags:['push','pull'] },
+      { id:'w-thoracic',  src:'rotacion-toracica', name:'Rotación torácica',        sec:30, muscle:'Columna dorsal',      tags:['pull','push','core'] },
+      { id:'w-catcow',    src:'gato-vaca',         name:'Gato–Vaca',                sec:30, muscle:'Columna · core',      tags:['core'] },
+      { id:'w-ankle',     src:'movilidad-tobillo', name:'Movilidad de tobillo',     sec:30, muscle:'Tobillo · gemelo',    tags:['legs'] }
+    ];
+    const COOL = [
+      { id:'c-quad',     src:'estiramiento-cuadriceps', name:'Estiramiento de cuádriceps', sec:30, muscle:'Cuádriceps',            tags:['legs'] },
+      { id:'c-ham',      src:'estiramiento-isquios',    name:'Estiramiento de isquios',    sec:30, muscle:'Isquiotibiales',        tags:['legs','glutes'] },
+      { id:'c-downdog',  src:'perro-abajo',             name:'Perro boca abajo',           sec:30, muscle:'Isquios · gemelo · dorsal', tags:['legs','pull'] },
+      { id:'c-pigeon',   src:'paloma',                  name:'Postura de la paloma',       sec:40, muscle:'Glúteo · rotadores',    tags:['glutes'] },
+      { id:'c-9090',     src:'noventa-noventa',         name:'90/90 de cadera',            sec:30, muscle:'Rotadores de cadera',   tags:['glutes','legs'] },
+      { id:'c-cobra',    src:'cobra',                   name:'Cobra',                      sec:30, muscle:'Pecho · abdomen (estira)', tags:['push','core'] },
+      { id:'c-child',    src:'postura-nino',            name:'Postura del niño',           sec:40, muscle:'Espalda · hombro · cadera', tags:['pull','push','core'] },
+      { id:'c-thoracic', src:'rotacion-toracica',       name:'Rotación torácica',          sec:30, muscle:'Columna dorsal',        tags:['pull','core'] },
+      { id:'c-catcow',   src:'gato-vaca',               name:'Gato–Vaca',                  sec:30, muscle:'Columna · core',        tags:['core'] }
+    ];
+
+    const mk = (it, block) => {
+      const src = EXMAP[it.src] || {};
+      return {
+        id: it.id, name: it.name, pose: it.src || it.id, block, sec: it.sec,
+        muscle: it.muscle, material: src.equip && src.equip !== 'Ninguno' ? src.equip : (block==='cooldown' ? 'Esterilla' : 'Peso corporal'),
+        errors: ((src.errores) || it.errors || []).slice(0, 3),
+        pasos: (src.pasos || it.pasos || [])
+      };
+    };
+    const select = (pool, count) => {
+      const avail = pool.filter(p => !risky(p.src));
+      const chosen = [], used = new Set();
+      activeTags.forEach(tag => { if (chosen.length >= count) return; const it = avail.find(p => !used.has(p.id) && p.tags.includes(tag)); if (it) { chosen.push(it); used.add(it.id); } });
+      for (const p of avail) { if (chosen.length >= count) break; if (used.has(p.id)) continue; if (p.tags.some(t => activeTags.includes(t))) { chosen.push(p); used.add(p.id); } }
+      for (const p of avail) { if (chosen.length >= count) break; if (used.has(p.id)) continue; chosen.push(p); used.add(p.id); }
+      // orden estable según el pool original
+      return pool.filter(p => used.has(p.id));
+    };
+
+    const lowImpact = inj.some(z => ['Rodilla','Tobillo'].includes(z));
+    const primer = lowImpact
+      ? { id:'w-march', name:'Marcha en el sitio', pose:'highknees', block:'warmup', sec:40, muscle:'Cardio suave · bajo impacto', material:'Peso corporal', errors:['Ritmo cómodo y constante','No fuerces la rodilla ni el tobillo'], pasos:['Marcha en el sitio elevando poco las rodillas.','Acompaña el movimiento con los brazos.','Sube el ritmo poco a poco para elevar el pulso.'] }
+      : mk({ id:'w-jack', src:'jumping-jacks', name:'Saltos de tijera', sec:40, muscle:'Cuerpo · activa el pulso', tags:['cardio'] }, 'warmup');
+
+    const breath = mk({ id:'c-breath', src:'respiracion', name:'Respiración guiada', sec:60, muscle:'Recuperación · baja pulsaciones', tags:['always'] }, 'cooldown');
+
+    this.WARMUP = [primer].concat(select(WARM, 4).map(it => mk(it, 'warmup')));
+    this.COOL = select(COOL, 4).map(it => mk(it, 'cooldown')).concat([breath]);
+  }
+
   // Construye el circuito de HOY a partir de:
   //   · objetivo (goal) → mezcla de categorías
   //   · nivel (level) → duración base del AMRAP
@@ -781,13 +897,7 @@ class Component extends DCLogic {
     p = p || {};
 
     // ── mapa objetivo → 4 categorías del pool ──
-    const GOAL_CATS = {
-      full:    ['Piernas','Empuje','Tracción','Core'],
-      legs:    ['Piernas','Piernas','Glúteo','Glúteo'],
-      upper:   ['Empuje','Empuje','Tracción','Tracción'],
-      core:    ['Core','Core','Core','Core'],
-      fatloss: ['Cardio','Cardio','Piernas','Empuje']
-    };
+    const GOAL_CATS = this.GOAL_CATS;
     const goalKey = p.goal || (this.saved && (this.saved.goalToday || (function(){
       // toma el focus de la sesión actual del plan si existe
       const plan = Array.isArray(this.saved && this.saved.plan) ? this.saved.plan : null;
@@ -828,9 +938,10 @@ class Component extends DCLogic {
     // ── rotación entre sesiones: evita repetir los últimos ejercicios ──
     const hist = (this.saved && this.saved.history) || [];
     const recent = new Set(hist.slice(-2).flatMap(h => h.exercises || []));
-    const seed = hist.length;
+    const seed = hist.length + (this.shuffleOffset || 0);
 
     const wantedCats = GOAL_CATS[goalKey] || GOAL_CATS.full;
+    const hint = this.GOAL_HINTS[goalKey] || null;
     const used = new Set();
     const buildEx = (pick) => ({
       id: pick.key, ex: pick.key, pose: pick.key,
@@ -851,6 +962,7 @@ class Component extends DCLogic {
       const preferred = catPool.filter(e => !recent.has(e.key));
       let pool = preferred.length ? preferred : catPool;
       if (!pool.length) pool = eligible.filter(e => !used.has(e.key)); // sin cat: coge cualquier eligible
+      if (hint) { const hinted = pool.filter(e => hint.some(h => (e.musculos||'').toLowerCase().includes(h))); if (hinted.length) pool = hinted; }
       if (!pool.length) continue;
       const pick = pool[(seed + i) % pool.length];
       used.add(pick.key);
@@ -868,6 +980,7 @@ class Component extends DCLogic {
     }
 
     this.EXS = EXS;
+    this.buildWarmupCool(EXS, ALL, activeInjuries);
     this.planGoal = g;
     this.planLevel = lvl;
     this.injuryActive = activeInjuries;
@@ -975,6 +1088,11 @@ class Component extends DCLogic {
   };
   onCloseFicha = () => this.setState({ ficha:null });
   onOpenSession = () => this.setState({ phase:'intro', express:false, amrapTotal:this.amrapSecs, amrapLeft:this.amrapSecs });
+  onShuffle = () => {
+    this.shuffleOffset = (this.shuffleOffset || 0) + 1;
+    this.applyPlan({ goal: this.state.goal, level: this.state.level });
+    this.setState({ amrapTotal:this.amrapSecs, amrapLeft:this.amrapSecs });
+  };
   onExpressHome = () => this.setState({ phase:'check', express:true, amrapTotal:720, amrapLeft:720 });
   onStart = () => this.setState({ phase:'check', express:false });
   onExpress = () => this.setState({ phase:'check', express:true, amrapTotal:720, amrapLeft:720 });
@@ -1465,6 +1583,10 @@ class Component extends DCLogic {
 
       // intro / done
       streak: s.streak,
+      previewList: this.EXS.map(e => ({ name:e.name, reps:e.reps, muscle:e.muscle, onTap:()=>this.openFicha(e) })),
+      warmupPreview: this.WARMUP.map(w => w.name).join(' · '),
+      cooldownPreview: this.COOL.map(w => w.name).join(' · '),
+      onShuffle: this.onShuffle,
       onStart: this.onStart, onExpress: this.onExpress, onQuit: this.onQuit,
       onRestart: this.onRestart,
       rounds: s.rounds,

@@ -282,6 +282,12 @@
           <div class="sec" id="nutriTrackTitle" style="display:none;margin:22px 0 9px">Hoy</div>
           <div id="nutriTrackers" style="display:none;flex-direction:column;gap:12px"></div>
 
+          <div class="sec" id="nutriHabitsTitle" style="display:none;margin:24px 0 9px">Hábitos de hoy</div>
+          <div id="nutriHabits" style="display:none;flex-direction:column;gap:12px"></div>
+
+          <div class="sec" id="nutriPortTitle" style="display:none;margin:26px 0 9px">Guía de raciones sin báscula</div>
+          <div id="nutriPortions" style="display:none;flex-direction:column;gap:10px"></div>
+
           <div id="nutriTips" style="display:none;margin-top:24px;padding:16px 17px;border-radius:16px;background:var(--card-b);border:1px solid var(--border)"></div>
 
           <div class="sec" id="nutriShopTitle" style="display:none;margin:26px 0 9px">Lista de la compra · base</div>
@@ -334,13 +340,16 @@ function persist(){save(DB);if(window.AMRAPSync&&window.AMRAPSync.enabled&&windo
 
 // Catálogo de planes (espejo de la sesión)
 const GOALS={
-  full:{label:'Cuerpo completo',muscles:'Pecho · Espalda · Piernas · Core'},
-  legs:{label:'Piernas y glúteo',muscles:'Cuádriceps · Glúteo · Isquios'},
-  upper:{label:'Tren superior',muscles:'Pecho · Espalda · Hombro · Brazo'},
+  full:{label:'Cuerpo completo',muscles:'Piernas · Empuje · Tracción · Core'},
+  torso:{label:'Torso',muscles:'Pecho · Espalda · Hombro'},
+  brazos:{label:'Brazos',muscles:'Bíceps · Tríceps · Hombro'},
   core:{label:'Core y abdomen',muscles:'Abdomen · Lumbar · Estabilidad'},
+  legs:{label:'Piernas',muscles:'Cuádriceps · Isquios · Gemelo'},
+  gluteos:{label:'Glúteos',muscles:'Glúteo · Cadera · Isquios'},
+  upper:{label:'Tren superior',muscles:'Pecho · Espalda · Hombro · Brazo'},
   fatloss:{label:'Quemar grasa',muscles:'Cardio · Full body · Quema'}
 };
-const GOAL_ORDER=['full','legs','upper','core','fatloss'];
+const GOAL_ORDER=['full','torso','brazos','core','legs','gluteos'];
 const LEVEL_MIN={beginner:18,principiante:18,intermediate:20,intermedio:20,advanced:22,avanzado:22};
 
 // ─── PLAN ENGINE: secuencia de sesiones sin fechas fijas ───
@@ -359,20 +368,24 @@ function ensurePlan(){
   const days  = DB.diasPorSemana || DB.days || 3;
   const total = weeks * days;
   const baseGoal = DB.goal || 'full';
-  const rot = FOCUS_ROTATION[baseGoal] || FOCUS_ROTATION.full;
-  if (!Array.isArray(DB.plan) || DB.plan.length !== total || DB.planBaseGoal !== baseGoal){
-    // reconstruir preservando lo que se había hecho ya
+  // La rotación de sesiones sigue las zonas de foco elegidas en el onboarding.
+  const focos = (Array.isArray(DB.focos) && DB.focos.length) ? DB.focos.slice() : null;
+  const focosKey = focos ? focos.join(',') : '';
+  const rot = focos || FOCUS_ROTATION[baseGoal] || FOCUS_ROTATION.full;
+  if (!Array.isArray(DB.plan) || DB.plan.length !== total || DB.planBaseGoal !== baseGoal || DB.planFocosKey !== focosKey){
+    // reconstruir preservando el foco de las sesiones YA hechas; las pendientes toman la nueva rotación
     const prev = Array.isArray(DB.plan) ? DB.plan : [];
     DB.plan = Array.from({length: total}).map((_, i) => {
       const old = prev[i];
       return {
         n: i + 1,
-        focus: (old && old.focus) || rot[i % rot.length],
+        focus: (old && old.done && old.focus) ? old.focus : rot[i % rot.length],
         done: !!(old && old.done),
         doneDate: (old && old.doneDate) || null
       };
     });
     DB.planBaseGoal = baseGoal;
+    DB.planFocosKey = focosKey;
     persist();
   }
   return DB.plan;
@@ -787,6 +800,8 @@ function renderNutri(){
 
   renderShoppingList(goalPrim);
   renderRecipes(goalPrim);
+  renderHabits();
+  renderPortions();
 
   // guardar objetivos calculados por si supabase-sync los quiere
   DB.nutri.targets = { kcal, protein, fatG, carbG, waterGlasses, waterMl, tdee, bmr:Math.round(bmr) };
@@ -817,6 +832,148 @@ function resetProtein(){
   renderNutri();
 }
 window.toggleWater = toggleWater; window.addProtein = addProtein; window.resetProtein = resetProtein;
+
+// ─── HÁBITOS DE HOY: sueño · sol (vitamina D) · alcohol · tabaco ───
+function habitsToday(){
+  DB.nutri = DB.nutri || {};
+  DB.nutri.sleep = DB.nutri.sleep || {};
+  DB.nutri.sun = DB.nutri.sun || {};
+  DB.nutri.alcohol = DB.nutri.alcohol || {};
+  DB.nutri.tobacco = DB.nutri.tobacco || {};
+  return new Date().toISOString().slice(0,10);
+}
+function addSleep(h){const t=habitsToday();const cur=DB.nutri.sleep[t]||0;DB.nutri.sleep[t]=Math.max(0,Math.min(14,Math.round((cur+h)*2)/2));persist();renderHabits();}
+function toggleSun(win){const t=habitsToday();const a=DB.nutri.sun[t]||[];const i=a.indexOf(win);if(i>=0)a.splice(i,1);else a.push(win);DB.nutri.sun[t]=a;persist();renderHabits();}
+function addAlcohol(n){const t=habitsToday();const cur=DB.nutri.alcohol[t]||0;DB.nutri.alcohol[t]=Math.max(0,cur+n);persist();renderHabits();}
+function addTobacco(n){const t=habitsToday();const cur=DB.nutri.tobacco[t]||0;DB.nutri.tobacco[t]=Math.max(0,cur+n);persist();renderHabits();}
+window.addSleep=addSleep; window.toggleSun=toggleSun; window.addAlcohol=addAlcohol; window.addTobacco=addTobacco;
+
+function renderHabits(){
+  const el=document.getElementById('nutriHabits'); const ttl=document.getElementById('nutriHabitsTitle');
+  if(!el) return;
+  const t=habitsToday();
+  const sleep=DB.nutri.sleep[t]||0;
+  const sun=DB.nutri.sun[t]||[];
+  const alc=DB.nutri.alcohol[t]||0;
+  const tob=DB.nutri.tobacco[t]||0;
+  const sleepOk = sleep>=7 && sleep<=9;
+  const sleepMsg = sleep===0 ? 'Registra tus horas de anoche.' : sleepOk ? '✓ Rango óptimo (7–9 h): así se repara el músculo.' : sleep<7 ? 'Por debajo de 7 h: la recuperación y la fuerza se resienten.' : 'Más de 9 h de forma habitual puede indicar mala calidad de sueño.';
+  const SUN=[['mañana','🌅','Primera hora','Al despertar — regula tu reloj interno'],['mediodía','☀️','Mediodía','El sol más eficaz para la vitamina D'],['tarde','🌇','Atardecer','Luz suave de media tarde/anochecer']];
+  const stepBtn=(fn,label,col)=>`<div onclick="${fn}" style="padding:8px 13px;border-radius:10px;background:${col}22;border:1px solid ${col}77;font:600 12px/1 'Barlow Semi Condensed';color:${col};cursor:pointer">${label}</div>`;
+  const btnMuted=(fn,label)=>`<div onclick="${fn}" style="padding:8px 13px;border-radius:10px;background:var(--panel2);border:1px solid var(--border4);font:600 12px/1 'Barlow Semi Condensed';color:var(--muted3);cursor:pointer">${label}</div>`;
+
+  let html='';
+  // Sueño
+  html+=`<div style="padding:15px 16px;border-radius:15px;background:var(--card-b);border:1px solid var(--border)">
+    <div style="display:flex;align-items:baseline;justify-content:space-between">
+      <div style="font:600 11px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:#a855f7">😴 SUEÑO</div>
+      <div style="font:600 12px/1 'Barlow Semi Condensed';color:var(--text3)">${sleep? sleep+' h':'— h'}</div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:12px;align-items:center">
+      ${btnMuted('addSleep(-0.5)','–½ h')}${stepBtn('addSleep(0.5)','+½ h','#a855f7')}${stepBtn('addSleep(1)','+1 h','#a855f7')}
+    </div>
+    <div style="font:500 11.5px/1.4 'Barlow Semi Condensed';color:${sleepOk?'#22c55e':'var(--muted4)'};margin-top:10px">${sleepMsg}</div>
+  </div>`;
+  // Sol / vitamina D
+  html+=`<div style="padding:15px 16px;border-radius:15px;background:var(--card-b);border:1px solid var(--border)">
+    <div style="font:600 11px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:#f5a524">🌞 SOL · VITAMINA D</div>
+    <div style="display:flex;flex-direction:column;gap:7px;margin-top:12px">
+      ${SUN.map(([k,e,ti,d])=>{const on=sun.includes(k);return `<div onclick="toggleSun('${k}')" style="display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:12px;cursor:pointer;border:1px solid ${on?'#f5a52466':'var(--border4)'};background:${on?'#f5a52414':'var(--panel2)'}">
+        <div style="font-size:19px">${e}</div>
+        <div style="flex:1;min-width:0"><div style="font:600 12.5px/1.1 'Barlow Semi Condensed';color:var(--text3)">${ti}</div><div style="font:500 10.5px/1.2 'Barlow Semi Condensed';color:var(--muted4);margin-top:2px">${d}</div></div>
+        <div style="width:22px;height:22px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:1.5px solid ${on?'#f5a524':'var(--border8)'};background:${on?'#f5a524':'transparent'}">${on?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1a1204" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>':''}</div>
+      </div>`;}).join('')}
+    </div>
+    <div style="font:500 11.5px/1.4 'Barlow Semi Condensed';color:var(--muted4);margin-top:10px">Busca luz solar directa a primera hora, al mediodía y a media tarde. 10–20 min sin protección en brazos/cara bastan (más si tienes piel oscura). Nunca hasta quemarte.</div>
+  </div>`;
+  // Alcohol y tabaco
+  html+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <div style="padding:14px 14px;border-radius:15px;background:var(--card-b);border:1px solid var(--border)">
+      <div style="font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:${alc>0?'#f5a524':'#22c55e'}">🍷 ALCOHOL</div>
+      <div class="bebas" style="font-size:30px;line-height:.9;margin-top:6px;color:var(--text)">${alc}<span style="font-size:12px;color:var(--muted);margin-left:4px">${alc===1?'bebida':'bebidas'}</span></div>
+      <div style="display:flex;gap:7px;margin-top:11px">${btnMuted('addAlcohol(-1)','–')}${stepBtn('addAlcohol(1)','+1','#f5a524')}</div>
+      <div style="font:500 10.5px/1.35 'Barlow Semi Condensed';color:${alc===0?'#22c55e':'var(--muted4)'};margin-top:9px">${alc===0?'✓ Sin alcohol hoy — tu mejor recuperación.':'Frena la síntesis de proteína ~24–48 h.'}</div>
+    </div>
+    <div style="padding:14px 14px;border-radius:15px;background:var(--card-b);border:1px solid var(--border)">
+      <div style="font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:${tob>0?'#f5a524':'#22c55e'}">🚬 TABACO</div>
+      <div class="bebas" style="font-size:30px;line-height:.9;margin-top:6px;color:var(--text)">${tob}<span style="font-size:12px;color:var(--muted);margin-left:4px">${tob===1?'cig.':'cig.'}</span></div>
+      <div style="display:flex;gap:7px;margin-top:11px">${btnMuted('addTobacco(-1)','–')}${stepBtn('addTobacco(1)','+1','#f5a524')}</div>
+      <div style="font:500 10.5px/1.35 'Barlow Semi Condensed';color:${tob===0?'#22c55e':'var(--muted4)'};margin-top:9px">${tob===0?'✓ Cero hoy — el pulmón y el VO₂ lo agradecen.':'Reduce el oxígeno disponible en el entreno.'}</div>
+    </div>
+  </div>`;
+  el.innerHTML=html;
+  el.style.display='flex'; ttl.style.display='block';
+}
+
+// ─── GUÍA DE RACIONES SIN BÁSCULA ───
+// Referencias caseras (mano, vaso, cuchara) para registrar sin pesar.
+const PORTIONS = {
+  'Proteínas': { col:'#4f8cff', items:[
+    ['Pollo / pavo a la plancha','La palma de tu mano (sin dedos)','≈120 g','≈27 g proteína'],
+    ['Pescado blanco / salmón','Palma de la mano, grosor de un móvil','≈120 g','≈24 g proteína'],
+    ['Atún en lata (escurrido)','1 lata pequeña','≈52 g','≈14 g proteína'],
+    ['Huevo','1 unidad','≈55 g','≈6 g proteína'],
+    ['Yogur griego natural','1 vaso pequeño','≈150 g','≈15 g proteína'],
+    ['Legumbre cocida','1 puño cerrado','≈100 g','≈8 g proteína'],
+    ['Tofu firme','Media palma, grosor de 2 dedos','≈100 g','≈12 g proteína'],
+    ['Proteína en polvo','1 cacito raso','≈30 g','≈23 g proteína']
+  ]},
+  'Carbohidratos': { col:'#a855f7', items:[
+    ['Arroz / pasta cocidos','1 vaso normal (lleno hasta el borde)','≈150 g','≈40 g carbos'],
+    ['Patata / boniato','1 puño cerrado','≈150 g','≈25 g carbos'],
+    ['Pan','1 rebanada / medio panecillo','≈40 g','≈20 g carbos'],
+    ['Avena (en seco)','1 puñado generoso','≈40 g','≈27 g carbos'],
+    ['Quinoa / cuscús cocidos','Medio vaso','≈90 g','≈20 g carbos']
+  ]},
+  'Verdura': { col:'#22c55e', items:[
+    ['Verdura cocida','2 puños','≈200 g','fibra + saciedad'],
+    ['Ensalada / verdura cruda','Lo que quepa en 2 manos ahuecadas','≈150 g','libre, sin culpa'],
+    ['Tomate / pepino','1 pieza mediana','≈120 g','hidratación']
+  ]},
+  'Grasas': { col:'#f5a524', items:[
+    ['Aceite de oliva','1 cucharada sopera','≈10 ml','≈90 kcal'],
+    ['Aguacate','Medio, del tamaño de tu pulgar ×3','≈75 g','grasa buena'],
+    ['Frutos secos','Lo que cabe en el hueco de tu mano','≈30 g','≈180 kcal'],
+    ['Crema de cacahuete','1 cucharada sopera','≈15 g','≈95 kcal'],
+    ['Queso curado','2 dedos (grosor y ancho)','≈30 g','≈120 kcal']
+  ]},
+  'Fruta': { col:'#ec4899', items:[
+    ['Fruta entera','1 pieza del tamaño de tu puño','≈120 g','≈15 g azúcar natural'],
+    ['Frutos rojos','1 puñado','≈100 g','antioxidantes'],
+    ['Plátano','1 mediano','≈120 g','≈25 g carbos']
+  ]}
+};
+function renderPortions(){
+  const el=document.getElementById('nutriPortions'); const ttl=document.getElementById('nutriPortTitle');
+  if(!el) return;
+  let html=`<div style="font:500 12.5px/1.5 'Barlow Semi Condensed';color:var(--muted3);margin-bottom:4px">Sin báscula, usa tu mano y objetos de casa como referencia. Toca una categoría para desplegarla.</div>`;
+  Object.keys(PORTIONS).forEach((cat,ci)=>{
+    const {col,items}=PORTIONS[cat];
+    const open = (DB._portOpen===cat);
+    html+=`<div style="border-radius:15px;background:var(--card-b);border:1px solid var(--border);overflow:hidden">
+      <div onclick="togglePort('${cat}')" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer">
+        <div style="font:600 12px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:${col}">${cat.toUpperCase()}</div>
+        <div style="font:600 18px/1 'Barlow Semi Condensed';color:var(--muted4);transform:rotate(${open?'90':'0'}deg);transition:transform .2s">›</div>
+      </div>
+      <div style="${open?'':'display:none'};padding:0 16px 6px">
+        ${items.map(([n,p,g,m])=>`<div style="display:flex;gap:12px;padding:11px 0;border-top:1px solid var(--border)">
+          <div style="flex:1;min-width:0">
+            <div style="font:600 13px/1.15 'Barlow Semi Condensed';color:var(--text3)">${n}</div>
+            <div style="font:500 11.5px/1.3 'Barlow Semi Condensed';color:var(--muted3);margin-top:3px">📏 ${p}</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0">
+            <div style="font:700 12.5px/1.1 'Barlow Semi Condensed';color:${col}">${g}</div>
+            <div style="font:500 10.5px/1.2 'Barlow Semi Condensed';color:var(--muted4);margin-top:3px">${m}</div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  });
+  el.innerHTML=html;
+  el.style.display='flex'; ttl.style.display='block';
+}
+function togglePort(cat){DB._portOpen = (DB._portOpen===cat)?null:cat; renderPortions();}
+window.togglePort=togglePort;
 
 // ─── LISTA DE LA COMPRA POR OBJETIVO ───
 const SHOP_BASE = {
