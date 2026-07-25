@@ -1,5 +1,8 @@
 // AMRAP · Service Worker — app shell offline
-const CACHE = 'amrap-v6';
+const CACHE = 'amrap-v7';
+// Archivos que SIEMPRE deben ir a la red primero (claves y capa de nube).
+// Evita que una versión cacheada deje la sincronización "apagada".
+const ALWAYS_FRESH = ['config.js', 'supabase-sync.js', 'social.js'];
 const CORE = [
   './',
   './index.html',
@@ -39,6 +42,17 @@ self.addEventListener('fetch', (e) => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   const sameOrigin = url.origin === self.location.origin;
+
+  // Claves y capa de nube: siempre red primero (con caché como respaldo offline).
+  if (sameOrigin && ALWAYS_FRESH.some((f) => url.pathname.endsWith('/' + f) || url.pathname.endsWith(f))) {
+    e.respondWith(
+      fetch(req).then((res) => {
+        if (res.ok) { const cp = res.clone(); caches.open(CACHE).then((c) => c.put(req, cp)); }
+        return res;
+      }).catch(() => caches.match(req))
+    );
+    return;
+  }
 
   // Navegación / documentos: network-first con fallback a cache
   if (req.mode === 'navigate' || (req.destination === 'document')) {
