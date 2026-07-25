@@ -9,5 +9,5 @@
 // ══════════════════════════════════════════════════════════
 window.AMRAP_CONFIG = {
   SUPABASE_URL: 'https://ajbrwgfmyydzlcpahfmj.supabase.co',
-  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqYnJ3Z2ZteXlkemxjcGFoZm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5NjY4NzMsImV4cCI6MjEwMDU0Mjg3M30.tlQzrY4_55mGV94ET_b7j6xIvUnZfA2-lzYD-0x76e0'
+  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqYnJ3Z2ZteXlkemxjcGFoZm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5NjY4NzMsImV4cCI6MjEwMDU0Mjg3M30.tlQzrY4_55mGV94ET_b7j6xIvUnZfA2-IzYD-0x76e0'
 };
