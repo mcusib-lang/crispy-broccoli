@@ -300,6 +300,24 @@
         </div>
       </div>
 
+      <!-- ══════════ EVOLUCIÓN ══════════ -->
+      <div class="tab" id="tab-evol" style="flex:1;flex-direction:column">
+        <div class="scroll" style="padding-top:24px">
+          <div class="sec" style="letter-spacing:.18em;color:#14b8a6">Tu estilo de vida</div>
+          <div class="bebas" style="font-size:40px;line-height:.9;margin-top:6px">EVOLUCIÓN</div>
+          <div style="font:500 12.5px/1.45 'Barlow Semi Condensed';color:var(--muted);margin-top:10px">Todo lo que registras, junto y en el tiempo. Cuida los hábitos y verás cómo se refuerzan entre sí.</div>
+          <div id="evolRange" style="display:flex;gap:8px;margin-top:18px"></div>
+          <div id="evolCards" style="display:flex;flex-direction:column;gap:10px;margin-top:16px"></div>
+          <div class="sec" id="evolPatTitle" style="display:none;margin:26px 0 9px">Patrones que observamos</div>
+          <div id="evolPatterns" style="display:none;flex-direction:column;gap:10px"></div>
+          <div class="sec" id="evolBodyTitle" style="display:none;margin:26px 0 9px">Peso y cintura</div>
+          <div id="evolBody" style="display:none"></div>
+          <div id="evolTableTitle" class="sec" style="display:none;margin:26px 0 9px">Día a día</div>
+          <div id="evolTable" style="display:none;border-radius:16px;background:var(--card-b);border:1px solid var(--border);overflow:hidden"></div>
+          <div style="height:8px"></div>
+        </div>
+      </div>
+
     </div>
     <div class="navbar" id="navbar"></div>
   </div>
@@ -317,14 +335,14 @@
 <script src="supabase-sync.js"></script>
 <script>
 const ic=(p,c)=>`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="${c||'currentColor'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
-const ICONS={hoy:'<path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/>',calend:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/>',cardio:'<path d="M20.8 5.6a5.5 5.5 0 0 0-8.8 1.4A5.5 5.5 0 0 0 3.2 5.6C1 7.8 1 11.3 3.2 13.5L12 22l8.8-8.5c2.2-2.2 2.2-5.7 0-7.9z"/>',progreso:'<path d="M3 20h18"/><path d="M6 16l4-5 3 3 5-7"/>',libro:'<path d="M4 4h13a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2z"/><path d="M4 4v14"/>',nutri:'<path d="M12 3c3 3 5 6 5 9a5 5 0 0 1-10 0c0-3 2-6 5-9z"/><path d="M9 14c1 1 2 1 3 1"/>'};
+const ICONS={hoy:'<path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/>',calend:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/>',cardio:'<path d="M20.8 5.6a5.5 5.5 0 0 0-8.8 1.4A5.5 5.5 0 0 0 3.2 5.6C1 7.8 1 11.3 3.2 13.5L12 22l8.8-8.5c2.2-2.2 2.2-5.7 0-7.9z"/>',progreso:'<path d="M3 20h18"/><path d="M6 16l4-5 3 3 5-7"/>',libro:'<path d="M4 4h13a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2z"/><path d="M4 4v14"/>',nutri:'<path d="M12 3c3 3 5 6 5 9a5 5 0 0 1-10 0c0-3 2-6 5-9z"/><path d="M9 14c1 1 2 1 3 1"/>',evol:'<path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 4-6"/><circle cx="7" cy="15" r="1"/><circle cx="17" cy="7" r="1"/>'};
 document.querySelector('#acCardio').innerHTML=ic(ICONS.cardio,'#ea580c');
 document.querySelector('#acLibro').innerHTML=ic(ICONS.libro,'#f59e0b');
 
-const TABS=[['hoy','Hoy',ICONS.hoy,'#4f8cff'],['calend','Calend.',ICONS.calend,'#4f8cff'],['cardio','Cardio',ICONS.cardio,'#ea580c'],['progreso','Progreso',ICONS.progreso,'#4f8cff'],['nutri','Nutri',ICONS.nutri,'#22c55e']];
+const TABS=[['hoy','Hoy',ICONS.hoy,'#4f8cff'],['calend','Calend.',ICONS.calend,'#4f8cff'],['cardio','Cardio',ICONS.cardio,'#ea580c'],['nutri','Nutri',ICONS.nutri,'#22c55e'],['evol','Evol.',ICONS.evol,'#14b8a6'],['progreso','Cargas',ICONS.progreso,'#4f8cff']];
 let active='hoy';
 function renderNav(){document.getElementById('navbar').innerHTML=TABS.map(([id,lbl,path,col])=>{const on=id===active;const c=on?col:'var(--muted4)';return `<div class="navb" onclick="go('${id}')"><span style="color:${c}">${ic(path,c)}</span><span class="lbl" style="color:${c}">${lbl.toUpperCase()}</span></div>`;}).join('');}
-function go(id){active=id;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));const el=document.getElementById('tab-'+id);el.classList.add('on');el.querySelector('.scroll').classList.add('fade');renderNav();if(id==='calend')renderCal();else if(id==='cardio')renderCardio();else if(id==='progreso')renderProgreso();else if(id==='nutri')renderNutri();else renderHoy();}
+function go(id){active=id;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));const el=document.getElementById('tab-'+id);el.classList.add('on');el.querySelector('.scroll').classList.add('fade');renderNav();if(id==='calend')renderCal();else if(id==='cardio')renderCardio();else if(id==='progreso')renderProgreso();else if(id==='nutri')renderNutri();else if(id==='evol')renderEvolucion();else renderHoy();}
 window.go=go;
 
 function load(){try{return JSON.parse(localStorage.getItem('amrap_fn')||'{}')}catch(e){return{}}}
@@ -1022,72 +1040,189 @@ function renderShoppingList(goal){
 
 // ─── RECETARIO POR OBJETIVO ───
 const RECIPES_COMMON = [
-  { title:'Bowl de avena prote', tag:'Desayuno', kcal:420, p:32, tPrep:5, badges:['5 min','Sin cocinar'],
+  { title:'Bowl de avena prote', tag:'Desayuno', meal:'desayuno', kcal:420, p:32, tPrep:5, badges:['5 min','Sin cocinar'],
     ing:['60 g avena', '200 ml leche o bebida vegetal', '25 g whey vainilla (o 200 g yogur griego)', '1 plátano', '15 g mantequilla de cacahuete', 'Canela'],
     pasos:['Mezcla avena + leche + whey en un bol.','Añade plátano en rodajas y la mantequilla de cacahuete.','Espolvorea canela. Listo.'] },
-  { title:'Tortilla francesa cargada', tag:'Desayuno / cena', kcal:380, p:30, tPrep:8, badges:['1 sartén'],
+  { title:'Tortilla francesa cargada', tag:'Desayuno / cena', meal:'desayuno', kcal:380, p:30, tPrep:8, badges:['1 sartén'],
     ing:['3 huevos', 'Un puñado de espinacas', '30 g queso fresco batido o feta', 'Chorrito de AOVE', 'Sal, pimienta'],
     pasos:['Bate los huevos con sal y pimienta.','En sartén caliente con AOVE, echa espinacas 30 s.','Añade el huevo, cuaja a fuego medio, corona con queso y pliega.'] },
-  { title:'Bol de pollo, arroz y verduras', tag:'Comida / cena', kcal:560, p:45, tPrep:15, badges:['Batch cooking'],
+  { title:'Tostadas de aguacate y huevo', tag:'Desayuno', meal:'desayuno', kcal:400, p:22, tPrep:8, badges:['Rápido'],
+    ing:['2 rebanadas de pan integral', '1/2 aguacate', '2 huevos', 'Tomate, sal, pimienta, limón'],
+    pasos:['Tuesta el pan y machaca el aguacate con limón y sal.','Cocina los huevos al gusto (poché o plancha).','Monta: pan, aguacate, huevo y tomate en dados.'] },
+  { title:'Bol de pollo, arroz y verduras', tag:'Comida / cena', meal:'comida', kcal:560, p:45, tPrep:15, badges:['Batch cooking'],
     ing:['150 g pechuga de pollo', '80 g arroz integral (en crudo)', '200 g mix brócoli + pimiento + cebolla', '1 c.s. AOVE', 'Salsa de soja, ajo, jengibre'],
     pasos:['Cuece el arroz según paquete.','Saltea las verduras con AOVE y ajo 5 min.','Añade el pollo troceado 5-6 min más. Salsa de soja al final.','Sirve todo junto en un bol.'] },
-  { title:'Ensalada de garbanzos y atún', tag:'Comida rápida', kcal:480, p:35, tPrep:6, badges:['Sin cocinar','Fiambrera'],
+  { title:'Ensalada de garbanzos y atún', tag:'Comida rápida', meal:'comida', kcal:480, p:35, tPrep:6, badges:['Sin cocinar','Fiambrera'],
     ing:['200 g garbanzos cocidos', '1 lata de atún al natural', '1 tomate', '1/2 pepino', '1/4 cebolla morada', 'AOVE, vinagre, orégano'],
     pasos:['Enjuaga y escurre los garbanzos.','Corta las verduras en dados.','Mezcla todo con el atún escurrido.','Aliña con AOVE, vinagre y orégano.'] },
-  { title:'Salmón al horno con boniato', tag:'Cena', kcal:590, p:38, tPrep:25, badges:['Al horno','Oméga 3'],
+  { title:'Salmón al horno con boniato', tag:'Cena', meal:'cena', kcal:590, p:38, tPrep:25, badges:['Al horno','Oméga 3'],
     ing:['150 g salmón', '1 boniato mediano', 'Brócoli o espárragos', 'Limón, ajo, eneldo, AOVE'],
     pasos:['Horno a 200°C.','Boniato en cuñas, brócoli en ramilletes, salmón con limón y eneldo.','20-22 min todo junto en la bandeja con AOVE, sal y ajo.'] },
-  { title:'Yogur griego con fruta y nueces', tag:'Snack', kcal:280, p:20, tPrep:2, badges:['2 min','Post-entreno'],
+  { title:'Crema de calabacín con pavo', tag:'Cena', meal:'cena', kcal:320, p:28, tPrep:20, badges:['Reconfortante'],
+    ing:['2 calabacines', '1 patata pequeña', '1/2 cebolla', '100 g pavo en dados', 'Caldo, AOVE, sal'],
+    pasos:['Sofríe cebolla, añade calabacín y patata en trozos.','Cubre con caldo y hierve 15 min. Tritura.','Saltea el pavo aparte y añádelo por encima al servir.'] },
+  { title:'Yogur griego con fruta y nueces', tag:'Snack', meal:'snack', kcal:280, p:20, tPrep:2, badges:['2 min','Post-entreno'],
     ing:['200 g yogur griego natural 0%', '1 puñado frutos rojos', '15 g nueces', '1 c.p. miel (opcional)'],
     pasos:['Yogur en un vaso.','Corona con la fruta y las nueces.','Miel al gusto.'] }
 ];
 const RECIPES_BY_GOAL = {
   grasa: [
-    { title:'Wrap de pavo y hummus', tag:'Comida rápida', kcal:410, p:38, tPrep:5, badges:['Alto en prote','Bajo en kcal'],
+    { title:'Wrap de pavo y hummus', tag:'Comida rápida', meal:'comida', kcal:410, p:38, tPrep:5, badges:['Alto en prote','Bajo en kcal'],
       ing:['1 tortilla integral', '100 g pechuga de pavo', '2 c.s. hummus', 'Lechuga, tomate, pepino', 'Mostaza'],
       pasos:['Extiende hummus sobre la tortilla.','Coloca el pavo y las verduras.','Enrolla apretando y corta por la mitad.'] },
-    { title:'Sopa de verduras con pollo', tag:'Cena ligera', kcal:340, p:32, tPrep:20, badges:['Saciante'],
-      ing:['120 g pollo desmenuzado', '400 ml caldo bajo en sodio', 'Puerro, zanahoria, calabacín, apío', 'Jengibre, cúrcuma'],
-      pasos:['En una olla, sofríe las verduras cortadas 5 min.','Añade caldo, especias y el pollo cocido.','Hierve 12-15 min. Rectifica de sal.'] }
+    { title:'Sopa de verduras con pollo', tag:'Cena ligera', meal:'cena', kcal:340, p:32, tPrep:20, badges:['Saciante'],
+      ing:['120 g pollo desmenuzado', '400 ml caldo bajo en sodio', 'Puerro, zanahoria, calabacín, apio', 'Jengibre, cúrcuma'],
+      pasos:['En una olla, sofríe las verduras cortadas 5 min.','Añade caldo, especias y el pollo cocido.','Hierve 12-15 min. Rectifica de sal.'] },
+    { title:'Tortitas de claras y avena', tag:'Desayuno', meal:'desayuno', kcal:300, p:28, tPrep:10, badges:['Alto en prote'],
+      ing:['4 claras (o 150 ml claras)', '40 g avena', '1/2 plátano', 'Canela, edulcorante opcional'],
+      pasos:['Tritura todo hasta una masa líquida.','Haz tortitas pequeñas en sartén antiadherente.','Sirve con fruta fresca por encima.'] },
+    { title:'Ensalada César fit con pollo', tag:'Comida', meal:'comida', kcal:390, p:40, tPrep:12, badges:['Bajo en kcal'],
+      ing:['150 g pollo a la plancha', 'Lechuga romana', '20 g parmesano', 'Yogur griego + mostaza + limón (salsa)', 'Picatostes integrales'],
+      pasos:['Mezcla yogur, mostaza, limón y pimienta para la salsa.','Trocea el pollo y la lechuga.','Combina y corona con parmesano y unos picatostes.'] },
+    { title:'Merluza al papillote', tag:'Cena', meal:'cena', kcal:300, p:34, tPrep:20, badges:['Al horno','Ligero'],
+      ing:['160 g merluza', 'Juliana de puerro, zanahoria y calabacín', 'Limón, eneldo, AOVE, sal'],
+      pasos:['Coloca verduras y pescado sobre papel de horno.','Añade limón, eneldo, un hilo de AOVE y cierra el paquete.','Horno 200°C, 15-18 min.'] },
+    { title:'Requesón con canela y fresas', tag:'Snack', meal:'snack', kcal:200, p:22, tPrep:3, badges:['Saciante'],
+      ing:['200 g requesón o queso batido', '100 g fresas', 'Canela', 'Semillas de lino'],
+      pasos:['Pon el requesón en un bol.','Corona con fresas troceadas, canela y lino.'] },
+    { title:'Revuelto de tofu y espinacas', tag:'Desayuno', meal:'desayuno', kcal:260, p:22, tPrep:10, badges:['Vegetal'],
+      ing:['150 g tofu firme', 'Espinacas', 'Cúrcuma, comino, sal', 'AOVE'],
+      pasos:['Desmenuza el tofu con las manos.','Saltéalo con especias y un poco de AOVE 4 min.','Añade espinacas hasta que reduzcan.'] },
+    { title:'Salteado de langostinos', tag:'Cena', meal:'cena', kcal:330, p:36, tPrep:12, badges:['Rápido','Bajo en kcal'],
+      ing:['180 g langostinos pelados', 'Brócoli, pimiento, tirabeques', 'Ajo, jengibre, salsa de soja', 'AOVE'],
+      pasos:['Saltea verduras a fuego fuerte 4 min.','Añade langostinos, ajo y jengibre 3 min.','Termina con salsa de soja.'] }
   ],
   musculo: [
-    { title:'Batido post-entreno', tag:'Post-entreno', kcal:520, p:45, tPrep:3, badges:['3 min','Líquido'],
+    { title:'Batido post-entreno', tag:'Post-entreno', meal:'post', kcal:520, p:45, tPrep:3, badges:['3 min','Líquido'],
       ing:['250 ml leche entera o semi', '30 g whey', '1 plátano', '30 g avena', '15 g mantequilla de cacahuete'],
       pasos:['Todo a la batidora.','Bate 30 segundos hasta que quede cremoso.','Bebe en los 60 min post-entreno.'] },
-    { title:'Solomillo con arroz y aguacate', tag:'Cena hipercalórica', kcal:720, p:48, tPrep:20, badges:['Alta densidad'],
+    { title:'Solomillo con arroz y aguacate', tag:'Cena', meal:'cena', kcal:720, p:48, tPrep:20, badges:['Alta densidad'],
       ing:['150 g solomillo de ternera', '100 g arroz basmati (crudo)', '1/2 aguacate', 'Brócoli al vapor', 'AOVE, sal, pimienta'],
-      pasos:['Cuece el arroz.','Marca el solomillo 2 min por cada lado en sartén caliente con AOVE. Reposa 3 min.','Sirve con brócoli, aguacate en láminas y buena pimienta.'] }
+      pasos:['Cuece el arroz.','Marca el solomillo 2 min por lado. Reposa 3 min.','Sirve con brócoli, aguacate en láminas y pimienta.'] },
+    { title:'Arroz con pollo y huevo', tag:'Comida', meal:'comida', kcal:680, p:50, tPrep:18, badges:['Batch cooking'],
+      ing:['150 g pollo', '100 g arroz (crudo)', '2 huevos', 'Guisantes y zanahoria', 'Salsa de soja, AOVE'],
+      pasos:['Cuece el arroz y resérvalo.','Saltea pollo y verduras.','Añade arroz, haz hueco y cuaja los huevos revueltos. Mezcla con soja.'] },
+    { title:'Bocadillo de atún, huevo y aguacate', tag:'Comida', meal:'comida', kcal:620, p:42, tPrep:8, badges:['Fácil'],
+      ing:['Panecillo integral grande', '2 latas de atún', '2 huevos duros', '1/2 aguacate', 'Mayonesa ligera, lechuga'],
+      pasos:['Machaca atún con huevo, aguacate y un poco de mayonesa.','Rellena el pan con la mezcla y lechuga.'] },
+    { title:'Pasta boloñesa de ternera', tag:'Comida', meal:'comida', kcal:700, p:46, tPrep:25, badges:['Clásico'],
+      ing:['100 g pasta (crudo)', '150 g carne picada de ternera', 'Tomate triturado, cebolla, ajo', 'AOVE, orégano, parmesano'],
+      pasos:['Cuece la pasta.','Sofríe cebolla y ajo, añade la carne y dora.','Incorpora tomate y orégano, 10 min. Mezcla con la pasta y parmesano.'] },
+    { title:'Porridge de plátano y cacahuete', tag:'Desayuno', meal:'desayuno', kcal:560, p:30, tPrep:8, badges:['Energético'],
+      ing:['70 g avena', '300 ml leche', '1 plátano', '20 g mantequilla de cacahuete', '20 g whey (opcional)'],
+      pasos:['Cuece avena con leche 4-5 min removiendo.','Fuera del fuego, añade whey y plátano.','Corona con la mantequilla de cacahuete.'] },
+    { title:'Burrito de ternera y arroz', tag:'Comida', meal:'comida', kcal:710, p:44, tPrep:15, badges:['Contundente'],
+      ing:['Tortilla grande', '120 g ternera picada', '80 g arroz cocido', 'Frijoles, maíz, queso', 'Salsa de tomate, especias'],
+      pasos:['Dora la carne con especias.','Rellena la tortilla con arroz, frijoles, carne, maíz y queso.','Enrolla y dora 1 min por cada lado.'] },
+    { title:'Tostada francesa proteica', tag:'Desayuno', meal:'desayuno', kcal:480, p:34, tPrep:10, badges:['Dulce'],
+      ing:['3 rebanadas pan integral', '2 huevos + 1 clara', '100 ml leche', 'Canela, whey vainilla', 'Fruta para servir'],
+      pasos:['Bate huevos, leche, canela y whey.','Empapa el pan y dóralo en sartén con spray.','Sirve con fruta fresca.'] }
   ],
   fuerza: [
-    { title:'Pre-entreno: tostada + huevo + fruta', tag:'Pre-entreno', kcal:380, p:22, tPrep:5, badges:['Energía estable'],
+    { title:'Pre-entreno: tostada + huevo + fruta', tag:'Pre-entreno', meal:'pre', kcal:380, p:22, tPrep:5, badges:['Energía estable'],
       ing:['2 rebanadas pan integral', '2 huevos', '1 plátano', 'AOVE, sal'],
-      pasos:['Tuesta el pan.','Fríe los huevos con AOVE (planchados).','Plátano al lado. Come 60-90 min antes de entrenar.'] }
+      pasos:['Tuesta el pan.','Fríe los huevos con AOVE (planchados).','Plátano al lado. Come 60-90 min antes de entrenar.'] },
+    { title:'Pollo teriyaki con arroz', tag:'Comida', meal:'comida', kcal:600, p:48, tPrep:18, badges:['Sabroso'],
+      ing:['160 g pollo', '90 g arroz (crudo)', 'Salsa teriyaki', 'Brócoli, sésamo', 'AOVE'],
+      pasos:['Cuece el arroz.','Dora el pollo en dados y glasea con teriyaki.','Sirve con brócoli al vapor y sésamo.'] },
+    { title:'Filete de ternera con patata asada', tag:'Cena', meal:'cena', kcal:650, p:46, tPrep:30, badges:['Fuerza'],
+      ing:['180 g filete de ternera', '1 patata grande', 'Ensalada verde', 'AOVE, romero, sal'],
+      pasos:['Asa la patata al horno con romero y AOVE.','Marca el filete al punto deseado.','Acompaña con ensalada.'] },
+    { title:'Bowl de salmón y quinoa', tag:'Comida', meal:'comida', kcal:590, p:40, tPrep:20, badges:['Oméga 3'],
+      ing:['150 g salmón', '80 g quinoa (crudo)', 'Edamame, zanahoria, pepino', 'Salsa de soja, sésamo, lima'],
+      pasos:['Cuece la quinoa.','Cocina el salmón a la plancha.','Monta el bowl con verduras y aliño de soja y lima.'] },
+    { title:'Omelette de patata y atún', tag:'Comida', meal:'comida', kcal:520, p:38, tPrep:20, badges:['1 sartén'],
+      ing:['3 huevos', '1 patata cocida', '1 lata de atún', 'Cebolla, AOVE, sal'],
+      pasos:['Sofríe cebolla y patata en dados.','Añade huevo batido y atún.','Cuaja por ambos lados a fuego medio.'] },
+    { title:'Yogur con granola y miel', tag:'Post-entreno', meal:'post', kcal:340, p:24, tPrep:3, badges:['Recupera'],
+      ing:['200 g yogur griego', '40 g granola', '1 c.p. miel', 'Fruta al gusto'],
+      pasos:['Yogur en un bol.','Corona con granola, miel y fruta.'] },
+    { title:'Tortilla de avena salada con pavo', tag:'Desayuno', meal:'desayuno', kcal:420, p:34, tPrep:12, badges:['Salado'],
+      ing:['40 g avena', '3 claras + 1 huevo', '60 g pavo', 'Espinacas, sal, pimienta'],
+      pasos:['Bate avena con huevos y sal.','Cuaja como tortilla, añade pavo y espinacas.','Pliega y sirve.'] },
+    { title:'Lentejas estofadas con arroz', tag:'Comida', meal:'comida', kcal:560, p:26, tPrep:30, badges:['De cuchara'],
+      ing:['200 g lentejas cocidas', '60 g arroz (crudo)', 'Zanahoria, cebolla, pimiento, ajo', 'Pimentón, laurel, AOVE'],
+      pasos:['Sofríe las verduras.','Añade lentejas, pimentón, laurel y agua. Cuece 15 min.','Sirve con el arroz cocido aparte.'] }
   ],
   resistencia: [
-    { title:'Overnight oats de plátano', tag:'Pre-entreno largo', kcal:480, p:22, tPrep:5, badges:['Preparar noche antes'],
-      ing:['60 g avena', '200 ml leche', '1 plátano', '15 g miel', '10 g semillas de chia', 'Canela'],
+    { title:'Overnight oats de plátano', tag:'Pre-entreno largo', meal:'pre', kcal:480, p:22, tPrep:5, badges:['Preparar noche antes'],
+      ing:['60 g avena', '200 ml leche', '1 plátano', '15 g miel', '10 g semillas de chía', 'Canela'],
       pasos:['Mezcla todo en un bote de cristal.','Nevera toda la noche.','Come 60-90 min antes de la sesión larga.'] },
-    { title:'Bebida isotónica casera', tag:'Durante entreno', kcal:120, p:0, tPrep:3, badges:['Electrolitos'],
+    { title:'Bebida isotónica casera', tag:'Durante entreno', meal:'pre', kcal:120, p:0, tPrep:3, badges:['Electrolitos'],
       ing:['500 ml agua', 'Zumo de 1 limón', '20 g azúcar o miel', '1 pizca de sal marina'],
-      pasos:['Disuelve todo en el agua.','Agita bien.','Bebe a sorbos durante sesiones >60 min.'] }
+      pasos:['Disuelve todo en el agua.','Agita bien.','Bebe a sorbos durante sesiones >60 min.'] },
+    { title:'Pasta con atún y tomate', tag:'Comida', meal:'comida', kcal:620, p:34, tPrep:15, badges:['Combustible'],
+      ing:['100 g pasta (crudo)', '2 latas de atún', 'Tomate triturado, ajo, cebolla', 'AOVE, orégano'],
+      pasos:['Cuece la pasta.','Sofríe ajo y cebolla, añade tomate 8 min.','Incorpora atún y mezcla con la pasta.'] },
+    { title:'Arroz con verduras y huevo', tag:'Comida', meal:'comida', kcal:560, p:22, tPrep:18, badges:['Ligero de digerir'],
+      ing:['100 g arroz (crudo)', '2 huevos', 'Guisantes, zanahoria, maíz', 'Salsa de soja, AOVE'],
+      pasos:['Cuece el arroz.','Saltea las verduras y añade el arroz.','Cuaja los huevos revueltos e integra con soja.'] },
+    { title:'Batido recuperador plátano-dátil', tag:'Post-entreno', meal:'post', kcal:400, p:20, tPrep:3, badges:['Repone glucógeno'],
+      ing:['300 ml leche o bebida vegetal', '1 plátano', '3 dátiles', '20 g whey', 'Hielo'],
+      pasos:['Todo a la batidora.','Bate hasta que quede fino.','Toma justo tras la sesión larga.'] },
+    { title:'Sándwich de pavo y queso', tag:'Pre-entreno', meal:'pre', kcal:420, p:30, tPrep:5, badges:['Portátil'],
+      ing:['2 rebanadas pan', '80 g pavo', '1 loncha de queso', 'Tomate, lechuga, mostaza'],
+      pasos:['Monta el sándwich con todos los ingredientes.','Ideal 1-2 h antes de rodar o pedalear.'] },
+    { title:'Boniato relleno de pollo y maíz', tag:'Comida', meal:'comida', kcal:540, p:36, tPrep:35, badges:['Carbo lento'],
+      ing:['1 boniato grande', '120 g pollo desmenuzado', 'Maíz, cebolleta', 'Yogur, lima, cilantro'],
+      pasos:['Asa el boniato al horno 30-35 min.','Ábrelo y rellena con pollo y maíz.','Corona con yogur, lima y cilantro.'] },
+    { title:'Tostada con miel y plátano', tag:'Pre-entreno', meal:'pre', kcal:300, p:8, tPrep:4, badges:['Energía rápida'],
+      ing:['2 rebanadas pan', '1 plátano', 'Miel', 'Canela'],
+      pasos:['Tuesta el pan.','Cubre con plátano en rodajas, miel y canela.','Come 45-60 min antes.'] }
   ],
   salud: [
-    { title:'Bowl mediterráneo', tag:'Comida completa', kcal:520, p:26, tPrep:15, badges:['Antiinflamatorio'],
+    { title:'Bowl mediterráneo', tag:'Comida completa', meal:'comida', kcal:520, p:26, tPrep:15, badges:['Antiinflamatorio'],
       ing:['80 g quinoa (crudo)', '100 g garbanzos', '1/2 aguacate', 'Tomate cherry, pepino, olivas', 'Feta 30 g', 'AOVE, limón, orégano'],
-      pasos:['Cuece la quinoa.','Corta las verduras y el aguacate.','Monta todo en un bol y aliña con AOVE, limón y orégano.'] }
+      pasos:['Cuece la quinoa.','Corta las verduras y el aguacate.','Monta todo en un bol y aliña con AOVE, limón y orégano.'] },
+    { title:'Salmón con brócoli y quinoa', tag:'Cena', meal:'cena', kcal:540, p:38, tPrep:22, badges:['Oméga 3'],
+      ing:['150 g salmón', '80 g quinoa (crudo)', 'Brócoli', 'Limón, ajo, AOVE'],
+      pasos:['Cuece la quinoa y el brócoli al vapor.','Cocina el salmón a la plancha con limón y ajo.','Sirve todo junto con un hilo de AOVE.'] },
+    { title:'Crema de lentejas y cúrcuma', tag:'Comida', meal:'comida', kcal:420, p:22, tPrep:25, badges:['De cuchara'],
+      ing:['150 g lentejas rojas', 'Zanahoria, cebolla, ajo', 'Cúrcuma, comino, jengibre', 'Caldo, AOVE, leche de coco'],
+      pasos:['Sofríe verduras y especias.','Añade lentejas y caldo, cuece 15 min.','Tritura y remata con un poco de leche de coco.'] },
+    { title:'Ensalada de espinacas y naranja', tag:'Comida', meal:'comida', kcal:360, p:12, tPrep:10, badges:['Fresca'],
+      ing:['Espinacas baby', '1 naranja', '30 g nueces', 'Queso de cabra', 'AOVE, vinagre balsámico'],
+      pasos:['Coloca las espinacas de base.','Añade gajos de naranja, nueces y queso.','Aliña con AOVE y balsámico.'] },
+    { title:'Yogur con frutos rojos y semillas', tag:'Desayuno / snack', meal:'desayuno', kcal:260, p:18, tPrep:3, badges:['Antioxidante'],
+      ing:['200 g yogur natural', '100 g frutos rojos', 'Semillas de chía y lino', 'Un poco de avena'],
+      pasos:['Yogur en un bol.','Corona con frutos rojos, semillas y avena.'] },
+    { title:'Verduras al horno con garbanzos', tag:'Cena', meal:'cena', kcal:440, p:18, tPrep:30, badges:['Vegetal','Fibra'],
+      ing:['Calabacín, pimiento, cebolla, berenjena', '200 g garbanzos', 'AOVE, pimentón, comino, sal'],
+      pasos:['Trocea las verduras y mézclalas con garbanzos.','Aliña con AOVE y especias.','Horno 200°C, 25-30 min removiendo a media cocción.'] },
+    { title:'Tostada de aguacate y tomate', tag:'Desayuno', meal:'desayuno', kcal:320, p:10, tPrep:6, badges:['Grasa buena'],
+      ing:['2 rebanadas pan integral', '1/2 aguacate', 'Tomate', 'Semillas, limón, sal'],
+      pasos:['Tuesta el pan.','Machaca el aguacate con limón y sal.','Cubre con tomate y semillas.'] },
+    { title:'Sopa miso con tofu', tag:'Cena', meal:'cena', kcal:250, p:18, tPrep:12, badges:['Ligera','Probiótico'],
+      ing:['500 ml caldo dashi o vegetal', '2 c.s. pasta miso', '100 g tofu', 'Alga wakame, cebolleta'],
+      pasos:['Calienta el caldo (sin hervir) y disuelve el miso.','Añade tofu en dados y wakame.','Sirve con cebolleta picada.'] }
   ]
 };
-let _recipeOpen = null;
+let _recipeOpen = null, _recMeal = 'todas', _recQuick = false, _recGoal = 'salud';
+const MEAL_FILTERS = [['todas','Todas'],['desayuno','Desayuno'],['comida','Comida'],['cena','Cena'],['snack','Snack'],['prepost','Pre/Post']];
+function setRecMeal(m){ _recMeal = m; _recipeOpen = null; renderRecipes(_recGoal); }
+function toggleRecQuick(){ _recQuick = !_recQuick; _recipeOpen = null; renderRecipes(_recGoal); }
+window.setRecMeal = setRecMeal; window.toggleRecQuick = toggleRecQuick;
 function renderRecipes(goal){
-  const list = RECIPES_COMMON.concat(RECIPES_BY_GOAL[goal] || []);
+  _recGoal = goal;
+  const all = RECIPES_COMMON.concat(RECIPES_BY_GOAL[goal] || []);
+  const list = all.filter(r => {
+    const mealOk = _recMeal==='todas' ? true : (_recMeal==='prepost' ? (r.meal==='pre'||r.meal==='post') : r.meal===_recMeal);
+    const quickOk = _recQuick ? r.tPrep<=10 : true;
+    return mealOk && quickOk;
+  });
   const el = document.getElementById('nutriRec');
   const t  = document.getElementById('nutriRecTitle');
   if (!el) return;
-  el.innerHTML = list.map((r, i) => {
-    const open = (_recipeOpen === i);
+  const chips = MEAL_FILTERS.map(([k,l])=>{ const on=_recMeal===k; return `<div onclick="setRecMeal('${k}')" style="padding:7px 13px;border-radius:18px;cursor:pointer;white-space:nowrap;font:600 11.5px/1 'Barlow Semi Condensed';${on?'background:#22c55e22;border:1px solid #22c55e88;color:#22c55e':'background:var(--panel2);border:1px solid var(--border4);color:var(--muted3)'}">${l}</div>`; }).join('');
+  const quickChip = `<div onclick="toggleRecQuick()" style="padding:7px 13px;border-radius:18px;cursor:pointer;white-space:nowrap;font:600 11.5px/1 'Barlow Semi Condensed';${_recQuick?'background:#f5a52422;border:1px solid #f5a52488;color:#f5a524':'background:var(--panel2);border:1px solid var(--border4);color:var(--muted3)'}">⚡ ≤10 min</div>`;
+  const filterBar = `<div style="display:flex;gap:7px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch">${chips}${quickChip}</div>`;
+  const count = `<div style="font:500 11px/1.3 'Barlow Semi Condensed';color:var(--muted4)">${list.length} receta${list.length===1?'':'s'} para <b style="color:#22c55e">${({grasa:'perder grasa',musculo:'ganar músculo',fuerza:'fuerza',resistencia:'resistencia',salud:'salud'})[goal]||'salud'}</b></div>`;
+  const cardsHtml = list.length ? list.map((r) => {
+    const gi = all.indexOf(r);
+    const open = (_recipeOpen === gi);
     const badges = (r.badges||[]).map(b => `<span style="padding:2px 8px;border-radius:10px;background:var(--panel2);border:1px solid var(--border4);font:600 9.5px/1.2 'Barlow Semi Condensed';color:var(--muted3)">${b}</span>`).join('');
     return `<div style="padding:14px 15px;border-radius:14px;background:var(--card-b);border:1px solid ${open?'#22c55e77':'var(--border)'}">
-      <div onclick="toggleRecipe(${i})" style="display:flex;align-items:center;gap:12px;cursor:pointer">
+      <div onclick="toggleRecipe(${gi})" style="display:flex;align-items:center;gap:12px;cursor:pointer">
         <div style="flex:1">
           <div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:#22c55e;margin-bottom:5px">${r.tag.toUpperCase()}</div>
           <div class="bebas" style="font-size:22px;line-height:1;color:var(--text)">${r.title}</div>
@@ -1105,12 +1240,187 @@ function renderRecipes(goal){
         <ol style="margin:0;padding-left:20px;font:500 12.5px/1.55 'Barlow Semi Condensed';color:var(--text3)">${r.pasos.map(x => `<li style="margin-bottom:5px">${x}</li>`).join('')}</ol>
       </div>` : ''}
     </div>`;
-  }).join('');
+  }).join('') : `<div style="font:500 12.5px/1.5 'Barlow Semi Condensed';color:var(--muted4);text-align:center;padding:18px;border-radius:14px;background:var(--card-b);border:1px solid var(--border)">No hay recetas con este filtro. Prueba otra combinación.</div>`;
+  el.innerHTML = filterBar + count + cardsHtml;
   el.style.display = 'flex';
   t.style.display = 'block';
 }
 function toggleRecipe(i){ _recipeOpen = (_recipeOpen === i) ? null : i; renderNutri(); }
 window.toggleRecipe = toggleRecipe;
+
+// ═══ EVOLUCIÓN ═══
+let _evolRange = 30;
+function setEvolRange(n){ _evolRange = n; renderEvolucion(); }
+window.setEvolRange = setEvolRange;
+function evolDateKeys(n){ const out=[]; const d=new Date(); d.setHours(12,0,0,0); for(let i=0;i<n;i++){ out.push(d.toISOString().slice(0,10)); d.setDate(d.getDate()-1);} return out; } // hoy primero
+function exerciseCount(k){ const a=(DB.history||[]).filter(e=>e.date&&e.date.slice(0,10)===k).length; const c=(DB.cardio||[]).filter(e=>e.date&&e.date.slice(0,10)===k).length; return a+c; }
+function trainedOn(k){ return exerciseCount(k)>0; }
+function avg(arr){ return arr.length ? arr.reduce((s,x)=>s+x,0)/arr.length : 0; }
+function fmtNum(v){ return (Math.round(v*10)/10).toString().replace(/\.0$/,''); }
+
+const EVOL_METRICS = [
+  { key:'ejercicio', label:'Ejercicio', unit:'sesiones', col:'#4f8cff', emoji:'🏋️', good:'high', get:k=>exerciseCount(k) },
+  { key:'sleep',     label:'Sueño',     unit:'h',        col:'#a855f7', emoji:'💤', good:'high', get:k=>DB.nutri.sleep[k]||0, band:[7,9] },
+  { key:'water',     label:'Agua',      unit:'vasos',    col:'#38bdf8', emoji:'💧', good:'high', get:k=>DB.nutri.water[k]||0 },
+  { key:'protein',   label:'Proteína',  unit:'g',        col:'#4f8cff', emoji:'🥩', good:'high', get:k=>DB.nutri.protein[k]||0 },
+  { key:'sun',       label:'Sol',       unit:'/3',       col:'#f5a524', emoji:'🌞', good:'high', get:k=>(DB.nutri.sun[k]||[]).length },
+  { key:'alcohol',   label:'Alcohol',   unit:'bebidas',  col:'#ef4444', emoji:'🍷', good:'low',  get:k=>DB.nutri.alcohol[k]||0 },
+  { key:'tabaco',    label:'Tabaco',    unit:'cig.',     col:'#ef4444', emoji:'🚬', good:'low',  get:k=>DB.nutri.tobacco[k]||0 }
+];
+
+function renderEvolucion(){
+  habitsToday(); // asegura estructura de DB.nutri
+  const cards=document.getElementById('evolCards'); if(!cards) return;
+  const rng=document.getElementById('evolRange');
+  rng.innerHTML=[[7,'7 días'],[30,'30 días'],[90,'90 días']].map(([n,l])=>{
+    const on=_evolRange===n;
+    return `<div onclick="setEvolRange(${n})" style="flex:1;text-align:center;padding:10px 0;border-radius:11px;cursor:pointer;font:600 12px/1 'Barlow Semi Condensed';${on?'background:#14b8a622;border:1px solid #14b8a688;color:#2dd4bf':'background:var(--panel2);border:1px solid var(--border4);color:var(--muted3)'}">${l}</div>`;
+  }).join('');
+
+  const keys=evolDateKeys(_evolRange);      // hoy → atrás
+  const chron=keys.slice().reverse();        // antiguo → hoy (para barras)
+  // ¿hay algún dato en todo el rango?
+  const anyData = keys.some(k => EVOL_METRICS.some(m => m.get(k)>0));
+  if(!anyData){
+    cards.innerHTML=`<div style="font:500 13px/1.55 'Barlow Semi Condensed';color:var(--muted4);text-align:center;padding:22px 18px;border-radius:16px;background:var(--card-b);border:1px solid var(--border)">Aún no hay registros en este periodo.<br>Ve a <b style="color:#22c55e">Nutri</b>, marca tu agua, proteína, sueño, sol… y entrena. En unos días verás aquí tu evolución.</div>`;
+    document.getElementById('evolPatterns').style.display='none';
+    document.getElementById('evolPatTitle').style.display='none';
+    renderEvolBody(); renderEvolTable(keys);
+    return;
+  }
+
+  cards.innerHTML = EVOL_METRICS.map(m=>{
+    const daily = chron.map(k=>m.get(k));
+    // media: para ejercicio suma; para consumo bajo cuenta media de días registrados
+    let stat, statLabel;
+    if(m.key==='ejercicio'){ const tot=daily.reduce((s,x)=>s+x,0); stat=tot; statLabel=tot+' '+(tot===1?'sesión':'sesiones'); }
+    else { const vals=daily.filter(v=>v>0); const a=avg(vals); stat=a; statLabel=(a?fmtNum(a):'—')+' '+m.unit+' /día'; }
+    // tendencia: primera mitad vs segunda mitad del rango (cronológico)
+    const half=Math.floor(daily.length/2);
+    const older=daily.slice(0,half), newer=daily.slice(half);
+    const oa=m.key==='ejercicio'?older.reduce((s,x)=>s+x,0):avg(older.filter(v=>v>0)), na=m.key==='ejercicio'?newer.reduce((s,x)=>s+x,0):avg(newer.filter(v=>v>0));
+    let arrow='→', tcol='var(--muted4)';
+    const diff=na-oa;
+    if(Math.abs(diff) > (m.key==='ejercicio'?0.5:0.15*(oa||1))){
+      const up=diff>0; arrow=up?'↑':'↓';
+      const better=(m.good==='high')?up:!up;
+      tcol=better?'#22c55e':'#f5a524';
+    }
+    // barras
+    const maxV=Math.max(1,...daily);
+    const buckets=bucketize(daily, m.key==='ejercicio'?'sum':'avg');
+    const bmax=Math.max(1,...buckets);
+    const bars=buckets.map(v=>{ const h=v>0?Math.max(3,Math.round(v/bmax*34)):2; return `<div style="flex:1;min-width:2px;height:${h}px;border-radius:2px;background:${v>0?m.col:'var(--track)'};opacity:${v>0?1:.5}"></div>`; }).join('');
+    const bandNote = m.band ? ` · óptimo ${m.band[0]}–${m.band[1]} h` : '';
+    return `<div style="padding:15px 16px;border-radius:15px;background:var(--card-b);border:1px solid var(--border)">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="font-size:18px">${m.emoji}</div>
+        <div style="flex:1"><div style="font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:${m.col}">${m.label.toUpperCase()}<span style="color:var(--muted5);font-weight:500">${bandNote}</span></div>
+          <div style="font:700 15px/1.1 'Barlow Semi Condensed';color:var(--text2);margin-top:4px">${statLabel}</div></div>
+        <div style="font:700 17px/1 'Barlow Semi Condensed';color:${tcol}">${arrow}</div>
+      </div>
+      <div style="display:flex;align-items:flex-end;gap:2px;height:36px;margin-top:12px">${bars}</div>
+    </div>`;
+  }).join('');
+
+  renderEvolPatterns(keys, chron);
+  renderEvolBody();
+  renderEvolTable(keys);
+}
+// agrupa serie diaria (cronológica) en <=26 barras
+function bucketize(daily, mode){
+  const N=daily.length, MAX=26;
+  if(N<=MAX) return daily;
+  const size=Math.ceil(N/MAX), out=[];
+  for(let i=0;i<N;i+=size){ const chunk=daily.slice(i,i+size); out.push(mode==='sum'?chunk.reduce((s,x)=>s+x,0):avg(chunk)); }
+  return out;
+}
+
+function renderEvolPatterns(keys, chron){
+  const el=document.getElementById('evolPatterns'), t=document.getElementById('evolPatTitle');
+  const obs=[];
+  const daysWith=(getFn)=>keys.filter(k=>getFn(k)!=null);
+  // 1 · sueño en noches antes de entrenar vs resto
+  const sleepDays=keys.filter(k=>(DB.nutri.sleep[k]||0)>0);
+  if(sleepDays.length>=6){
+    const tSleep=sleepDays.filter(k=>trainedOn(k)).map(k=>DB.nutri.sleep[k]);
+    const rSleep=sleepDays.filter(k=>!trainedOn(k)).map(k=>DB.nutri.sleep[k]);
+    if(tSleep.length>=2 && rSleep.length>=2){
+      const d=avg(tSleep)-avg(rSleep);
+      if(d>=0.4) obs.push(['#a855f7','😴→🏋️',`Duermes ~${fmtNum(d)} h más los días que entrenas. Buen círculo: descanso y movimiento se retroalimentan.`]);
+      else if(d<=-0.4) obs.push(['#f5a524','😴',`Los días que entrenas duermes algo menos. Prioriza acostarte antes esas noches para recuperar mejor.`]);
+    }
+    const good=sleepDays.filter(k=>DB.nutri.sleep[k]>=7).length;
+    obs.push(['#22c55e','💤',`Dormiste 7 h+ en ${good} de ${sleepDays.length} días registrados. El músculo se repara mientras duermes.`]);
+  }
+  // 2 · racha sin alcohol
+  {
+    let streak=0; for(const k of keys){ const v=DB.nutri.alcohol[k]; if(v===0){streak++;} else break; }
+    const anyAlc=keys.some(k=>(DB.nutri.alcohol[k]||0)>0);
+    if(streak>=3) obs.push(['#22c55e','🍷',`Racha de ${streak} días sin alcohol. La síntesis de proteína lo agradece — sigue así.`]);
+    else if(anyAlc){ const tot=keys.reduce((s,k)=>s+(DB.nutri.alcohol[k]||0),0); obs.push(['#f5a524','🍷',`${tot} bebidas en el periodo. Reducirlas acelera tu recuperación tras entrenar.`]); }
+  }
+  // 3 · sol
+  const sunDays=keys.filter(k=>(DB.nutri.sun[k]||[]).length>0);
+  if(sunDays.length>=4){ const full=keys.filter(k=>(DB.nutri.sun[k]||[]).length>=2).length; obs.push(['#f5a524','🌞',`Tomaste sol en ${sunDays.length} días (2+ franjas en ${full}). Luz natural = mejor ánimo, sueño y vitamina D.`]); }
+  // 4 · agua objetivo
+  const wTarget=(DB.nutri.targets&&DB.nutri.targets.waterGlasses)||8;
+  const wDays=keys.filter(k=>(DB.nutri.water[k]||0)>0);
+  if(wDays.length>=4){ const hit=wDays.filter(k=>DB.nutri.water[k]>=wTarget).length; obs.push(['#38bdf8','💧',`Llegaste a tu objetivo de agua (${wTarget} vasos) en ${hit} de ${wDays.length} días. La hidratación sostiene tu rendimiento.`]); }
+  // 5 · tabaco
+  { const tot=keys.reduce((s,k)=>s+(DB.nutri.tobacco[k]||0),0); const zero=keys.filter(k=>DB.nutri.tobacco[k]===0).length; if(tot>0) obs.push(['#f5a524','🚬',`${tot} cigarrillos registrados. Cada día sin fumar mejora tu oxígeno y tu VO₂ en el entreno.`]); else if(zero>=5) obs.push(['#22c55e','🚭',`Sin tabaco en el periodo. Tu capacidad pulmonar lo nota en cada AMRAP.`]); }
+
+  if(!obs.length){ el.style.display='none'; t.style.display='none'; return; }
+  el.innerHTML=obs.map(([c,e,txt])=>`<div style="display:flex;gap:12px;padding:14px 15px;border-radius:14px;background:var(--card-b);border:1px solid var(--border);border-left:3px solid ${c}">
+    <div style="font-size:17px;flex-shrink:0">${e}</div>
+    <div style="font:500 12.5px/1.5 'Barlow Semi Condensed';color:var(--text3)">${txt}</div>
+  </div>`).join('') + `<div style="font:500 10.5px/1.4 'Barlow Semi Condensed';color:var(--muted5);padding:2px 4px">Observaciones orientativas a partir de tus registros, no conclusiones médicas.</div>`;
+  el.style.display='flex'; t.style.display='block';
+}
+
+function renderEvolBody(){
+  const el=document.getElementById('evolBody'), t=document.getElementById('evolBodyTitle');
+  const ms=DB.measures||[];
+  if(!ms.length){ el.style.display='none'; t.style.display='none'; return; }
+  const last=ms[ms.length-1], first=ms[0];
+  const dW=last.w&&first.w?(last.w-first.w):0, dC=last.c&&first.c?(last.c-first.c):0;
+  const stat=(lbl,val,unit,delta,col)=>`<div style="flex:1;padding:14px 15px;border-radius:14px;background:var(--card-b);border:1px solid var(--border)">
+    <div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:${col}">${lbl}</div>
+    <div class="bebas" style="font-size:30px;line-height:.9;margin-top:5px;color:var(--text)">${val?val:'—'}<span style="font-size:12px;color:var(--muted);margin-left:3px">${unit}</span></div>
+    ${delta?`<div style="font:600 11px/1 'Barlow Semi Condensed';color:${delta<0?'#22c55e':'#f5a524'};margin-top:5px">${delta>0?'+':''}${fmtNum(delta)} ${unit} desde el inicio</div>`:''}
+  </div>`;
+  el.innerHTML=`<div style="display:flex;gap:10px">${stat('PESO',last.w,'kg',dW,'#4f8cff')}${stat('CINTURA',last.c,'cm',dC,'#ec4899')}</div>
+    <div style="font:500 11px/1.4 'Barlow Semi Condensed';color:var(--muted5);margin-top:8px;padding:0 4px">Registra nuevas medidas en la pestaña <b>Cargas</b> (Medidas corporales).</div>`;
+  el.style.display='block'; t.style.display='block';
+}
+
+function renderEvolTable(keys){
+  const el=document.getElementById('evolTable'), t=document.getElementById('evolTableTitle');
+  // solo días con al menos un registro, máximo 30 filas
+  const rows=keys.filter(k=>EVOL_METRICS.some(m=>m.get(k)>0)).slice(0,30);
+  if(!rows.length){ el.style.display='none'; t.style.display='none'; return; }
+  const meses=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const head=`<div style="display:flex;align-items:center;padding:10px 12px;background:var(--panel2);border-bottom:1px solid var(--border);font:600 12px/1 'Barlow Semi Condensed';color:var(--muted3)">
+    <div style="width:52px;flex-shrink:0">Día</div>
+    ${EVOL_METRICS.map(m=>`<div style="flex:1;text-align:center" title="${m.label}">${m.emoji}</div>`).join('')}
+  </div>`;
+  const body=rows.map((k,ri)=>{
+    const d=new Date(k+'T12:00');
+    const dl=`${d.getDate()} ${meses[d.getMonth()]}`;
+    const cells=EVOL_METRICS.map(m=>{
+      const v=m.get(k);
+      let disp='·', col='var(--muted6)';
+      if(m.key==='ejercicio'){ disp=v?'✓':'·'; col=v?'#4f8cff':'var(--muted6)'; }
+      else if(m.key==='sun'){ disp=v?v+'/3':'·'; col=v?m.col:'var(--muted6)'; }
+      else if(v>0){ disp=fmtNum(v); col=(m.good==='low')?'#f5a524':'var(--text3)'; }
+      return `<div style="flex:1;text-align:center;font:600 11.5px/1 'Barlow Semi Condensed';color:${col}">${disp}</div>`;
+    }).join('');
+    return `<div style="display:flex;align-items:center;padding:11px 12px;${ri?'border-top:1px solid var(--border)':''}">
+      <div style="width:52px;flex-shrink:0;font:600 11.5px/1 'Barlow Semi Condensed';color:var(--muted2)">${dl}</div>${cells}</div>`;
+  }).join('');
+  el.innerHTML=head+body;
+  el.style.display='block'; t.style.display='block';
+}
 
 function renderProgreso(){
   const highs=(DB.loads||[]).filter(l=>l.rpe==='alto').length;const b=document.getElementById('rpeBanner');
@@ -1337,7 +1647,7 @@ function mergeDB(a,b){
 
 // ═══ INIT ═══
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
-renderNav();renderHoy();renderCal();renderCardio();renderProgreso();renderNutri();applyWallpaper();
+renderNav();renderHoy();renderCal();renderCardio();renderProgreso();renderNutri();renderEvolucion();applyWallpaper();
 (function(){
   // Tour de bienvenida (solo la primera vez tras crear el plan)
   try {
@@ -1379,7 +1689,7 @@ renderNav();renderHoy();renderCal();renderCardio();renderProgreso();renderNutri(
 (function(){const b=document.getElementById('themeBtn');if(b){const t=(function(){try{return localStorage.getItem('amrap_theme')||'dark';}catch(e){return 'dark';}})();b.textContent=t==='light'?'☀️':'🌙';}})();
 // deep-link por hash
 (function(){const h=(location.hash||'').replace('#','');if(['calend','cardio','progreso','hoy'].includes(h))go(h);})();
-window.addEventListener('hashchange',()=>{const h=(location.hash||'').replace('#','');if(['calend','cardio','progreso','hoy'].includes(h))go(h);});
+window.addEventListener('hashchange',()=>{const h=(location.hash||'').replace('#','');if(['calend','cardio','progreso','hoy','nutri','evol'].includes(h))go(h);});
 // sync inicial: si hay sesión, trae remoto y fusiona
 (async function(){try{const S=window.AMRAPSync;if(S&&S.enabled&&S.enabled()){await S.ready();if(S.user&&S.user()){const remote=await S.pull();if(remote){DB=mergeDB(DB,remote);save(DB);renderHoy();renderCal();renderCardio();renderProgreso();}}}}catch(e){}})();
 </script>
