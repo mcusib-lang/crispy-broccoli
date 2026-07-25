@@ -318,6 +318,14 @@
         </div>
       </div>
 
+      <!-- ══════════ RETOS ══════════ -->
+      <div class="tab" id="tab-retos" style="flex:1;flex-direction:column">
+        <div class="scroll" style="padding-top:24px">
+          <div id="retosBody"></div>
+          <div style="height:8px"></div>
+        </div>
+      </div>
+
     </div>
     <div class="navbar" id="navbar"></div>
   </div>
@@ -333,16 +341,17 @@
 
 <script src="config.js"></script>
 <script src="supabase-sync.js"></script>
+<script src="social.js"></script>
 <script>
 const ic=(p,c)=>`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="${c||'currentColor'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
-const ICONS={hoy:'<path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/>',calend:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/>',cardio:'<path d="M20.8 5.6a5.5 5.5 0 0 0-8.8 1.4A5.5 5.5 0 0 0 3.2 5.6C1 7.8 1 11.3 3.2 13.5L12 22l8.8-8.5c2.2-2.2 2.2-5.7 0-7.9z"/>',progreso:'<path d="M3 20h18"/><path d="M6 16l4-5 3 3 5-7"/>',libro:'<path d="M4 4h13a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2z"/><path d="M4 4v14"/>',nutri:'<path d="M12 3c3 3 5 6 5 9a5 5 0 0 1-10 0c0-3 2-6 5-9z"/><path d="M9 14c1 1 2 1 3 1"/>',evol:'<path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 4-6"/><circle cx="7" cy="15" r="1"/><circle cx="17" cy="7" r="1"/>'};
+const ICONS={hoy:'<path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/>',calend:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/>',cardio:'<path d="M20.8 5.6a5.5 5.5 0 0 0-8.8 1.4A5.5 5.5 0 0 0 3.2 5.6C1 7.8 1 11.3 3.2 13.5L12 22l8.8-8.5c2.2-2.2 2.2-5.7 0-7.9z"/>',progreso:'<path d="M3 20h18"/><path d="M6 16l4-5 3 3 5-7"/>',libro:'<path d="M4 4h13a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2z"/><path d="M4 4v14"/>',nutri:'<path d="M12 3c3 3 5 6 5 9a5 5 0 0 1-10 0c0-3 2-6 5-9z"/><path d="M9 14c1 1 2 1 3 1"/>',retos:'<path d="M7 4h10v4a5 5 0 0 1-10 0zM7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3M8 21h8M12 17v4"/>',evol:'<path d="M3 3v18h18"/><path d="M7 15l3-4 3 2 4-6"/><circle cx="7" cy="15" r="1"/><circle cx="17" cy="7" r="1"/>'};
 document.querySelector('#acCardio').innerHTML=ic(ICONS.cardio,'#ea580c');
 document.querySelector('#acLibro').innerHTML=ic(ICONS.libro,'#f59e0b');
 
-const TABS=[['hoy','Hoy',ICONS.hoy,'#4f8cff'],['calend','Calend.',ICONS.calend,'#4f8cff'],['cardio','Cardio',ICONS.cardio,'#ea580c'],['nutri','Nutri',ICONS.nutri,'#22c55e'],['evol','Evol.',ICONS.evol,'#14b8a6'],['progreso','Cargas',ICONS.progreso,'#4f8cff']];
+const TABS=[['hoy','Hoy',ICONS.hoy,'#4f8cff'],['calend','Calend.',ICONS.calend,'#4f8cff'],['cardio','Cardio',ICONS.cardio,'#ea580c'],['nutri','Nutri',ICONS.nutri,'#22c55e'],['evol','Evol.',ICONS.evol,'#14b8a6'],['retos','Retos',ICONS.retos,'#f5a524'],['progreso','Cargas',ICONS.progreso,'#4f8cff']];
 let active='hoy';
 function renderNav(){document.getElementById('navbar').innerHTML=TABS.map(([id,lbl,path,col])=>{const on=id===active;const c=on?col:'var(--muted4)';return `<div class="navb" onclick="go('${id}')"><span style="color:${c}">${ic(path,c)}</span><span class="lbl" style="color:${c}">${lbl.toUpperCase()}</span></div>`;}).join('');}
-function go(id){active=id;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));const el=document.getElementById('tab-'+id);el.classList.add('on');el.querySelector('.scroll').classList.add('fade');renderNav();if(id==='calend')renderCal();else if(id==='cardio')renderCardio();else if(id==='progreso')renderProgreso();else if(id==='nutri')renderNutri();else if(id==='evol')renderEvolucion();else renderHoy();}
+function go(id){active=id;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));const el=document.getElementById('tab-'+id);el.classList.add('on');el.querySelector('.scroll').classList.add('fade');renderNav();if(id==='calend')renderCal();else if(id==='cardio')renderCardio();else if(id==='progreso')renderProgreso();else if(id==='nutri')renderNutri();else if(id==='evol')renderEvolucion();else if(id==='retos')renderRetos();else renderHoy();}
 window.go=go;
 
 function load(){try{return JSON.parse(localStorage.getItem('amrap_fn')||'{}')}catch(e){return{}}}
@@ -354,7 +363,7 @@ DB.measures=DB.measures||[];
 DB.loads=DB.loads||[];
 DB.cardioType=DB.cardioType||'Running';
 const WEEK_TARGET=DB.diasPorSemana||DB.days||DB.weekTarget||4;
-function persist(){save(DB);if(window.AMRAPSync&&window.AMRAPSync.enabled&&window.AMRAPSync.enabled())window.AMRAPSync.push(DB);}
+function persist(){save(DB);if(window.AMRAPSync&&window.AMRAPSync.enabled&&window.AMRAPSync.enabled())window.AMRAPSync.push(DB);if(window.AMRAPSocial&&window.AMRAPSocial.signedIn&&window.AMRAPSocial.signedIn())window.AMRAPSocial.publish(DB);}
 
 // Catálogo de planes (espejo de la sesión)
 const GOALS={
@@ -1422,6 +1431,303 @@ function renderEvolTable(keys){
   el.style.display='block'; t.style.display='block';
 }
 
+// ═══ RETOS (social) ═══
+const RS = { ligas:null, animos:[], sel:null, members:[], busy:false, showCreate:false };
+const AVC = [['#4f8cff22','#9cc0ff'],['#f5a52422','#f5a524'],['#a855f722','#c9a5f7'],['#22c55e22','#7fe0a0'],['#ec489922','#f7a5cf'],['#14b8a622','#7fe0d6']];
+const MODO_LABEL = { coop:'Cooperativo', competi:'Competición', liga:'Liga por jornadas' };
+const MODO_ICON = { coop:'🤝', competi:'⚔️', liga:'🏆' };
+function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function fDate(d){ try{ return new Date(d).toLocaleDateString('es-ES',{day:'numeric',month:'short'}); }catch(e){ return d; } }
+function retosNombre(m){ return (m.stats && m.stats.name) || 'Jugador'; }
+
+async function renderRetos(){
+  const el=document.getElementById('retosBody'); if(!el) return;
+  const So=window.AMRAPSocial;
+  if(!So||!So.enabled()){
+    el.innerHTML = `<div class="bebas" style="font-size:40px;line-height:.9">RETOS</div>
+      <div style="margin-top:14px;padding:16px 17px;border-radius:16px;background:var(--card-b);border:1px solid var(--border);font:500 13px/1.55 'Barlow Semi Condensed';color:var(--muted3)">Los retos con amigos necesitan la nube activada. Configura Supabase para competir entre dispositivos.</div>`;
+    return;
+  }
+  if(!So.signedIn()){
+    el.innerHTML = `<div class="bebas" style="font-size:40px;line-height:.9">RETOS</div>
+      <div style="margin-top:14px;padding:16px 17px;border-radius:16px;background:var(--card-b);border:1px solid var(--border)">
+        <div style="font:500 13px/1.55 'Barlow Semi Condensed';color:var(--muted3)">Inicia sesión para crear retos, unirte a ligas y competir con tus amigos.</div>
+        <div onclick="openAccount()" class="btnP" style="margin-top:14px;background:#4f8cff;color:#04132e;padding:13px;border-radius:12px;text-align:center;font:700 13px/1 'Barlow Semi Condensed';cursor:pointer">Iniciar sesión</div>
+      </div>`;
+    return;
+  }
+  // asegura ficha pública fresca
+  try{ const code=await So.publish(DB); if(code&&code!==DB.friendCode){ DB.friendCode=code; save(DB); } }catch(e){}
+  if(RS.sel){ el.innerHTML = retosViewLiga(); return; }
+  el.innerHTML = retosViewList();
+  if(RS.ligas===null){
+    RS.ligas = await So.myLigas();
+    try{ RS.animos = await So.animosRecibidos(); }catch(e){ RS.animos=[]; }
+    if(!RS.sel) el.innerHTML = retosViewList();
+  }
+}
+window.renderRetos = renderRetos;
+
+function retosViewList(){
+  const code = DB.friendCode || '—';
+  const loading = RS.ligas===null;
+  const ligas = RS.ligas||[];
+  const animoTxt = (RS.animos&&RS.animos.length) ? `<div style="margin-top:12px;padding:13px 15px;border-radius:14px;background:var(--tint-green);border:1px solid #22c55e33;font:600 12.5px/1.4 'Barlow Semi Condensed';color:var(--txt-green)">🔥 Has recibido ${RS.animos.length} ánimo${RS.animos.length>1?'s':''} en las últimas 48 h. ¡A darlo todo!</div>` : '';
+
+  const modoOpts = `<option value="liga">🏆 Liga por jornadas</option><option value="competi">⚔️ Competición</option><option value="coop">🤝 Cooperativo</option>`;
+  const today=new Date(); const fin=new Date(); fin.setDate(fin.getDate()+56);
+  const iso=d=>d.toISOString().slice(0,10);
+  const createForm = RS.showCreate ? `
+    <div style="margin-top:12px;padding:16px;border-radius:16px;background:var(--card-b);border:1px solid var(--border);display:flex;flex-direction:column;gap:11px">
+      <div><div class="lbl2">NOMBRE DEL RETO</div><input id="rtNombre" class="field" placeholder="Ej. Reto de primavera" style="margin-top:5px"></div>
+      <div><div class="lbl2">MODALIDAD</div><select id="rtModo" class="field" style="margin-top:5px" onchange="retosFormMode()">${modoOpts}</select></div>
+      <div id="rtFormatoWrap"><div class="lbl2">FORMATO</div><select id="rtFormato" class="field" style="margin-top:5px"><option value="single">1 vuelta (todos contra todos)</option><option value="double">Ida y vuelta (doble)</option></select></div>
+      <div id="rtMetaWrap" style="display:none"><div class="lbl2">OBJETIVO DEL GRUPO (sesiones)</div><input id="rtMeta" class="field" type="number" value="40" style="margin-top:5px"></div>
+      <div style="display:flex;gap:10px">
+        <div style="flex:1"><div class="lbl2">INICIO</div><input id="rtInicio" class="field" type="date" value="${iso(today)}" style="margin-top:5px"></div>
+        <div style="flex:1"><div class="lbl2">FIN</div><input id="rtFin" class="field" type="date" value="${iso(fin)}" style="margin-top:5px"></div>
+      </div>
+      <div onclick="retosCreate()" class="btnP" style="background:#f5a524;color:#1a1204;padding:13px;border-radius:12px;text-align:center;font:700 13px/1 'Barlow Semi Condensed';cursor:pointer">Crear reto</div>
+    </div>` : '';
+
+  const listHtml = loading
+    ? `<div style="padding:20px;text-align:center;font:500 12.5px/1 'Barlow Semi Condensed';color:var(--muted4)">Cargando…</div>`
+    : (ligas.length ? ligas.map(retosLigaCard).join('') : `<div style="padding:18px;border-radius:14px;background:var(--card-b);border:1px solid var(--border);font:500 12.5px/1.5 'Barlow Semi Condensed';color:var(--muted4);text-align:center">Aún no participas en ningún reto.<br>Crea uno o únete con un código.</div>`);
+
+  return `
+    <style>.lbl2{font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:var(--muted2)}</style>
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div class="bebas" style="font-size:40px;line-height:.9">RETOS</div>
+    </div>
+    <div style="font:500 12.5px/1.45 'Barlow Semi Condensed';color:var(--muted);margin-top:8px">Compite con tus amigos: sumad juntos, cara a cara, o una liga por jornadas.</div>
+
+    <div style="margin-top:16px;padding:15px 16px;border-radius:16px;background:linear-gradient(120deg,var(--row-blue),var(--card-b));border:1px solid #4f8cff33;display:flex;align-items:center;gap:14px">
+      <div style="flex:1"><div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:#4f8cff">TU CÓDIGO DE AMIGO</div>
+        <div style="font:400 26px/1 'Bebas Neue';letter-spacing:.1em;margin-top:6px;color:var(--text3)">${esc(code)}</div></div>
+      <div onclick="retosCopyCode()" style="padding:10px 14px;border-radius:12px;background:#4f8cff;color:#04132e;font:700 12px/1 'Barlow Semi Condensed';cursor:pointer">Copiar</div>
+    </div>
+
+    <div style="display:flex;gap:9px;margin-top:10px">
+      <input id="rtJoin" class="field" placeholder="Código de reto…" style="flex:1;text-transform:uppercase">
+      <div onclick="retosJoin()" style="padding:0 18px;display:flex;align-items:center;border-radius:12px;background:var(--panel2);border:1px solid var(--border7);font:700 13px/1 'Barlow Semi Condensed';color:var(--muted3);cursor:pointer">Unirme</div>
+    </div>
+    <div onclick="retosToggleCreate()" style="margin-top:10px;padding:13px;border-radius:12px;border:1px dashed var(--border8);text-align:center;font:700 12.5px/1 'Barlow Semi Condensed';color:var(--muted3);cursor:pointer">${RS.showCreate?'✕ Cancelar':'+ Crear un reto nuevo'}</div>
+    ${createForm}
+    ${animoTxt}
+
+    <div class="sec" style="margin:24px 0 10px">Tus retos</div>
+    <div style="display:flex;flex-direction:column;gap:9px">${listHtml}</div>`;
+}
+
+function retosLigaCard(l){
+  const U=window.AMRAPSocial.util;
+  const ja=U.jornadaActual(l.inicio,l.fin), total=U.jornadasDe(l.inicio,l.fin);
+  const estado = ja<0 ? 'Empieza '+fDate(l.inicio) : (ja>=total-1 && new Date()>new Date(l.fin) ? 'Finalizado' : `Jornada ${Math.min(ja+1,total)} de ${total}`);
+  return `<div onclick="retosOpen('${l.id}')" style="padding:15px 16px;border-radius:15px;background:var(--card-b);border:1px solid var(--border);cursor:pointer">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <span style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:#f5a524">${MODO_ICON[l.modo]||'🏆'} ${(MODO_LABEL[l.modo]||'Reto').toUpperCase()}</span>
+      <span style="font:600 10px/1 'Barlow Semi Condensed';color:var(--muted4)">${esc(estado)}</span>
+    </div>
+    <div class="bebas" style="font-size:24px;line-height:1;margin-top:7px;color:var(--text)">${esc(l.nombre)}</div>
+    <div style="font:500 11px/1.3 'Barlow Semi Condensed';color:var(--muted3);margin-top:5px">${fDate(l.inicio)} – ${fDate(l.fin)} · código ${esc(l.code)}</div>
+  </div>`;
+}
+
+function retosFormMode(){
+  const m=document.getElementById('rtModo').value;
+  const fw=document.getElementById('rtFormatoWrap'), mw=document.getElementById('rtMetaWrap');
+  if(fw) fw.style.display = m==='liga'?'block':'none';
+  if(mw) mw.style.display = m==='coop'?'block':'none';
+}
+function retosToggleCreate(){ RS.showCreate=!RS.showCreate; renderRetos(); }
+window.retosToggleCreate=retosToggleCreate; window.retosFormMode=retosFormMode;
+
+function retosCopyCode(){ const c=DB.friendCode||''; if(navigator.clipboard) navigator.clipboard.writeText(c); alert('Código copiado: '+c); }
+window.retosCopyCode=retosCopyCode;
+
+async function retosJoin(){
+  const inp=document.getElementById('rtJoin'); const code=(inp&&inp.value||'').trim();
+  if(!code){ return; }
+  if(RS.busy) return; RS.busy=true;
+  try{ const l=await window.AMRAPSocial.joinByCode(code); RS.ligas=null; await renderRetos(); retosOpen(l.id); }
+  catch(e){ alert(e.message||'No se pudo unir'); }
+  finally{ RS.busy=false; }
+}
+window.retosJoin=retosJoin;
+
+async function retosCreate(){
+  const g=id=>document.getElementById(id);
+  const nombre=(g('rtNombre').value||'').trim();
+  if(!nombre){ alert('Ponle un nombre al reto.'); return; }
+  const modo=g('rtModo').value, formato=g('rtFormato')?g('rtFormato').value:'single';
+  const inicio=g('rtInicio').value, fin=g('rtFin').value;
+  const meta=g('rtMeta')?parseInt(g('rtMeta').value,10)||40:40;
+  if(!inicio||!fin||new Date(fin)<=new Date(inicio)){ alert('Revisa las fechas: el fin debe ser posterior al inicio.'); return; }
+  if(RS.busy) return; RS.busy=true;
+  const plan=(DB.weeks||8)+' sem · '+((GOALS[DB.goal]&&GOALS[DB.goal].label)||'Cuerpo completo');
+  try{ const l=await window.AMRAPSocial.createLiga({nombre,modo,formato,inicio,fin,meta,plan}); RS.showCreate=false; RS.ligas=null; await renderRetos(); retosOpen(l.id); }
+  catch(e){ alert(e.message||'No se pudo crear'); }
+  finally{ RS.busy=false; }
+}
+window.retosCreate=retosCreate;
+
+async function retosOpen(id){
+  const l=(RS.ligas||[]).find(x=>x.id===id);
+  RS.sel=l||{id};
+  RS.members=[];
+  const el=document.getElementById('retosBody'); if(el) el.innerHTML=`<div style="padding:24px;text-align:center;font:500 12.5px/1 'Barlow Semi Condensed';color:var(--muted4)">Cargando reto…</div>`;
+  try{ RS.members=await window.AMRAPSocial.members(id); }catch(e){ RS.members=[]; }
+  renderRetos();
+}
+window.retosOpen=retosOpen;
+function retosBack(){ RS.sel=null; renderRetos(); }
+window.retosBack=retosBack;
+
+async function retosLeave(id){ if(!confirm('¿Salir de este reto?')) return; await window.AMRAPSocial.leave(id); RS.sel=null; RS.ligas=null; renderRetos(); }
+window.retosLeave=retosLeave;
+async function retosCheer(uid,btnId){ const ok=await window.AMRAPSocial.sendAnimo(uid); const b=document.getElementById(btnId); if(b&&ok){ b.innerHTML='✓ Enviado'; b.style.background='var(--tint-green)'; b.style.color='var(--txt-green)'; b.style.borderColor='#22c55e44'; } }
+window.retosCheer=retosCheer;
+
+function retosViewLiga(){
+  const l=RS.sel, So=window.AMRAPSocial, U=So.util, me=So.uid();
+  const ms=RS.members||[];
+  const statsById={}; ms.forEach(m=>{ statsById[m.user_id]=m.stats||{}; });
+  const nm=id=>(statsById[id]&&statsById[id].name)||'Jugador';
+  const idx=id=>Math.max(0,ms.findIndex(m=>m.user_id===id));
+  const av=(id,sz)=>{ const c=AVC[idx(id)%AVC.length]; const s=sz||36; return `<div style="width:${s}px;height:${s}px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font:400 ${Math.round(s*0.44)}px/1 'Bebas Neue';background:${c[0]};color:${c[1]}">${esc((nm(id)[0]||'?').toUpperCase())}</div>`; };
+
+  const header = `
+    <div onclick="retosBack()" style="display:inline-flex;align-items:center;gap:6px;padding:7px 13px 7px 10px;border-radius:20px;border:1px solid var(--border4);background:var(--panel);font:600 11px/1 'Barlow Semi Condensed';color:var(--muted3);cursor:pointer">‹ Retos</div>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:14px">
+      <span style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:#f5a524">${MODO_ICON[l.modo]||'🏆'} ${(MODO_LABEL[l.modo]||'RETO').toUpperCase()}</span>
+    </div>
+    <div class="bebas" style="font-size:34px;line-height:.95;margin-top:6px">${esc(l.nombre)}</div>
+    <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:10px">
+      <span class="rchip">📅 ${fDate(l.inicio)} – ${fDate(l.fin)}</span>
+      ${l.modo==='liga'?`<span class="rchip">🔁 ${l.formato==='double'?'Ida y vuelta':'1 vuelta'}</span>`:''}
+      <span class="rchip">👥 ${ms.length} ${ms.length===1?'jugador':'jugadores'}</span>
+      <span class="rchip">🔑 ${esc(l.code)}</span>
+    </div>`;
+
+  let body='';
+  if(l.modo==='coop') body=retosBodyCoop(l,ms,U,me,av,nm);
+  else if(l.modo==='competi') body=retosBodyCompeti(l,ms,U,me,av,nm);
+  else body=retosBodyLiga(l,ms,U,me,statsById,av,nm,idx);
+
+  const cheers = ms.filter(m=>m.user_id!==me).length ? `
+    <div class="sec" style="margin:24px 0 10px">Enviar ánimo</div>
+    <div style="display:flex;flex-direction:column;gap:8px">${ms.filter(m=>m.user_id!==me).map((m,i)=>`
+      <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:13px;background:var(--card-b);border:1px solid var(--border)">
+        ${av(m.user_id,34)}<div style="flex:1;font:600 13px/1.1 'Barlow Semi Condensed';color:var(--text3)">${esc(nm(m.user_id))}</div>
+        <div id="cheer${i}" onclick="retosCheer('${m.user_id}','cheer${i}')" style="display:flex;align-items:center;gap:5px;padding:8px 13px;border-radius:20px;background:var(--tint-amber-c);border:1px solid #f5a52440;font:700 11px/1 'Barlow Semi Condensed';color:#f5a524;cursor:pointer">🔥 Ánimo</div>
+      </div>`).join('')}</div>` : '';
+
+  return `<style>.rchip{padding:6px 12px;border-radius:20px;background:var(--panel2);border:1px solid var(--border4);font:600 10px/1 'Barlow Semi Condensed';color:var(--muted3)}</style>
+    ${header}${body}${cheers}
+    <div onclick="retosLeave('${l.id}')" style="margin-top:22px;text-align:center;font:600 11px/1 'Barlow Semi Condensed';color:var(--muted4);cursor:pointer;padding:8px">Salir del reto</div>`;
+}
+
+function retosBodyCoop(l,ms,U,me,av,nm){
+  const per=id=>{ const m=ms.find(x=>x.user_id===id); return U.sesionesEnPeriodo(m&&m.stats,l.inicio,l.fin); };
+  const rows=ms.map(m=>({id:m.user_id,n:per(m.user_id)})).sort((a,b)=>b.n-a.n);
+  const total=rows.reduce((s,r)=>s+r.n,0), meta=l.meta||40, pct=Math.min(100,Math.round(total/meta*100));
+  const max=Math.max(1,...rows.map(r=>r.n));
+  return `
+    <div style="margin-top:18px;padding:20px 18px;border-radius:20px;background:linear-gradient(160deg,var(--tint-amber-a),var(--tint-amber-b));border:1px solid #f5a52444">
+      <div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:var(--txt-amber-warn)">OBJETIVO DEL GRUPO</div>
+      <div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:10px">
+        <span style="font:400 30px/1 'Bebas Neue';color:#f5a524">${total}<span style="font-size:15px;color:var(--txt-amber-sub)"> / ${meta}</span></span>
+        <span style="font:600 12px/1 'Barlow Semi Condensed';color:var(--txt-amber-sub)">${pct}%</span>
+      </div>
+      <div style="height:10px;border-radius:6px;background:var(--track);margin-top:9px;overflow:hidden"><div style="width:${pct}%;height:100%;border-radius:6px;background:linear-gradient(90deg,#f5a524,#ea580c)"></div></div>
+    </div>
+    <div class="sec" style="margin:22px 0 10px">Quién aporta</div>
+    <div style="display:flex;flex-direction:column;gap:8px">${rows.map(r=>`
+      <div style="display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:14px;background:var(--card-b);border:1px solid var(--border)">
+        ${av(r.id,36)}<div style="flex:1;min-width:0">
+          <div style="font:600 13px/1.1 'Barlow Semi Condensed';color:${r.id===me?'#9cc0ff':'var(--text3)'}">${esc(nm(r.id))}${r.id===me?' (tú)':''}</div>
+          <div style="height:6px;border-radius:4px;background:var(--track);margin-top:6px;overflow:hidden"><div style="width:${Math.round(r.n/max*100)}%;height:100%;border-radius:4px;background:#f5a524"></div></div>
+        </div>
+        <div style="font:400 22px/1 'Bebas Neue';color:#f5a524">${r.n}</div>
+      </div>`).join('')}</div>`;
+}
+
+function retosBodyCompeti(l,ms,U,me,av,nm){
+  const rows=ms.map(m=>({id:m.user_id,n:U.sesionesEnPeriodo(m.stats,l.inicio,l.fin),streak:(m.stats&&m.stats.streak)||0})).sort((a,b)=>b.n-a.n||b.streak-a.streak);
+  return `
+    <div class="sec" style="margin:22px 0 10px">Clasificación · sesiones en el periodo</div>
+    <div style="border-radius:16px;background:var(--card-b);border:1px solid var(--border);overflow:hidden">${rows.map((r,i)=>`
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;${i?'border-top:1px solid var(--border)':''};background:${r.id===me?'var(--row-blue)':'transparent'}">
+        <div style="width:24px;text-align:center;font:400 20px/1 'Bebas Neue';color:${i===0?'#f5a524':'var(--muted3)'}">${i+1}</div>
+        ${av(r.id,32)}
+        <div style="flex:1;min-width:0"><div style="font:600 13px/1.1 'Barlow Semi Condensed';color:${r.id===me?'#9cc0ff':'var(--text3)'}">${esc(nm(r.id))}${r.id===me?' (tú)':''}</div>
+          <div style="font:500 10.5px/1.2 'Barlow Semi Condensed';color:var(--muted4);margin-top:3px">🔥 racha ${r.streak}</div></div>
+        <div style="text-align:right"><div style="font:400 22px/1 'Bebas Neue';color:${i===0?'#f5a524':'var(--text3)'}">${r.n}</div><div style="font:600 8px/1 'Barlow Semi Condensed';letter-spacing:.1em;color:var(--muted5);margin-top:3px">SESIONES</div></div>
+      </div>`).join('')}</div>
+    <div style="margin-top:10px;padding:12px 15px;border-radius:13px;background:var(--row-blue);border:1px solid #4f8cff26;font:500 11px/1.5 'Barlow Semi Condensed';color:var(--muted3)">Gana quien más sesiones (AMRAP + cardio) acumule en el periodo. Desempate por racha.</div>`;
+}
+
+function retosBodyLiga(l,ms,U,me,statsById,av,nm,idx){
+  const ids=ms.map(m=>m.user_id);
+  if(ids.length<2){
+    return `<div style="margin-top:18px;padding:16px 17px;border-radius:16px;background:var(--card-b);border:1px solid var(--border);font:500 12.5px/1.55 'Barlow Semi Condensed';color:var(--muted3)">La liga necesita al menos 2 jugadores. Comparte el código <b style="color:#f5a524">${esc(l.code)}</b> para que se unan y empiecen los duelos por jornada.</div>`;
+  }
+  const rounds=U.jornadasDe(l.inicio,l.fin), fx=U.fixtures(ids,rounds), ja=U.jornadaActual(l.inicio,l.fin);
+  const total=rounds;
+  let duel='';
+  if(ja>=0 && ja<fx.length){
+    const week=U.semanaDeJornada(l.inicio,ja);
+    const myPair=fx[ja].find(p=>p[0]===me||p[1]===me);
+    if(myPair){
+      const rival=myPair[0]===me?myPair[1]:myPair[0];
+      const cMe=(statsById[me]&&statsById[me].weeks&&statsById[me].weeks[week])||0;
+      if(rival){
+        const cRv=(statsById[rival]&&statsById[rival].weeks&&statsById[rival].weeks[week])||0;
+        const lead = cMe>cRv?'Vas ganando':(cRv>cMe?'Vas perdiendo':'Empate');
+        const lcol = cMe>cRv?'var(--txt-green)':(cRv>cMe?'#e08a8a':'var(--txt-amber-warn)');
+        const lbg = cMe>cRv?'var(--tint-green)':(cRv>cMe?'#1a0f0f':'var(--tint-amber-c)');
+        duel=`<div style="margin-top:18px;padding:16px;border-radius:18px;background:linear-gradient(160deg,var(--tint-purple),var(--card-b));border:1px solid #a855f744">
+          <div style="font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:#c9a5f7">TU DUELO · JORNADA ${ja+1}</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:14px">
+            <div style="flex:1;text-align:center">${av(me,48)}<div style="font:600 12px/1.1 'Barlow Semi Condensed';color:var(--text3);margin-top:7px">Tú</div><div style="font:400 30px/1 'Bebas Neue';color:var(--txt-green);margin-top:4px">${cMe}</div></div>
+            <div style="font:400 20px/1 'Bebas Neue';color:var(--muted4)">VS</div>
+            <div style="flex:1;text-align:center">${av(rival,48)}<div style="font:600 12px/1.1 'Barlow Semi Condensed';color:var(--text3);margin-top:7px">${esc(nm(rival))}</div><div style="font:400 30px/1 'Bebas Neue';color:var(--muted6);margin-top:4px">${cRv}</div></div>
+          </div>
+          <div style="margin-top:12px;padding:8px 12px;border-radius:10px;background:${lbg};font:600 11px/1.3 'Barlow Semi Condensed';color:${lcol};text-align:center">${lead} · sesiones de esta jornada</div>
+        </div>`;
+      } else {
+        duel=`<div style="margin-top:18px;padding:15px 16px;border-radius:16px;background:var(--card-b);border:1px solid var(--border);font:600 12.5px/1.4 'Barlow Semi Condensed';color:var(--muted3)">Descansas esta jornada (número impar de jugadores). Suma sesiones igualmente para tus próximos duelos.</div>`;
+      }
+    }
+    const otras=fx[ja].filter(p=>!(p[0]===me||p[1]===me)).filter(p=>p[0]&&p[1]);
+    if(otras.length){
+      duel+=`<div style="font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:var(--muted2);margin:16px 0 8px">OTROS DUELOS DE LA JORNADA</div>
+        <div style="display:flex;flex-direction:column;gap:7px">${otras.map(p=>{const w=U.semanaDeJornada(l.inicio,ja);const a=(statsById[p[0]]&&statsById[p[0]].weeks&&statsById[p[0]].weeks[w])||0;const b=(statsById[p[1]]&&statsById[p[1]].weeks&&statsById[p[1]].weeks[w])||0;return `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:12px;background:var(--card-b);border:1px solid var(--border)"><span style="font:600 12px/1 'Barlow Semi Condensed';color:var(--text3)">${esc(nm(p[0]))} <span style="color:var(--muted5)">vs</span> ${esc(nm(p[1]))}</span><span style="font:400 17px/1 'Bebas Neue';color:var(--muted6)">${a} – ${b}</span></div>`;}).join('')}</div>`;
+    }
+  } else if(ja<0){
+    duel=`<div style="margin-top:18px;padding:15px 16px;border-radius:16px;background:var(--card-b);border:1px solid var(--border);font:600 12.5px/1.4 'Barlow Semi Condensed';color:var(--muted3)">La liga empieza el ${fDate(l.inicio)}. Los duelos por jornada aparecerán aquí.</div>`;
+  }
+  // clasificación
+  const tab=U.standingsLiga(ms,l).sort((a,b)=>b.pts-a.pts||b.g-a.g);
+  const rowsHtml=tab.map((t,i)=>`
+    <div style="display:flex;align-items:center;padding:11px 14px;${i?'border-top:1px solid var(--border)':''};background:${t.user_id===me?'var(--row-blue)':'transparent'}">
+      <div style="width:22px;font:400 18px/1 'Bebas Neue';color:${i===0?'#f5a524':'var(--muted3)'}">${i+1}</div>
+      <div style="flex:1;min-width:0;display:flex;align-items:center;gap:9px">${av(t.user_id,28)}<span style="font:600 12.5px/1.1 'Barlow Semi Condensed';color:${t.user_id===me?'#9cc0ff':'var(--text3)'}">${esc(nm(t.user_id))}</span></div>
+      <div style="width:26px;text-align:center;font:600 12px/1 'Barlow Semi Condensed';color:var(--muted3)">${t.pj}</div>
+      <div style="width:22px;text-align:center;font:600 12px/1 'Barlow Semi Condensed';color:var(--txt-green)">${t.g}</div>
+      <div style="width:22px;text-align:center;font:600 12px/1 'Barlow Semi Condensed';color:var(--txt-amber-warn)">${t.e}</div>
+      <div style="width:22px;text-align:center;font:600 12px/1 'Barlow Semi Condensed';color:#e08a8a">${t.p}</div>
+      <div style="width:34px;text-align:right;font:400 20px/1 'Bebas Neue';color:${i===0?'#f5a524':'var(--text3)'}">${t.pts}</div>
+    </div>`).join('');
+  return `${duel}
+    <div style="font:600 10px/1 'Barlow Semi Condensed';letter-spacing:.12em;color:var(--muted2);margin:20px 0 8px">CLASIFICACIÓN · JORNADA ${ja<0?0:Math.min(ja+1,total)} DE ${total}</div>
+    <div style="border-radius:16px;background:var(--card-b);border:1px solid var(--border);overflow:hidden">
+      <div style="display:flex;align-items:center;padding:9px 14px;background:var(--panel2);border-bottom:1px solid var(--border);font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.06em;color:var(--muted2)">
+        <div style="width:22px">#</div><div style="flex:1">Jugador</div><div style="width:26px;text-align:center">PJ</div><div style="width:22px;text-align:center">G</div><div style="width:22px;text-align:center">E</div><div style="width:22px;text-align:center">P</div><div style="width:34px;text-align:right">Pts</div>
+      </div>${rowsHtml}</div>
+    <div style="margin-top:10px;padding:12px 15px;border-radius:13px;background:var(--row-blue);border:1px solid #4f8cff26;font:500 11px/1.5 'Barlow Semi Condensed';color:var(--muted3)">⚙️ Cada jornada te enfrentas a un rival distinto. Ganar 3 pts · empatar 1 · perder 0. Cuenta quién hace más sesiones esa semana.</div>`;
+}
+
 function renderProgreso(){
   const highs=(DB.loads||[]).filter(l=>l.rpe==='alto').length;const b=document.getElementById('rpeBanner');
   if(highs){b.style.display='block';document.getElementById('rpeBannerTxt').textContent=`Tienes ${highs} ejercicio${highs>1?'s':''} marcados en RPE alto. Si se repite otra sesión, mantén el peso antes de subir.`;}else b.style.display='none';
@@ -1688,10 +1994,10 @@ renderNav();renderHoy();renderCal();renderCardio();renderProgreso();renderNutri(
 })();
 (function(){const b=document.getElementById('themeBtn');if(b){const t=(function(){try{return localStorage.getItem('amrap_theme')||'dark';}catch(e){return 'dark';}})();b.textContent=t==='light'?'☀️':'🌙';}})();
 // deep-link por hash
-(function(){const h=(location.hash||'').replace('#','');if(['calend','cardio','progreso','hoy'].includes(h))go(h);})();
-window.addEventListener('hashchange',()=>{const h=(location.hash||'').replace('#','');if(['calend','cardio','progreso','hoy','nutri','evol'].includes(h))go(h);});
+(function(){const h=(location.hash||'').replace('#','');if(['calend','cardio','progreso','hoy','retos'].includes(h))go(h);})();
+window.addEventListener('hashchange',()=>{const h=(location.hash||'').replace('#','');if(['calend','cardio','progreso','hoy','nutri','evol','retos'].includes(h))go(h);});
 // sync inicial: si hay sesión, trae remoto y fusiona
-(async function(){try{const S=window.AMRAPSync;if(S&&S.enabled&&S.enabled()){await S.ready();if(S.user&&S.user()){const remote=await S.pull();if(remote){DB=mergeDB(DB,remote);save(DB);renderHoy();renderCal();renderCardio();renderProgreso();}}}}catch(e){}})();
+(async function(){try{const S=window.AMRAPSync;if(S&&S.enabled&&S.enabled()){await S.ready();if(S.user&&S.user()){const remote=await S.pull();if(remote){DB=mergeDB(DB,remote);save(DB);renderHoy();renderCal();renderCardio();renderProgreso();}const So=window.AMRAPSocial;if(So&&So.signedIn&&So.signedIn()){const code=await So.publish(DB);if(code&&code!==DB.friendCode){DB.friendCode=code;save(DB);}}}}}catch(e){}})();
 </script>
 </body>
 </html>

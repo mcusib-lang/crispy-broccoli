@@ -47,6 +47,7 @@
     enabled: function () { return ON; },
     ready: function () { return readyP; },
     user: function () { return currentUser; },
+    client: function () { return client; },
     signIn: async function (email) {
       await readyP; if (!client) throw new Error('Sync no disponible');
       var redirect = location.href.split('#')[0];
