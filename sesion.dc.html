@@ -300,7 +300,10 @@
                 <div style="font:600 13.5px/1.1 'Barlow Semi Condensed'; color:var(--text3);">{{ e.name }}</div>
                 <div style="font:500 10.5px/1 'Barlow Semi Condensed'; color:var(--muted); margin-top:4px;">{{ e.muscle }}</div>
               </div>
-              <span style="flex-shrink:0; font:600 12px/1 'Barlow Semi Condensed'; color:#4f8cff;">{{ e.reps }} <span style="color:var(--muted5);">›</span></span>
+              <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+                <span style="font:600 12px/1 'Barlow Semi Condensed'; color:#4f8cff;">{{ e.reps }}</span>
+                <div onClick="{{ e.onSwap }}" title="Cambiar por otro equivalente" style="display:flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:9px; background:var(--panel2); border:1px solid var(--border4); font-size:14px; color:var(--muted3); cursor:pointer;">🔄</div>
+              </div>
             </div>
           </sc-for>
         </div>
@@ -310,7 +313,7 @@
           <div style="font:500 11.5px/1.4 'Barlow Semi Condensed'; color:var(--muted3);">{{ cooldownPreview }}</div>
         </div>
 
-        <div style="font:500 11px/1.4 'Barlow Semi Condensed'; color:var(--muted4); text-align:center; margin-top:12px;">¿No te convence hoy? Toca «Otro entreno» o vuelve y elige otro día.</div>
+        <div style="font:500 11px/1.4 'Barlow Semi Condensed'; color:var(--muted4); text-align:center; margin-top:12px;">Toca 🔄 para cambiar un ejercicio por otro equivalente, «Otro entreno» para renovarlos todos, o vuelve y elige otro día.</div>
 
         <div style="flex:1; min-height:14px;"></div>
         <div onClick="{{ onStart }}" style="margin-top:22px; padding:17px; border-radius:15px; background:#4f8cff; text-align:center; font:600 15px/1 'Barlow Semi Condensed'; letter-spacing:.06em; color:#04132e; cursor:pointer; box-shadow:0 10px 30px -8px #4f8cff66;">▶  EMPEZAR SESIÓN</div>
@@ -964,9 +967,12 @@ class Component extends DCLogic {
       if (!pool.length) pool = eligible.filter(e => !used.has(e.key)); // sin cat: coge cualquier eligible
       if (hint) { const hinted = pool.filter(e => hint.some(h => (e.musculos||'').toLowerCase().includes(h))); if (hinted.length) pool = hinted; }
       if (!pool.length) continue;
-      const pick = pool[(seed + i) % pool.length];
+      const off = (this._swap && this._swap[i]) || 0;
+      const pick = pool[(seed + i + off) % pool.length];
       used.add(pick.key);
-      EXS.push(buildEx(pick));
+      const ex = buildEx(pick);
+      ex._slot = i; ex._cat = cat;
+      EXS.push(ex);
     }
 
     // Fallback total (raro): sólo si literalmente nada superó los filtros
@@ -1090,8 +1096,16 @@ class Component extends DCLogic {
   onOpenSession = () => this.setState({ phase:'intro', express:false, amrapTotal:this.amrapSecs, amrapLeft:this.amrapSecs });
   onShuffle = () => {
     this.shuffleOffset = (this.shuffleOffset || 0) + 1;
+    this._swap = {};
     this.applyPlan({ goal: this.state.goal, level: this.state.level });
     this.setState({ amrapTotal:this.amrapSecs, amrapLeft:this.amrapSecs });
+  };
+  swapExercise = (slot) => {
+    if (slot == null) return;
+    this._swap = this._swap || {};
+    this._swap[slot] = (this._swap[slot] || 0) + 1;
+    this.applyPlan({ goal: this.state.goal, level: this.state.level });
+    this.forceUpdate();
   };
   onExpressHome = () => this.setState({ phase:'check', express:true, amrapTotal:720, amrapLeft:720 });
   onStart = () => this.setState({ phase:'check', express:false });
@@ -1583,7 +1597,7 @@ class Component extends DCLogic {
 
       // intro / done
       streak: s.streak,
-      previewList: this.EXS.map(e => ({ name:e.name, reps:e.reps, muscle:e.muscle, onTap:()=>this.openFicha(e) })),
+      previewList: this.EXS.map((e,i) => ({ name:e.name, reps:e.reps, muscle:e.muscle, onTap:()=>this.openFicha(e), onSwap:(ev)=>{ if(ev&&ev.stopPropagation)ev.stopPropagation(); this.swapExercise(e._slot!=null?e._slot:i); } })),
       warmupPreview: this.WARMUP.map(w => w.name).join(' · '),
       cooldownPreview: this.COOL.map(w => w.name).join(' · '),
       onShuffle: this.onShuffle,
