@@ -829,35 +829,55 @@ class Component extends DCLogic {
     const zonesOf = (src) => ((EXMAP[src] && EXMAP[src].riesgo) || '').split('·').map(s => s.trim()).filter(Boolean);
     const risky = (src) => zonesOf(src).some(z => inj.includes(z));
 
-    const CAT_TAG = { Piernas:'legs', 'Glúteo':'glutes', Empuje:'push', 'Tracción':'pull', Core:'core', Cardio:'cardio' };
+    // Grupos musculares REALES que toca el AMRAP de hoy (no la categoría genérica):
+    // se leen del campo `musculos` de cada ejercicio, con la categoría como respaldo.
+    const MUSCLE_MAP = [
+      ['chest',   ['pectoral','pecho']],
+      ['back',    ['dorsal','espalda','romboides','trapecio','lumbar','redondo']],
+      ['shoulder',['deltoides','hombro','manguito']],
+      ['arms',    ['bíceps','biceps','tríceps','triceps','braquial','antebrazo']],
+      ['quads',   ['cuádriceps','cuadriceps','flexor de cadera','flexores']],
+      ['hams',    ['isquio','femoral']],
+      ['glutes',  ['glúteo','gluteo','rotadores de cadera','cadera']],
+      ['core',    ['abdomen','core','oblicuo','recto','transverso']],
+      ['calves',  ['gemelo','sóleo','soleo','tobillo']],
+      ['cardio',  ['cardio','cuerpo completo']]
+    ];
+    const CAT_FALLBACK = { Piernas:['quads','hams'], 'Glúteo':['glutes'], Empuje:['chest','shoulder','arms'], 'Tracción':['back','arms'], Core:['core'], Cardio:['cardio'] };
     const tags = new Set();
-    (EXS || []).forEach(e => { const t = CAT_TAG[e.cat]; if (t) tags.add(t); });
-    if (!tags.size) { tags.add('legs'); tags.add('push'); tags.add('core'); }
+    (EXS || []).forEach(e => {
+      const txt = ((e.muscle || '') + ' ' + ((EXMAP[e.pose || e.id] || {}).musculos || '')).toLowerCase();
+      let hit = false;
+      MUSCLE_MAP.forEach(([tag, words]) => { if (words.some(w => txt.includes(w))) { tags.add(tag); hit = true; } });
+      if (!hit) (CAT_FALLBACK[e.cat] || []).forEach(t => tags.add(t));
+    });
+    if (!tags.size) { tags.add('quads'); tags.add('chest'); tags.add('core'); }
     const activeTags = Array.from(tags);
 
     const WARM = [
-      { id:'w-highknees', src:'rodillas-altas',    name:'Rodillas altas',           sec:30, muscle:'Cardio · flexores',   tags:['cardio','legs'] },
-      { id:'w-legswing',  src:'balanceo-pierna',   name:'Balanceo de pierna',       sec:30, muscle:'Cadera · isquios',    tags:['legs','glutes'] },
-      { id:'w-squat',     src:'sentadilla',        name:'Sentadillas sin peso',     sec:40, muscle:'Cuádriceps · glúteo', tags:['legs'] },
-      { id:'w-lunge',     src:'zancada-caminando', name:'Zancadas caminando',       sec:30, muscle:'Glúteo · cuádriceps', tags:['legs','glutes'] },
-      { id:'w-bridge',    src:'puente-gluteo',     name:'Puente de glúteo',         sec:30, muscle:'Glúteo · isquios',    tags:['glutes'] },
-      { id:'w-wgs',       src:'world-greatest',    name:'World\u2019s greatest stretch', sec:30, muscle:'Cadera · dorsal', tags:['legs','glutes','pull','core'] },
-      { id:'w-shoulder',  src:'circulos-hombro',   name:'Círculos de hombro',       sec:30, muscle:'Hombro · manguito',   tags:['push','pull'] },
-      { id:'w-wallangel', src:'wall-angels',       name:'Wall angels',              sec:30, muscle:'Hombro · postura',    tags:['push','pull'] },
-      { id:'w-thoracic',  src:'rotacion-toracica', name:'Rotación torácica',        sec:30, muscle:'Columna dorsal',      tags:['pull','push','core'] },
-      { id:'w-catcow',    src:'gato-vaca',         name:'Gato–Vaca',                sec:30, muscle:'Columna · core',      tags:['core'] },
-      { id:'w-ankle',     src:'movilidad-tobillo', name:'Movilidad de tobillo',     sec:30, muscle:'Tobillo · gemelo',    tags:['legs'] }
+      { id:'w-highknees', src:'rodillas-altas',    name:'Rodillas altas',           sec:30, muscle:'Cardio · flexores',   tags:['cardio','quads','core'] },
+      { id:'w-legswing',  src:'balanceo-pierna',   name:'Balanceo de pierna',       sec:30, muscle:'Cadera · isquios',    tags:['hams','glutes','quads'] },
+      { id:'w-squat',     src:'sentadilla',        name:'Sentadillas sin peso',     sec:40, muscle:'Cuádriceps · glúteo', tags:['quads','glutes'] },
+      { id:'w-lunge',     src:'zancada-caminando', name:'Zancadas caminando',       sec:30, muscle:'Glúteo · cuádriceps', tags:['quads','glutes','hams'] },
+      { id:'w-bridge',    src:'puente-gluteo',     name:'Puente de glúteo',         sec:30, muscle:'Glúteo · isquios',    tags:['glutes','hams'] },
+      { id:'w-9090',      src:'noventa-noventa',   name:'90/90 de cadera',          sec:30, muscle:'Rotadores de cadera', tags:['glutes','hams'] },
+      { id:'w-wgs',       src:'world-greatest',    name:'World\u2019s greatest stretch', sec:30, muscle:'Cadera · dorsal', tags:['glutes','hams','quads','back'] },
+      { id:'w-shoulder',  src:'circulos-hombro',   name:'Círculos de hombro',       sec:30, muscle:'Hombro · manguito',   tags:['shoulder','chest','arms'] },
+      { id:'w-wallangel', src:'wall-angels',       name:'Wall angels',              sec:30, muscle:'Hombro · postura',    tags:['shoulder','back','chest','arms'] },
+      { id:'w-thoracic',  src:'rotacion-toracica', name:'Rotación torácica',        sec:30, muscle:'Columna dorsal',      tags:['back','chest','shoulder','core'] },
+      { id:'w-catcow',    src:'gato-vaca',         name:'Gato–Vaca',                sec:30, muscle:'Columna · core',      tags:['core','back'], general:true },
+      { id:'w-ankle',     src:'movilidad-tobillo', name:'Movilidad de tobillo',     sec:30, muscle:'Tobillo · gemelo',    tags:['calves','quads'] }
     ];
     const COOL = [
-      { id:'c-quad',     src:'estiramiento-cuadriceps', name:'Estiramiento de cuádriceps', sec:30, muscle:'Cuádriceps',            tags:['legs'] },
-      { id:'c-ham',      src:'estiramiento-isquios',    name:'Estiramiento de isquios',    sec:30, muscle:'Isquiotibiales',        tags:['legs','glutes'] },
-      { id:'c-downdog',  src:'perro-abajo',             name:'Perro boca abajo',           sec:30, muscle:'Isquios · gemelo · dorsal', tags:['legs','pull'] },
+      { id:'c-quad',     src:'estiramiento-cuadriceps', name:'Estiramiento de cuádriceps', sec:30, muscle:'Cuádriceps',            tags:['quads'] },
+      { id:'c-ham',      src:'estiramiento-isquios',    name:'Estiramiento de isquios',    sec:30, muscle:'Isquiotibiales',        tags:['hams'] },
+      { id:'c-downdog',  src:'perro-abajo',             name:'Perro boca abajo',           sec:30, muscle:'Isquios · gemelo · dorsal', tags:['hams','calves','back','shoulder'] },
       { id:'c-pigeon',   src:'paloma',                  name:'Postura de la paloma',       sec:40, muscle:'Glúteo · rotadores',    tags:['glutes'] },
-      { id:'c-9090',     src:'noventa-noventa',         name:'90/90 de cadera',            sec:30, muscle:'Rotadores de cadera',   tags:['glutes','legs'] },
-      { id:'c-cobra',    src:'cobra',                   name:'Cobra',                      sec:30, muscle:'Pecho · abdomen (estira)', tags:['push','core'] },
-      { id:'c-child',    src:'postura-nino',            name:'Postura del niño',           sec:40, muscle:'Espalda · hombro · cadera', tags:['pull','push','core'] },
-      { id:'c-thoracic', src:'rotacion-toracica',       name:'Rotación torácica',          sec:30, muscle:'Columna dorsal',        tags:['pull','core'] },
-      { id:'c-catcow',   src:'gato-vaca',               name:'Gato–Vaca',                  sec:30, muscle:'Columna · core',        tags:['core'] }
+      { id:'c-9090',     src:'noventa-noventa',         name:'90/90 de cadera',            sec:30, muscle:'Rotadores de cadera',   tags:['glutes','hams'] },
+      { id:'c-cobra',    src:'cobra',                   name:'Cobra',                      sec:30, muscle:'Pecho · abdomen (estira)', tags:['chest','core','shoulder'] },
+      { id:'c-child',    src:'postura-nino',            name:'Postura del niño',           sec:40, muscle:'Espalda · hombro · cadera', tags:['back','shoulder','arms'], general:true },
+      { id:'c-thoracic', src:'rotacion-toracica',       name:'Rotación torácica',          sec:30, muscle:'Columna dorsal',        tags:['back','chest','shoulder','core'] },
+      { id:'c-catcow',   src:'gato-vaca',               name:'Gato–Vaca',                  sec:30, muscle:'Columna · core',        tags:['core','back'], general:true }
     ];
 
     const mk = (it, block) => {
@@ -869,13 +889,22 @@ class Component extends DCLogic {
         pasos: (src.pasos || it.pasos || [])
       };
     };
+    // Selección ESTRICTA: solo entra lo que toca alguno de los músculos de hoy.
+    // Se prioriza un item por músculo trabajado (más específico primero) y, si
+    // falta relleno, solo se añaden movimientos generales (columna/respiración).
     const select = (pool, count) => {
       const avail = pool.filter(p => !risky(p.src));
-      const chosen = [], used = new Set();
-      activeTags.forEach(tag => { if (chosen.length >= count) return; const it = avail.find(p => !used.has(p.id) && p.tags.includes(tag)); if (it) { chosen.push(it); used.add(it.id); } });
-      for (const p of avail) { if (chosen.length >= count) break; if (used.has(p.id)) continue; if (p.tags.some(t => activeTags.includes(t))) { chosen.push(p); used.add(p.id); } }
-      for (const p of avail) { if (chosen.length >= count) break; if (used.has(p.id)) continue; chosen.push(p); used.add(p.id); }
-      // orden estable según el pool original
+      const used = new Set();
+      const matches = (p) => p.tags.some(t => activeTags.includes(t));
+      activeTags.forEach(tag => {
+        if (used.size >= count) return;
+        const cands = avail.filter(p => !used.has(p.id) && p.tags.includes(tag));
+        if (!cands.length) return;
+        cands.sort((a, b) => a.tags.length - b.tags.length);
+        used.add(cands[0].id);
+      });
+      for (const p of avail) { if (used.size >= count) break; if (!used.has(p.id) && matches(p)) used.add(p.id); }
+      for (const p of avail) { if (used.size >= Math.max(3, count)) break; if (!used.has(p.id) && p.general) used.add(p.id); }
       return pool.filter(p => used.has(p.id));
     };
 
@@ -899,15 +928,17 @@ class Component extends DCLogic {
   applyPlan(p) {
     p = p || {};
 
-    // ── mapa objetivo → 4 categorías del pool ──
+    // ── objetivo EFECTIVO de hoy ──
+    // Prioridad: override puntual (goalToday) → focus de la sesión actual del plan
+    // (permite traer a hoy una sesión futura desde el calendario) → objetivo del perfil.
     const GOAL_CATS = this.GOAL_CATS;
-    const goalKey = p.goal || (this.saved && (this.saved.goalToday || (function(){
-      // toma el focus de la sesión actual del plan si existe
+    const planFocus = (function () {
       const plan = Array.isArray(this.saved && this.saved.plan) ? this.saved.plan : null;
       if (!plan) return null;
       const cur = plan.find(x => !x.done);
       return cur ? cur.focus : null;
-    }).call({saved:this.saved}))) || (this.saved && this.saved.goal) || 'full';
+    }).call({ saved: this.saved });
+    const goalKey = (this.saved && this.saved.goalToday) || planFocus || p.goal || (this.saved && this.saved.goal) || 'full';
     const g = this.GOALS[goalKey] || this.GOALS.full;
     const lvl = this.LEVELS[p.level] || this.LEVELS[(this.saved && (this.saved.level || this.saved.nivel))] || this.LEVELS.beginner;
 
@@ -1506,7 +1537,7 @@ class Component extends DCLogic {
     const dailyQuote = QUOTES[qIdx];
 
     // ── PLAN del perfil (objetivo · nivel · frecuencia · semanas) ──
-    const g = this.GOALS[s.goal] || this.planGoal || this.GOALS.full;
+    const g = this.planGoal || this.GOALS[s.goal] || this.GOALS.full;
     const lvl = this.LEVELS[s.level] || this.planLevel || this.LEVELS.beginner;
     const amrapMin = Math.round((this.amrapSecs || lvl.min*60) / 60);
     const totalMin = amrapMin + 10; // 5' calentar + 5' enfriar
