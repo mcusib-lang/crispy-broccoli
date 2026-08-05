@@ -297,7 +297,10 @@
           <sc-for list="{{ previewList }}" as="e" hint-placeholder-count="4">
             <div onClick="{{ e.onTap }}" style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding:11px 14px; border-radius:12px; background:var(--panel); border-left:3px solid #4f8cff; cursor:pointer;">
               <div style="min-width:0;">
-                <div style="font:600 13.5px/1.1 'Barlow Semi Condensed'; color:var(--text3);">{{ e.name }}</div>
+                <div style="display:flex; align-items:center; gap:7px;">
+                  <span style="font:600 13.5px/1.1 'Barlow Semi Condensed'; color:var(--text3);">{{ e.name }}</span>
+                  <span style="display:{{ e.tagShow }}; padding:2px 7px; border-radius:8px; background:var(--tint-amber-c); border:1px solid #f5a52440; font:700 8px/1.3 'Barlow Semi Condensed'; letter-spacing:.08em; color:#f5a524;">{{ e.tag }}</span>
+                </div>
                 <div style="font:500 10.5px/1 'Barlow Semi Condensed'; color:var(--muted); margin-top:4px;">{{ e.muscle }}</div>
               </div>
               <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
@@ -966,13 +969,26 @@ class Component extends DCLogic {
     const canEquip = (ex) => equip.has(ex.equip || 'Ninguno');
     const isRisky = (ex) => zonesOf(ex).some(z => activeInjuries.includes(z));
     const isWarmupOrCool = (ex) => ex.cat === 'Movilidad'; // no elegimos movilidad para el AMRAP
+    // Mancuernas de discos (redondas): no aguantan de pie en el suelo como soporte.
+    const discos = !!(this.saved && this.saved.mancuernaDiscos);
+    const needsStand = (ex) => discos && ex.apoyoSuelo;
 
-    const eligible = ALL.filter(ex => canEquip(ex) && !isRisky(ex) && !isWarmupOrCool(ex));
+    const eligible = ALL.filter(ex => canEquip(ex) && !isRisky(ex) && !isWarmupOrCool(ex) && !needsStand(ex));
 
-    // ── rotación entre sesiones: evita repetir los últimos ejercicios ──
+    // ── Variación PLANIFICADA (no aleatoria) ──
+    // La evidencia (Kassiano 2022; Baz-Valle 2019) indica que rotar ejercicios
+    // cada sesión compromete fuerza e hipertrofia: cuesta progresar en carga.
+    // Lo eficaz es repetir un movimiento base ("ancla") durante un bloque de
+    // varias semanas y rotar solo los accesorios. Aquí: el slot 0 de cada
+    // sesión es el ancla del bloque (cambia cada BLOQUE sesiones) y el resto
+    // rota para mantener el entreno ameno.
+    const BLOQUE = 6; // sesiones que dura un bloque antes de cambiar el ancla
     const hist = (this.saved && this.saved.history) || [];
+    const done = hist.length;
+    const bloqueIdx = Math.floor(done / BLOQUE);
+    const seed = done + (this.shuffleOffset || 0);
+    // los accesorios evitan lo último hecho; el ancla NO (debe repetirse)
     const recent = new Set(hist.slice(-2).flatMap(h => h.exercises || []));
-    const seed = hist.length + (this.shuffleOffset || 0);
 
     const wantedCats = GOAL_CATS[goalKey] || GOAL_CATS.full;
     const hint = this.GOAL_HINTS[goalKey] || null;
@@ -983,6 +999,7 @@ class Component extends DCLogic {
       reps: pick.reps || '10–12 reps',
       muscle: pick.musculos || pick.muscle || '',
       material: pick.equip || pick.material || 'Peso corporal',
+      tension: pick.tension || '',
       errors: (pick.errores || pick.errors || []).slice(0, 3),
       pasos: pick.pasos || [],
       cat: pick.cat || 'Full',
@@ -992,17 +1009,21 @@ class Component extends DCLogic {
     const EXS = [];
     for (let i = 0; i < wantedCats.length; i++) {
       const cat = wantedCats[i];
+      const isAnchor = (i === 0); // movimiento base del bloque: se repite para poder progresar
       const catPool = eligible.filter(e => e.cat === cat && !used.has(e.key));
-      const preferred = catPool.filter(e => !recent.has(e.key));
+      // El ancla NO evita lo reciente (queremos repetirla); los accesorios sí rotan.
+      const preferred = isAnchor ? catPool : catPool.filter(e => !recent.has(e.key));
       let pool = preferred.length ? preferred : catPool;
       if (!pool.length) pool = eligible.filter(e => !used.has(e.key)); // sin cat: coge cualquier eligible
       if (hint) { const hinted = pool.filter(e => hint.some(h => (e.musculos||'').toLowerCase().includes(h))); if (hinted.length) pool = hinted; }
       if (!pool.length) continue;
       const off = (this._swap && this._swap[i]) || 0;
-      const pick = pool[(seed + i + off) % pool.length];
+      // ancla: índice estable durante todo el bloque · accesorios: rotan cada sesión
+      const base = isAnchor ? bloqueIdx + (this.shuffleOffset || 0) : seed + i;
+      const pick = pool[(base + off) % pool.length];
       used.add(pick.key);
       const ex = buildEx(pick);
-      ex._slot = i; ex._cat = cat;
+      ex._slot = i; ex._cat = cat; ex._anchor = isAnchor;
       EXS.push(ex);
     }
 
@@ -1628,7 +1649,7 @@ class Component extends DCLogic {
 
       // intro / done
       streak: s.streak,
-      previewList: this.EXS.map((e,i) => ({ name:e.name, reps:e.reps, muscle:e.muscle, onTap:()=>this.openFicha(e), onSwap:(ev)=>{ if(ev&&ev.stopPropagation)ev.stopPropagation(); this.swapExercise(e._slot!=null?e._slot:i); } })),
+      previewList: this.EXS.map((e,i) => ({ name:e.name, reps:e.reps, muscle:e.muscle + (e.tension ? ' · goma ' + e.tension : ''), tag:(e._anchor ? 'BASE' : ''), tagShow:(e._anchor ? 'inline-block' : 'none'), onTap:()=>this.openFicha(e), onSwap:(ev)=>{ if(ev&&ev.stopPropagation)ev.stopPropagation(); this.swapExercise(e._slot!=null?e._slot:i); } })),
       warmupPreview: this.WARMUP.map(w => w.name).join(' · '),
       cooldownPreview: this.COOL.map(w => w.name).join(' · '),
       onShuffle: this.onShuffle,

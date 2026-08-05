@@ -66,7 +66,7 @@
       <div id="chips" style="display:flex;gap:8px;overflow-x:auto;padding:8px 22px 8px"></div>
       <div style="padding:2px 22px 2px;font:600 9px/1 'Barlow Semi Condensed';letter-spacing:.14em;color:#4f4d69;text-transform:uppercase">Material</div>
       <div id="equipChips" style="display:flex;gap:8px;overflow-x:auto;padding:8px 22px 6px"></div>
-      <div style="padding:4px 22px 6px;font:500 12px/1 'Barlow Semi Condensed';color:var(--muted)" id="count">108 ejercicios</div>
+      <div style="padding:4px 22px 6px;font:500 12px/1 'Barlow Semi Condensed';color:var(--muted)" id="count">Cargando…</div>
       <div id="grid" style="flex:1;padding:2px 22px 24px;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:174px;gap:12px;align-content:start"></div>
     </div>
 
@@ -269,8 +269,9 @@ function renderDetail(){
     <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:16px">
       ${pill(e.reps,c,true)}
       <span style="display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:20px;font:600 11px/1 'Barlow Semi Condensed';background:var(--panel2);color:var(--muted6);border:1px solid var(--border4)">
-        <span style="color:${c};display:inline-flex">${equipIcon(e.equip,15)}</span>${EQUIP_LABEL[e.equip]}
+        <span style="color:${c};display:inline-flex">${equipIcon(e.equip,15)}</span>${EQUIP_LABEL[e.equip]}${e.tension?` · ${e.tension}`:''}
       </span>
+      ${e.apoyoSuelo?`<span style="display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:20px;font:600 11px/1 'Barlow Semi Condensed';background:#f5a52418;color:#f5a524;border:1px solid #f5a52440">⚠️ Necesita mancuerna hexagonal</span>`:''}
     </div>
 
     <div style="font:500 14px/1.5 'Barlow Semi Condensed';color:#b8b4d0;margin-top:16px">${e.desc}</div>

@@ -82,8 +82,8 @@
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
 const ic=(p)=>`<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
 
-const P={name:'',sexo:'',edad:'',altura:'',peso:'',objetivos:[],focos:[],level:'',days:0,weeks:8,equipamiento:[],lesiones:[],lesionesNivel:{},modoCardio:'',cardioType:'Running',alcohol:'',tabaco:''};
-try{const prev=JSON.parse(localStorage.getItem('amrap_fn')||'{}');if(prev&&prev.name){P.name=prev.name;P.sexo=prev.sexo||'';P.edad=prev.edad||'';P.altura=prev.altura||'';P.peso=prev.peso||'';P.objetivos=Array.isArray(prev.objetivos)?prev.objetivos.slice():[];P.focos=Array.isArray(prev.focos)?prev.focos.slice():[];P.level=prev.level||prev.nivel||'';P.days=prev.days||prev.diasPorSemana||0;P.weeks=prev.weeks||8;P.equipamiento=Array.isArray(prev.equipamiento)?prev.equipamiento.slice():[];P.lesiones=Array.isArray(prev.lesiones)?prev.lesiones.slice():[];P.lesionesNivel=Object.assign({},prev.lesionesNivel||{});P.modoCardio=prev.modoCardio||'';P.cardioType=prev.cardioType||'Running';P.alcohol=prev.alcohol||'';P.tabaco=prev.tabaco||'';}}catch(e){}
+const P={name:'',sexo:'',edad:'',altura:'',peso:'',objetivos:[],focos:[],level:'',days:0,weeks:8,equipamiento:[],lesiones:[],lesionesNivel:{},modoCardio:'',cardioType:'Running',alcohol:'',tabaco:'',mancuernaDiscos:false};
+try{const prev=JSON.parse(localStorage.getItem('amrap_fn')||'{}');if(prev&&prev.name){P.name=prev.name;P.sexo=prev.sexo||'';P.edad=prev.edad||'';P.altura=prev.altura||'';P.peso=prev.peso||'';P.objetivos=Array.isArray(prev.objetivos)?prev.objetivos.slice():[];P.focos=Array.isArray(prev.focos)?prev.focos.slice():[];P.level=prev.level||prev.nivel||'';P.days=prev.days||prev.diasPorSemana||0;P.weeks=prev.weeks||8;P.equipamiento=Array.isArray(prev.equipamiento)?prev.equipamiento.slice():[];P.lesiones=Array.isArray(prev.lesiones)?prev.lesiones.slice():[];P.lesionesNivel=Object.assign({},prev.lesionesNivel||{});P.modoCardio=prev.modoCardio||'';P.cardioType=prev.cardioType||'Running';P.alcohol=prev.alcohol||'';P.tabaco=prev.tabaco||'';P.mancuernaDiscos=!!prev.mancuernaDiscos;}}catch(e){}
 
 // Modo edición: si ya había perfil O si viene ?edit=1, saltamos la bienvenida
 const IS_EDIT = (!!P.name) || /[?&]edit=1/.test(location.search || '');
@@ -212,7 +212,17 @@ function render(){
       <div class="kicker">Paso 8 · material</div>
       <div class="title">¿QUÉ MATERIAL<br>TIENES?</div>
       <div class="sub">Marca todo lo que tengas a mano. Solo propondremos ejercicios que puedas hacer.</div>
-      <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px">${E.map(([k,t,d,i])=>optMulti('equipamiento',k,'',i,t,d)).join('')}</div>`;
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px">${E.map(([k,t,d,i])=>optMulti('equipamiento',k,'',i,t,d)).join('')}</div>
+      ${P.equipamiento.includes('Mancuerna')?`
+      <div class="kicker" style="margin-top:24px">Tus mancuernas</div>
+      <div onclick="toggleDiscos()" style="display:flex;align-items:center;gap:13px;margin-top:11px;padding:14px 15px;border-radius:14px;cursor:pointer;border:1px solid ${P.mancuernaDiscos?'#f5a52466':'var(--border4)'};background:${P.mancuernaDiscos?'#f5a52414':'var(--panel2)'}">
+        <div style="font-size:19px">⚠️</div>
+        <div style="flex:1;min-width:0">
+          <div style="font:600 13px/1.15 'Barlow Semi Condensed';color:var(--text3)">Son de discos (redondas)</div>
+          <div style="font:500 10.5px/1.35 'Barlow Semi Condensed';color:var(--muted4);margin-top:3px">No se apoyan de pie en el suelo. Evitaremos ejercicios que las usen como soporte, como el remo renegado.</div>
+        </div>
+        <div style="width:22px;height:22px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:1.5px solid ${P.mancuernaDiscos?'#f5a524':'var(--border8)'};background:${P.mancuernaDiscos?'#f5a524':'transparent'}">${P.mancuernaDiscos?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1a1204" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>':''}</div>
+      </div>`:''}`;
     setNext('Continuar');refresh();
   }
   else if(key==='lesiones'){
@@ -278,6 +288,7 @@ function render(){
         ${sumRow('Cardio',P.modoCardio==='amrap_mas_cardio'?('Sí · '+P.cardioType):'Solo AMRAP')}
         ${sumRow('Alcohol',{no:'No / casi nunca',ocasional:'Ocasional',semanal:'Semanal',frecuente:'Frecuente'}[P.alcohol]||'—')}
         ${sumRow('Tabaco',{no:'No fumo',ocasional:'Ocasional',diario:'A diario'}[P.tabaco]||'—')}
+        ${P.equipamiento.includes('Mancuerna')?sumRow('Mancuernas',P.mancuernaDiscos?'De discos (redondas)':'Estables / hexagonales'):''}
       </div>`;
     setNext(IS_EDIT ? '✓ Guardar cambios' : '▶  Crear mi plan',true);
   }
@@ -294,17 +305,18 @@ function daysHint(){const h={2:'Perfecto para empezar o mantener con poco tiempo
 function toggleMulti(field,k){const a=P[field];const i=a.indexOf(k);if(i>=0)a.splice(i,1);else a.push(k);render();}
 function toggleLes(k){if(k==='ninguna'){P.lesiones=P.lesiones.includes('ninguna')?[]:['ninguna'];P.lesionesNivel={};}else{P.lesiones=P.lesiones.filter(x=>x!=='ninguna');const i=P.lesiones.indexOf(k);if(i>=0){P.lesiones.splice(i,1);delete P.lesionesNivel[k];}else{P.lesiones.push(k);P.lesionesNivel[k]=P.lesionesNivel[k]||'leve';}}render();}
 function setLesNivel(z,n){P.lesionesNivel[z]=n;render();}
+function toggleDiscos(){P.mancuernaDiscos=!P.mancuernaDiscos;render();}
 function setNext(label,enabled){const n=document.getElementById('next');n.textContent=label;n._forceEnabled=enabled;refresh();}
 function canAdvance(){const key=STEPS[step];if(key==='datos')return !!(P.name&&P.name.trim());if(key==='objetivos')return P.objetivos.length>0;if(key==='foco')return P.focos.length>0;if(key==='nivel')return !!P.level;if(key==='dias')return P.days>0;if(key==='equip')return P.equipamiento.length>0;if(key==='cardio')return !!P.modoCardio;return true;}
 function refresh(){const n=document.getElementById('next');const ok=n._forceEnabled||canAdvance();n.classList.toggle('off',!ok);}
 function next(){if(document.getElementById('next').classList.contains('off'))return;if(step<STEPS.length-1){step++;render();}else finish();}
 function prev(){if(step>0){step--;render();}}
-function resetAll(){if(confirm('¿Borrar todos tus datos y empezar de cero? Se perderá tu racha e historial.')){try{localStorage.removeItem('amrap_fn');}catch(e){}P.name='';P.sexo='';P.edad='';P.altura='';P.peso='';P.objetivos=[];P.focos=[];P.level='';P.days=0;P.equipamiento=[];P.lesiones=[];P.lesionesNivel={};P.modoCardio='';P.cardioType='Running';P.alcohol='';P.tabaco='';alert('Datos borrados. Empezamos de cero.');}}
+function resetAll(){if(confirm('¿Borrar todos tus datos y empezar de cero? Se perderá tu racha e historial.')){try{localStorage.removeItem('amrap_fn');}catch(e){}P.name='';P.sexo='';P.edad='';P.altura='';P.peso='';P.objetivos=[];P.focos=[];P.level='';P.days=0;P.equipamiento=[];P.lesiones=[];P.lesionesNivel={};P.modoCardio='';P.cardioType='Running';P.alcohol='';P.tabaco='';P.mancuernaDiscos=false;alert('Datos borrados. Empezamos de cero.');}}
 function finish(){
   const goalMap={grasa:'fatloss',musculo:'upper',fuerza:'full',salud:'full',resistencia:'fatloss'};
   let prev={};try{prev=JSON.parse(localStorage.getItem('amrap_fn')||'{}');}catch(e){}
   const wasNew = !prev.name;
-  const data=Object.assign({},prev,{name:(P.name||'Atleta').slice(0,18),sexo:P.sexo,edad:P.edad,altura:P.altura,peso:P.peso,objetivos:P.objetivos,focos:P.focos,goal:goalMap[P.objetivos[0]]||'full',level:P.level||'principiante',nivel:P.level,days:P.days||3,diasPorSemana:P.days||3,weeks:P.weeks||8,equipamiento:P.equipamiento,lesiones:P.lesiones.filter(l=>l!=='ninguna'),lesionesNivel:P.lesionesNivel,modoCardio:P.modoCardio||'ninguno',cardioType:P.cardioType,alcohol:P.alcohol||'',tabaco:P.tabaco||'',startDate:prev.startDate||new Date().toISOString(),streak:prev.streak||0,bestRounds:prev.bestRounds||0,history:prev.history||[]});
+  const data=Object.assign({},prev,{name:(P.name||'Atleta').slice(0,18),sexo:P.sexo,edad:P.edad,altura:P.altura,peso:P.peso,objetivos:P.objetivos,focos:P.focos,goal:goalMap[P.objetivos[0]]||'full',level:P.level||'principiante',nivel:P.level,days:P.days||3,diasPorSemana:P.days||3,weeks:P.weeks||8,equipamiento:P.equipamiento,lesiones:P.lesiones.filter(l=>l!=='ninguna'),lesionesNivel:P.lesionesNivel,modoCardio:P.modoCardio||'ninguno',cardioType:P.cardioType,alcohol:P.alcohol||'',tabaco:P.tabaco||'',mancuernaDiscos:!!P.mancuernaDiscos,startDate:prev.startDate||new Date().toISOString(),streak:prev.streak||0,bestRounds:prev.bestRounds||0,history:prev.history||[]});
   // Si cambian las zonas de foco (o las semanas/días), el plan se reconstruye con la nueva rotación.
   if(JSON.stringify(prev.focos||[])!==JSON.stringify(P.focos)){ delete data.plan; delete data.planBaseGoal; delete data.planFocosKey; }
   try{localStorage.setItem('amrap_fn',JSON.stringify(data));}catch(e){}
