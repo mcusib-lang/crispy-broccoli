@@ -1,5 +1,5 @@
 // AMRAP · Service Worker — app shell offline
-const CACHE = 'amrap-v7';
+const CACHE = 'amrap-v10';
 // Archivos que SIEMPRE deben ir a la red primero (claves y capa de nube).
 // Evita que una versión cacheada deje la sincronización "apagada".
 const ALWAYS_FRESH = ['config.js', 'supabase-sync.js', 'social.js'];
@@ -65,7 +65,24 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // Resto (JS, imágenes, fuentes): cache-first, y cachea lo nuevo
+  // Resto propio (JS, CSS): stale-while-revalidate. Responde al instante con
+  // la copia en caché y a la vez baja la nueva en segundo plano, así un archivo
+  // actualizado entra solo en la siguiente carga SIN depender de subir la
+  // versión de CACHE a mano (era la causa de "lo subí y no se ve").
+  if (sameOrigin && /\.(js|css|json|webmanifest)$/i.test(url.pathname)) {
+    e.respondWith(
+      caches.match(req).then((cached) => {
+        const network = fetch(req).then((res) => {
+          if (res.ok) { const cp = res.clone(); caches.open(CACHE).then((c) => c.put(req, cp)); }
+          return res;
+        }).catch(() => cached);
+        return cached || network;
+      })
+    );
+    return;
+  }
+
+  // Imágenes, fuentes y terceros: cache-first (no cambian entre despliegues)
   e.respondWith(
     caches.match(req).then((cached) => cached || fetch(req).then((res) => {
       if (sameOrigin && res.ok) { const cp = res.clone(); caches.open(CACHE).then((c) => c.put(req, cp)); }

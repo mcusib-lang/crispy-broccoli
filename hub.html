@@ -348,10 +348,39 @@ const ICONS={hoy:'<path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/>',calend:'<
 document.querySelector('#acCardio').innerHTML=ic(ICONS.cardio,'#ea580c');
 document.querySelector('#acLibro').innerHTML=ic(ICONS.libro,'#f59e0b');
 
-const TABS=[['hoy','Hoy',ICONS.hoy,'#4f8cff'],['calend','Calend.',ICONS.calend,'#4f8cff'],['cardio','Cardio',ICONS.cardio,'#ea580c'],['nutri','Nutri',ICONS.nutri,'#22c55e'],['evol','Evol.',ICONS.evol,'#14b8a6'],['retos','Retos',ICONS.retos,'#f5a524'],['progreso','Cargas',ICONS.progreso,'#4f8cff']];
+// Navegación agrupada: 4 destinos en la barra (más legibles y con mejor área
+// táctil). Las vistas relacionadas viven dentro de un grupo con sub-nav.
+const GROUPS=[
+  ['g-hoy','Hoy',ICONS.hoy,'#4f8cff',['hoy']],
+  ['g-plan','Plan',ICONS.calend,'#4f8cff',['calend','cardio','retos']],
+  ['g-nutri','Nutri',ICONS.nutri,'#22c55e',['nutri']],
+  ['g-prog','Progreso',ICONS.evol,'#14b8a6',['evol','progreso']]
+];
+const SUB_LABEL={calend:'Calendario',cardio:'Cardio',retos:'Retos',evol:'Evolución',progreso:'Cargas'};
+const SUB_COL={calend:'#4f8cff',cardio:'#ea580c',retos:'#f5a524',evol:'#14b8a6',progreso:'#4f8cff'};
+const groupOf=(id)=>GROUPS.find(g=>g[4].includes(id))||GROUPS[0];
 let active='hoy';
-function renderNav(){document.getElementById('navbar').innerHTML=TABS.map(([id,lbl,path,col])=>{const on=id===active;const c=on?col:'var(--muted4)';return `<div class="navb" onclick="go('${id}')"><span style="color:${c}">${ic(path,c)}</span><span class="lbl" style="color:${c}">${lbl.toUpperCase()}</span></div>`;}).join('');}
-function go(id){active=id;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));const el=document.getElementById('tab-'+id);el.classList.add('on');el.querySelector('.scroll').classList.add('fade');renderNav();if(id==='calend')renderCal();else if(id==='cardio')renderCardio();else if(id==='progreso')renderProgreso();else if(id==='nutri')renderNutri();else if(id==='evol')renderEvolucion();else if(id==='retos')renderRetos();else renderHoy();}
+function renderNav(){
+  const cur=groupOf(active);
+  document.getElementById('navbar').innerHTML=GROUPS.map(([gid,lbl,path,col,members])=>{
+    const on=gid===cur[0];const c=on?col:'var(--muted4)';
+    return `<div class="navb" onclick="go('${members[0]}')"><span style="color:${c}">${ic(path,c)}</span><span class="lbl" style="color:${c}">${lbl.toUpperCase()}</span></div>`;
+  }).join('');
+}
+// Sub-nav segmentada dentro de los grupos con más de una vista
+function renderSubnav(id){
+  const members=groupOf(id)[4];
+  if(members.length<2)return;
+  const scroll=document.querySelector('#tab-'+id+' .scroll');
+  if(!scroll)return;
+  let bar=scroll.querySelector('.subnav');
+  if(!bar){bar=document.createElement('div');bar.className='subnav';bar.style.cssText='display:flex;gap:7px;padding:0 0 10px';scroll.insertBefore(bar,scroll.firstChild);}
+  bar.innerHTML=members.map(m=>{
+    const on=m===id;const col=SUB_COL[m]||'#4f8cff';
+    return `<div onclick="go('${m}')" style="flex:1;text-align:center;padding:10px 4px;border-radius:11px;cursor:pointer;font:600 12px/1 'Barlow Semi Condensed';${on?`background:${col}22;border:1px solid ${col}88;color:${col}`:'background:var(--panel2);border:1px solid var(--border4);color:var(--muted3)'}">${SUB_LABEL[m]||m}</div>`;
+  }).join('');
+}
+function go(id){active=id;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));const el=document.getElementById('tab-'+id);el.classList.add('on');el.querySelector('.scroll').classList.add('fade');renderNav();if(id==='calend')renderCal();else if(id==='cardio')renderCardio();else if(id==='progreso')renderProgreso();else if(id==='nutri')renderNutri();else if(id==='evol')renderEvolucion();else if(id==='retos')renderRetos();else renderHoy();renderSubnav(id);}
 window.go=go;
 
 function load(){try{return JSON.parse(localStorage.getItem('amrap_fn')||'{}')}catch(e){return{}}}
@@ -415,7 +444,31 @@ function ensurePlan(){
     DB.planFocosKey = focosKey;
     persist();
   }
+  reconcilePlanWithHistory();
   return DB.plan;
+}
+// Auto-reparación: el historial es la fuente de verdad de cuántas sesiones has
+// hecho. Si el plan se quedó atrás (sync antigua, cierre a medias), lo pone al día.
+function reconcilePlanWithHistory(){
+  const plan = Array.isArray(DB.plan) ? DB.plan : null;
+  if(!plan || !plan.length) return;
+  const hist = Array.isArray(DB.history) ? DB.history : [];
+  const target = Math.min(hist.length, plan.length);
+  const done = plan.filter(s=>s.done).length;
+  if(done >= target) return;
+  let changed = false;
+  let h = 0;
+  for(let i=0;i<plan.length && plan.filter(s=>s.done).length<target;i++){
+    if(plan[i].done) continue;
+    // fecha real de la sesión correspondiente del historial, si la hay
+    while(h<hist.length && hist[h]._used) h++;
+    plan[i].done = true;
+    plan[i].doneDate = (hist[h] && hist[h].date) || new Date().toISOString();
+    if(hist[h]) hist[h]._used = true;
+    changed = true;
+  }
+  hist.forEach(x=>{ delete x._used; });
+  if(changed) persist();
 }
 function currentPlanIdx(){
   const plan = ensurePlan();
@@ -1948,12 +2001,29 @@ function mergeDB(a,b){
   out.loads=b.loads||a.loads;
   out.streak=Math.max(a.streak||0,b.streak||0);
   out.bestRounds=Math.max(a.bestRounds||0,b.bestRounds||0);
+  // El plan NO puede sobrescribirse en bloque: una sesión hecha en cualquier
+  // dispositivo está hecha. Se fusiona slot a slot con OR sobre `done`.
+  const pa=Array.isArray(a.plan)?a.plan:null, pb=Array.isArray(b.plan)?b.plan:null;
+  if(pa&&pb){
+    const len=Math.max(pa.length,pb.length);
+    const plan=[];
+    for(let i=0;i<len;i++){
+      const x=pa[i], y=pb[i];
+      if(!x&&!y)continue;
+      if(!x){plan.push(y);continue;}
+      if(!y){plan.push(x);continue;}
+      const done=!!(x.done||y.done);
+      plan.push({n:x.n||y.n||i+1, focus:(x.done?x.focus:null)||(y.done?y.focus:null)||x.focus||y.focus, done:done, doneDate:done?(x.doneDate||y.doneDate||null):null});
+    }
+    out.plan=plan;
+  } else out.plan=pa||pb||undefined;
   return out;
 }
 
 // ═══ INIT ═══
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
 renderNav();renderHoy();renderCal();renderCardio();renderProgreso();renderNutri();renderEvolucion();applyWallpaper();
+['calend','cardio','retos','evol','progreso'].forEach(renderSubnav);
 (function(){
   // Tour de bienvenida (solo la primera vez tras crear el plan)
   try {

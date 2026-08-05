@@ -301,7 +301,10 @@
                   <span style="font:600 13.5px/1.1 'Barlow Semi Condensed'; color:var(--text3);">{{ e.name }}</span>
                   <span style="display:{{ e.tagShow }}; padding:2px 7px; border-radius:8px; background:var(--tint-amber-c); border:1px solid #f5a52440; font:700 8px/1.3 'Barlow Semi Condensed'; letter-spacing:.08em; color:#f5a524;">{{ e.tag }}</span>
                 </div>
-                <div style="font:500 10.5px/1 'Barlow Semi Condensed'; color:var(--muted); margin-top:4px;">{{ e.muscle }}</div>
+                <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:4px;">
+                  <span style="font:500 10.5px/1 'Barlow Semi Condensed'; color:var(--muted);">{{ e.muscle }}</span>
+                  <span style="display:{{ e.loadShow }}; padding:2px 8px; border-radius:9px; background:#4f8cff1f; border:1px solid #4f8cff44; font:600 10px/1.3 'Barlow Semi Condensed'; color:#9cc0ff;">{{ e.load }}</span>
+                </div>
               </div>
               <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
                 <span style="font:600 12px/1 'Barlow Semi Condensed'; color:#4f8cff;">{{ e.reps }}</span>
@@ -993,6 +996,13 @@ class Component extends DCLogic {
     const wantedCats = GOAL_CATS[goalKey] || GOAL_CATS.full;
     const hint = this.GOAL_HINTS[goalKey] || null;
     const used = new Set();
+    // Carga de la última vez que hiciste este ejercicio: es lo que permite
+    // aplicar sobrecarga progresiva (saber contra qué competir hoy).
+    const savedLoads = Array.isArray(this.saved && this.saved.loads) ? this.saved.loads : [];
+    const lastLoadOf = (name) => {
+      const l = savedLoads.find(x => x.ex === name);
+      return l && l.w ? String(l.w) : '';
+    };
     const buildEx = (pick) => ({
       id: pick.key, ex: pick.key, pose: pick.key,
       name: pick.name,
@@ -1000,6 +1010,7 @@ class Component extends DCLogic {
       muscle: pick.musculos || pick.muscle || '',
       material: pick.equip || pick.material || 'Peso corporal',
       tension: pick.tension || '',
+      lastLoad: lastLoadOf(pick.name),
       errors: (pick.errores || pick.errors || []).slice(0, 3),
       pasos: pick.pasos || [],
       cat: pick.cat || 'Full',
@@ -1207,6 +1218,22 @@ class Component extends DCLogic {
     const s = this.state;
     if (!s.rpe) return;
 
+    // Relee el perfil de disco justo antes de guardar: `this.saved` es una copia
+    // de cuando se abrió la sesión y puede haberse quedado atrás (otra pestaña,
+    // sync en segundo plano). Evita escribir un plan obsoleto encima del bueno.
+    try {
+      const fresh = JSON.parse(localStorage.getItem('amrap_fn') || 'null');
+      if (fresh && typeof fresh === 'object') {
+        const freshDone = Array.isArray(fresh.plan) ? fresh.plan.filter(x => x.done).length : -1;
+        const mineDone  = Array.isArray(this.saved.plan) ? this.saved.plan.filter(x => x.done).length : -1;
+        // conserva el plan más avanzado de los dos
+        const plan = (freshDone >= mineDone) ? fresh.plan : this.saved.plan;
+        const histLen = (h) => Array.isArray(h) ? h.length : 0;
+        const history = histLen(fresh.history) >= histLen(this.saved.history) ? fresh.history : this.saved.history;
+        this.saved = Object.assign({}, this.saved, fresh, { plan: plan, history: history });
+      }
+    } catch (e) {}
+
     // Normaliza el RPE al esquema que usa el resto de la app (facil/justo/alto)
     const rpeMap = { easy:'facil', just:'justo', hard:'alto' };
     const storedRpe = rpeMap[s.rpe] || s.rpe;
@@ -1265,10 +1292,10 @@ class Component extends DCLogic {
     const best = Math.max(this.saved.bestRounds || 0, s.rounds);
 
     // ── avanzar el plan: marcar como hecha la primera sesión pendiente ──
-    let plan = Array.isArray(this.saved.plan) ? this.saved.plan.slice() : null;
+    let plan = Array.isArray(this.saved.plan) ? this.saved.plan.map(x => Object.assign({}, x)) : null;
     if (plan){
       const idx = plan.findIndex(x => !x.done);
-      if (idx >= 0){ plan[idx] = { ...plan[idx], done:true, doneDate: new Date().toISOString() }; }
+      if (idx >= 0){ plan[idx].done = true; plan[idx].doneDate = new Date().toISOString(); }
     }
 
     const entry = {
@@ -1649,7 +1676,7 @@ class Component extends DCLogic {
 
       // intro / done
       streak: s.streak,
-      previewList: this.EXS.map((e,i) => ({ name:e.name, reps:e.reps, muscle:e.muscle + (e.tension ? ' · goma ' + e.tension : ''), tag:(e._anchor ? 'BASE' : ''), tagShow:(e._anchor ? 'inline-block' : 'none'), onTap:()=>this.openFicha(e), onSwap:(ev)=>{ if(ev&&ev.stopPropagation)ev.stopPropagation(); this.swapExercise(e._slot!=null?e._slot:i); } })),
+      previewList: this.EXS.map((e,i) => ({ name:e.name, reps:e.reps, muscle:e.muscle + (e.tension ? ' · goma ' + e.tension : ''), load:(e.lastLoad ? '🏋 ' + e.lastLoad : ''), loadShow:(e.lastLoad ? 'inline-block' : 'none'), tag:(e._anchor ? 'BASE' : ''), tagShow:(e._anchor ? 'inline-block' : 'none'), onTap:()=>this.openFicha(e), onSwap:(ev)=>{ if(ev&&ev.stopPropagation)ev.stopPropagation(); this.swapExercise(e._slot!=null?e._slot:i); } })),
       warmupPreview: this.WARMUP.map(w => w.name).join(' · '),
       cooldownPreview: this.COOL.map(w => w.name).join(' · '),
       onShuffle: this.onShuffle,
